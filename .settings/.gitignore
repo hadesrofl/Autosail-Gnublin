@@ -1,1 +1,3 @@
 *.settings.xml
+*.eclipse.cdt.core.prefs
+*.eclipse.cdt.ui.prefs
