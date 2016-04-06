@@ -2,7 +2,7 @@
 #define SRC_ADAPTER_XBEE_HPP_
 
 #include "adapter.hpp"
-#include "../../gnublin.h"
+#include "../../gnublin_wo_smtp.h"
 #include <iostream>
 
 /**

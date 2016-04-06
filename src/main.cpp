@@ -1,5 +1,6 @@
-#include "../gnublin.h"
 #include <iostream>
+
+#include "../gnublin_wo_smtp.h"
 #include "adapter/xbee.hpp"
 using namespace std;
 
