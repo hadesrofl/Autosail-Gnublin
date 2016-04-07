@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "../gnublin_wo_smtp.h"
-#include "adapter/xbee.hpp"
+#include "adapter/xbee.h"
 using namespace std;
 
 /**

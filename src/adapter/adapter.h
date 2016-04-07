@@ -5,8 +5,8 @@
  *      Author: Rene Kremer
  */
 
-#ifndef SRC_ADAPTER_ADAPTER_HPP_
-#define SRC_ADAPTER_ADAPTER_HPP_
+#ifndef SRC_ADAPTER_ADAPTER_H_
+#define SRC_ADAPTER_ADAPTER_H_
 
 /**
  * @class Adapter
@@ -45,4 +45,4 @@ public:
   }
 };
 
-#endif /* SRC_ADAPTER_ADAPTER_HPP_ */
+#endif /* SRC_ADAPTER_ADAPTER_H_ */

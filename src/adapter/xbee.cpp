@@ -1,4 +1,4 @@
-#include "xbee.hpp"
+#include "xbee.h"
 
 //
 // Public Functions

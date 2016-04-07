@@ -1,9 +1,9 @@
-#ifndef SRC_ADAPTER_XBEE_HPP_
-#define SRC_ADAPTER_XBEE_HPP_
+#ifndef SRC_ADAPTER_XBEE_H_
+#define SRC_ADAPTER_XBEE_H_
 
-#include "adapter.hpp"
 #include "../../gnublin_wo_smtp.h"
 #include <iostream>
+#include "adapter.h"
 
 /**
  * @file
@@ -73,4 +73,4 @@ public:
   ~Xbee ();
 };
 
-#endif /* SRC_ADAPTER_XBEE_HPP_ */
+#endif /* SRC_ADAPTER_XBEE_H_ */
