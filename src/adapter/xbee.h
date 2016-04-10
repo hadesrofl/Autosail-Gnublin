@@ -22,18 +22,18 @@ private:
   /**
    * Name of the device file
    */
-  const char* device_file;
+  const char* m_device_file;
   /**
    * Value of the baudrate
    */
-  int baudrate;
+  int m_baudrate;
   /**
    * @param device_file is the name of the file the device is listening to
    */
   /**
    * Serial Port of the xbee module
    */
-  gnublin_serial *xbee_port;
+  gnublin_serial* m_xbee_port;
   void
   set_device_file (char* device_file);
   /**

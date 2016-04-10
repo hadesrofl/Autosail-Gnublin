@@ -1,3 +1,5 @@
 *.settings.xml
 *.eclipse.cdt.core.prefs
 *.eclipse.cdt.ui.prefs
+*.eclipse.cdt.managedbuilder.core.prefs
+*.eclipse.cdt.codan.core.prefs

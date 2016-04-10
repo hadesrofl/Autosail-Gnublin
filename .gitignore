@@ -4,3 +4,6 @@
 *.cproject
 *.doxyfile
 /Release/
+/Tests/
+/Test/
+/Test-Build/

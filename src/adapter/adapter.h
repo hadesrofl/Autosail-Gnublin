@@ -1,18 +1,14 @@
-/*
- * adapter.hpp
- *
- *  Created on: Apr 5, 2016
- *      Author: Rene Kremer
- */
-
 #ifndef SRC_ADAPTER_ADAPTER_H_
 #define SRC_ADAPTER_ADAPTER_H_
 
 /**
+ * @file
  * @class Adapter
  * @brief Abstract Adapter class which needs receive, send and
  * a destructor to implement for derived classes. Some Adapters need some more
  * functionality or attributes but they all have a receive or send function
+ * @author Rene Kremer
+ * @version 0.2
  */
 class Adapter
 {
