@@ -1,11 +1,12 @@
 #include "test_file_reader.h"
-#include "../src/adapter/xbee.h"
+#include "../src/interfaces/serial.h"
 #include <vector>
+#include <memory>
 
 int
 xbee_test (char* file_name)
 {
-  TestFileReader* reader = new TestFileReader (file_name);
+  std::unique_ptr<TestFileReader> reader (new TestFileReader(file_name));
   std::cout << "Reader Allocated" << std::endl;
   std::vector<bool> asserts;
   int n_tests = 6;
@@ -17,7 +18,6 @@ xbee_test (char* file_name)
   asserts.push_back (reader->assert ((char*) "ER", 2));
   asserts.push_back (reader->assert ((char*) "TZ", 2));
   passed = reader->check_asserts (asserts, n_tests);
-  delete reader;
   if (passed == true)
     {
       return 1;
@@ -32,7 +32,7 @@ void
 xbee_real_test ()
 {
   char* device_file = (char*) "/dev/ttyUSB0";
-  Xbee *xbee = new Xbee (device_file, 38400);
+  Serial *xbee = new Serial (device_file, 38400);
   int i = 0, max = 5, second = 1, result = 0;
   unsigned char txbuf[2] =
     { 'T', 'X' };

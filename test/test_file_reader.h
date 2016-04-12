@@ -22,7 +22,7 @@ private:
   /**
    * Name of the file containing the test results
    */
-  char* m_file_name;
+  const char* m_file_name;
   /**
    * Input file stream
    */
@@ -48,7 +48,7 @@ public:
    * Constructor
    * @param file_name is the name of the file containing the test results
    */
-  TestFileReader (char* file_name);
+  TestFileReader (const char* file_name);
   /**
    * Asserts if the given data is the same as the excepted result as defined in
    * the test file
@@ -78,7 +78,7 @@ public:
    * Gets the name of the file containing the results of the tests
    * @return a pointer of chars containing the name of the file
    */
-  char*
+  const char*
   get_file_name ();
   /**
    * Destructor

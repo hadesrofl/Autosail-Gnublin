@@ -1,5 +1,5 @@
 #include "../gnublin_wo_smtp.h"
-#include "adapter/xbee.h"
+#include "interfaces/serial.h"
 
 /**
  * @mainpage Robotic-Sailing --- Port from a microprocessor to the gnublin platform

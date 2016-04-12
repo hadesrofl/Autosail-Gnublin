@@ -35,7 +35,7 @@ TestFileReader::get_line (std::vector<char> &line)
   return line;
 }
 
-TestFileReader::TestFileReader (char* file_name)
+TestFileReader::TestFileReader (const char* file_name)
 {
   m_current_line = 0;
   m_file_name = file_name;
@@ -46,7 +46,8 @@ TestFileReader::assert (char* data, int length)
 {
   std::vector<char> line;
   line = get_line (line);
-  std::cout << "Data given for Test Case: ";
+  if(line.empty() == false){
+      std::cout << "Data given for Test Case: ";
   for (int i = 0; i  < length; i++){
       std::cout << data[i];
   }
@@ -63,6 +64,10 @@ TestFileReader::assert (char* data, int length)
 	return false;
     }
   return true;
+  }else{
+      return false;
+  }
+
 }
 
 bool
@@ -95,7 +100,7 @@ TestFileReader::get_current_line ()
 {
   return m_current_line;
 }
-char*
+const char*
 TestFileReader::get_file_name ()
 {
   return m_file_name;

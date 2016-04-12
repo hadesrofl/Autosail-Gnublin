@@ -1,28 +1,29 @@
-#ifndef SRC_ADAPTER_XBEE_H_
-#define SRC_ADAPTER_XBEE_H_
+#ifndef SRC_INTERFACES_SERIAL_H_
+#define SRC_INTERFACES_SERIAL_H_
 
 #include "../../gnublin_wo_smtp.h"
 #include <iostream>
-#include "adapter.h"
+
+#include "interface.h"
 
 /**
  * @file
- * @class Xbee
- * @brief Adapter Class for the Xbee Module to set up a Xbee Module and provide
+ * @class Serial
+ * @brief Interface Class to set up a Serial Device and provide
  * a send and receive function
  * @author Rene Kremer
  * @version 0.2
  */
-class Xbee : public Adapter
+class Serial : public Interface
 {
-/**
- * Private Functions
- */
+  /**
+   * @private
+   */
 private:
   /**
    * Name of the device file
    */
-  const char* m_device_file;
+  //const char* m_device_file;
   /**
    * Value of the baudrate
    */
@@ -33,9 +34,8 @@ private:
   /**
    * Serial Port of the xbee module
    */
-  gnublin_serial* m_xbee_port;
-  void
-  set_device_file (char* device_file);
+  gnublin_serial* m_serial_port;
+
   /**
    * @param baudrate is the value of the baudrate
    */
@@ -49,9 +49,8 @@ public:
    * Constructor
    * @param device_file is the name of the file the device is listening to
    * @param baudrate is the value of the baudrate
-   * @return a new Xbee Module
    */
-  Xbee (char* device_file, int baudrate);
+  Serial (char* device_file, int baudrate);
   /**
    * Function to receive data
    * @param buf is a pointer to a buffer to write to data into
@@ -70,7 +69,7 @@ public:
   /**
    * Destructor
    */
-  ~Xbee ();
+  ~Serial ();
 };
 
-#endif /* SRC_ADAPTER_XBEE_H_ */
+#endif /* SRC_INTERFACES_SERIAL_H_ */
