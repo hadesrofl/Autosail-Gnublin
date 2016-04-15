@@ -1,23 +1,24 @@
-#include "test_file_reader.h"
+#include "../src/tools/file_reader.h"
 #include "../src/interfaces/serial.h"
+#include "asserter.h"
 #include <vector>
 #include <memory>
 
 int
 xbee_test (char* file_name)
 {
-  std::unique_ptr<TestFileReader> reader (new TestFileReader(file_name));
+  std::unique_ptr<FileReader> reader (new FileReader(file_name));
   std::cout << "Reader Allocated" << std::endl;
   std::vector<bool> asserts;
   int n_tests = 6;
   bool passed = false;
-  asserts.push_back (reader->assert ((char*) "TX", 2));
-  asserts.push_back (reader->assert ((char*) "AB", 2));
-  asserts.push_back (reader->assert ((char*) "TX", 2));
-  asserts.push_back (reader->assert ((char*) "AB", 2));
-  asserts.push_back (reader->assert ((char*) "ER", 2));
-  asserts.push_back (reader->assert ((char*) "TZ", 2));
-  passed = reader->check_asserts (asserts, n_tests);
+  asserts.push_back (assert (*reader, (char*) "TX", 2));
+  asserts.push_back (assert (*reader, (char*) "AB", 2));
+  asserts.push_back (assert (*reader, (char*) "TX", 2));
+  asserts.push_back (assert (*reader, (char*) "AB", 2));
+  asserts.push_back (assert (*reader, (char*) "ER", 2));
+  asserts.push_back (assert (*reader, (char*) "TZ", 2));
+  passed = check_asserts (asserts, n_tests);
   if (passed == true)
     {
       return 1;
