@@ -1,5 +1,5 @@
-#ifndef KLASSENDIAGRAMM_TLVE_T_L_V_E_PROTOCOL_H
-#define KLASSENDIAGRAMM_TLVE_T_L_V_E_PROTOCOL_H
+#ifndef TLVE_T_L_V_E_PROTOCOL_H
+#define TLVE_T_L_V_E_PROTOCOL_H
 
 #include <vector>
 #include "tlv_frame.h"
@@ -21,9 +21,9 @@ private:
   /**
    * Enums for the communication numbers of the components
    */
-  enum class m_communication_numbers
+  enum class CommunicationNumber
   {
-    GPS = 1, HYGROMETER = 2
+    GPS, HYGROMETER
   };
   /**
    * @public
@@ -49,7 +49,7 @@ public:
    * @param sync is the value of the sync field
    * @return a TLVFrame packed with the data
    */
-  TLVFrame
+  TLVFrame*
   create_frame (unsigned char tag, unsigned char attribute,
 		unsigned char length, std::vector<unsigned char> payload,
 		unsigned char sync);

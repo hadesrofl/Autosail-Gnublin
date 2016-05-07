@@ -41,12 +41,12 @@ FileReader::FileReader (const char* file_name)
   m_file_name = file_name;
 }
 int
-FileReader::get_current_line ()
+FileReader::get_current_line () const
 {
   return m_current_line;
 }
 const char*
-FileReader::get_file_name ()
+FileReader::get_file_name () const
 {
   return m_file_name;
 }

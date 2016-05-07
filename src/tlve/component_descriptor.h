@@ -1,5 +1,5 @@
-#ifndef KLASSENDIAGRAMM_TLVE_COMPONENT_DESCRIPTOR_H
-#define KLASSENDIAGRAMM_TLVE_COMPONENT_DESCRIPTOR_H
+#ifndef TLVE_COMPONENT_DESCRIPTOR_H
+#define TLVE_COMPONENT_DESCRIPTOR_H
 /**
  * @file
  * @class ComponentDescriptor
@@ -32,8 +32,26 @@ private:
 public:
   /**
    * Constructor
+   * @param component_class byte of the class field
+   * @param attribute byte of the attribute field
+   * @param number byte of the number field
    */
-  ComponentDescriptor ();
+  ComponentDescriptor (unsigned char component_class, unsigned char attribute, unsigned char number);
+  /**
+   * Gets the class of the component according to the TLVE Protocol
+   * @return the byte of the class of the component
+   */
+  unsigned char get_component_class() const;
+  /**
+   * Gets the attribute of the component according to the TLVE Protocol
+   * @return the byte of the attribute of the component
+   */
+  unsigned char get_component_attribute() const;
+  /**
+   * Gets the number of the component according to the TLVE Protocol
+   * @return the byte of the number of the component
+   */
+  unsigned char get_component_number() const;
   /**
    * Destructor
    */

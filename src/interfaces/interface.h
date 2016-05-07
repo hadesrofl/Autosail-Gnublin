@@ -1,5 +1,7 @@
-#ifndef SRC_INTERFACES_INTERFACE_H_
-#define SRC_INTERFACES_INTERFACE_H_
+#ifndef INTERFACES_INTERFACE_H_
+#define INTERFACES_INTERFACE_H_
+
+#include <memory>
 
 /**
  * @file
@@ -69,4 +71,4 @@ public:
   }
 };
 
-#endif /* SRC_INTERFACES_INTERFACE_H_ */
+#endif /* INTERFACES_INTERFACE_H_ */

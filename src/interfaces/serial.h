@@ -1,5 +1,5 @@
-#ifndef SRC_INTERFACES_SERIAL_H_
-#define SRC_INTERFACES_SERIAL_H_
+#ifndef INTERFACES_SERIAL_H_
+#define INTERFACES_SERIAL_H_
 
 #include "../../gnublin_wo_smtp.h"
 #include <iostream>
@@ -32,9 +32,9 @@ private:
    * @param device_file is the name of the file the device is listening to
    */
   /**
-   * Serial Port of the xbee module
+   * Serial port of the gnublin
    */
-  gnublin_serial* m_serial_port;
+  std::unique_ptr<gnublin_serial> m_serial_port;
 
   /**
    * @param baudrate is the value of the baudrate
@@ -72,4 +72,4 @@ public:
   ~Serial ();
 };
 
-#endif /* SRC_INTERFACES_SERIAL_H_ */
+#endif /* INTERFACES_SERIAL_H_ */

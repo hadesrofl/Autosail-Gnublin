@@ -1,8 +1,9 @@
-#ifndef KLASSENDIAGRAMM_INTERFACES_I2_C_H
-#define KLASSENDIAGRAMM_INTERFACES_I2_C_H
+#ifndef INTERFACES_I2_C_H
+#define INTERFACES_I2_C_H
 
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
+#define GNUBLIN_DEFAULT_I2C "/dev/i2c-1"
 /**
  * @file
  * @class I2C
@@ -26,9 +27,9 @@ private:
    */
   int m_slave_address;
   /**
-   * I2C Port of the gnublin
+   * I2C port of the gnublin
    */
-  gnublin_i2c* m_i2c_port;
+  std::unique_ptr<gnublin_i2c> m_i2c_port;
 /**
  * @public
  */
@@ -39,6 +40,11 @@ public:
    * @param address is the address of a connected slave
    */
   I2C (char* device_file, int address);
+  /**
+   * Constructor
+   * @param address is the slave address of a connected slave
+   */
+  I2C (int address);
 /**
  * Receives data from the I2C Port of the Gnublin and saves it into the buffer. Reads
  * only as much bytes as specified in variable length

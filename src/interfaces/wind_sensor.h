@@ -1,7 +1,8 @@
-#ifndef KLASSENDIAGRAMM_INTERFACES_WIND_SENSOR_H
-#define KLASSENDIAGRAMM_INTERFACES_WIND_SENSOR_H
+#ifndef INTERFACES_WIND_SENSOR_H
+#define INTERFACES_WIND_SENSOR_H
 
 #include "i2c.h"
+
 /**
  * @file
  * @class WindSensor
@@ -19,17 +20,22 @@ private:
   /**
    * I2C Interface
    */
-  I2C* m_i2c_port;
+  std::unique_ptr<I2C> m_i2c_port;
   /**
    * @public
    */
 public:
   /**
    * Constructor
-   * @param device_file is the name of the file for the device
-   * @param slave_address is the address of the slave
+   * @param device_file is the name of the I2C Interface this devices listens to
+   * @param slave_address is the address of the Windsensor Module
    */
   WindSensor (char* device_file, int slave_address);
+  /**
+   * Constructor
+   * @param slave_address is the address of the Windsensor Module
+   */
+  WindSensor(int slave_address);
   /**
    * Destructor
    */

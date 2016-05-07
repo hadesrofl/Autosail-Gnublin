@@ -1,5 +1,5 @@
-#ifndef SRC_TOOLS_FILEREADER_H_
-#define SRC_TOOLS_FILEREADER_H_
+#ifndef TOOLS_FILEREADER_H_
+#define TOOLS_FILEREADER_H_
 
 #include <iostream>
 #include <fstream>
@@ -55,13 +55,13 @@ public:
    * @return the number of the current line
    */
   int
-  get_current_line ();
+  get_current_line () const;
   /**
    * Gets the name of the file
    * @return a pointer of chars containing the name of the file
    */
   const char*
-  get_file_name ();
+  get_file_name () const;
   /**
    * Destructor
    */
@@ -69,4 +69,4 @@ public:
 
 };
 
-#endif /* SRC_TOOLS_FILEREADER_H_ */
+#endif /* TOOLS_FILEREADER_H_ */

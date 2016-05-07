@@ -1,5 +1,5 @@
-#ifndef KLASSENDIAGRAMM_INTERFACES_S_P_I_H
-#define KLASSENDIAGRAMM_INTERFACES_S_P_I_H
+#ifndef INTERFACES_S_P_I_H
+#define INTERFACES_S_P_I_H
 
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
@@ -25,7 +25,7 @@ private:
   /**
    * Gnublin SPI Port
    */
-  gnublin_spi* m_spi_port;
+  std::unique_ptr<gnublin_spi> m_spi_port;
   /**
    * @public
    */
@@ -34,7 +34,7 @@ public:
    * Constructor
    * @param device_file is the name of the file of the device
    */
-  SPI (char* device_file);
+  SPI (char* device_file, unsigned int spi_speed);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read

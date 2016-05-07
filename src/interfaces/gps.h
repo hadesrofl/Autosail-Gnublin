@@ -1,5 +1,5 @@
-#ifndef KLASSENDIAGRAMM_INTERFACES_G_P_S_H
-#define KLASSENDIAGRAMM_INTERFACES_G_P_S_H
+#ifndef INTERFACES_G_P_S_H
+#define INTERFACES_G_P_S_H
 
 #include "serial.h"
 /**
@@ -19,7 +19,7 @@ private:
   /**
    * Serial Interface
    */
-  Serial* m_serial_port;
+  std::unique_ptr<Serial> m_serial_port;
   /**
    * @public
    */
