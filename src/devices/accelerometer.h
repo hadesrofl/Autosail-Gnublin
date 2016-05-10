@@ -1,7 +1,8 @@
 #ifndef INTERFACES_ACCELEROMETER_H_
 #define INTERFACES_ACCELEROMETER_H_
 
-#include "i2c.h"
+#include "../interfaces/i2c.h"
+#include "device.h"
 /**
  * @file
  * @class Accelerometer
@@ -10,13 +11,8 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class Accelerometer
+class Accelerometer : public Device
 {
-private:
-  /**
-   * I2C Interface
-   */
-  std::unique_ptr<I2C> m_i2c_port;
 /**
  * @public
  */

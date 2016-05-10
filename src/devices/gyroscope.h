@@ -1,7 +1,8 @@
 #ifndef INTERFACES_GYROSCOPE_H_
 #define INTERFACES_GYROSCOPE_H_
 
-#include "i2c.h"
+#include "../interfaces/i2c.h"
+#include "device.h"
 
 /**
  * @file
@@ -11,13 +12,8 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class Gyroscope
+class Gyroscope : public Device
 {
-private:
-  /**
-   * I2C Interface
-   */
-  std::unique_ptr<I2C> m_i2c_port;
 /**
  * @public
  */

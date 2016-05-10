@@ -2,9 +2,9 @@
 #include "interfaces/serial.h"
 #include "interfaces/spi.h"
 #include "interfaces/i2c.h"
-#include "interfaces/interface_manager.h"
+#include "devices/device_manager.h"
 
-#define TEENSY_I2C 0x55
+#define TEENSY_I2C_ 0x55
 /**
  * @mainpage Robotic-Sailing --- Port from a microprocessor to the gnublin platform
  *
@@ -14,8 +14,9 @@
 int
 main (void)
 {
-  InterfaceManager imanager;
-  I2C* i2c_interface = new I2C (TEENSY_I2C);
+  DeviceManager dmanager;
+  Accelerometer* acc = (Accelerometer*) dmanager.get_sensor(DeviceManager::Sensor::ACCELEROMETER);
+  I2C* i2c_interface = new I2C(TEENSY_I2C_);
   unsigned char tx[2] =
     { 0x23, 0x25 };
   std::cout << tx[0] << " " << tx[1] << std::endl;
@@ -38,6 +39,7 @@ main (void)
       //i2c_interface->receive (rx, 2);
       //std::cout << rx[0] << " " << rx[1] << std::endl;
       std::cout << "Cycle done" << std::endl;
+      if(acc == NULL) std::cout << "ACC is NULL" << std::endl;
       sleep (1);
     }
   /*SPI *spi_interface = new SPI ((char*) "/dev/spidev0.11", 9600);

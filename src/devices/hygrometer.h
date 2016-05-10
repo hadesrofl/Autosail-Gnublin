@@ -1,7 +1,8 @@
 #ifndef INTERFACES_HYGROMETER_H
 #define INTERFACES_HYGROMETER_H
 
-#include "i2c.h"
+#include "../interfaces/i2c.h"
+#include "device.h"
 
 /**
  * @file
@@ -11,7 +12,7 @@
  * @author Rene Kremer
  * @version 0.3
  */
-class Hygrometer
+class Hygrometer : public Device
 {
 private:
   /**

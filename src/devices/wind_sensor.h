@@ -1,7 +1,8 @@
 #ifndef INTERFACES_WIND_SENSOR_H
 #define INTERFACES_WIND_SENSOR_H
 
-#include "i2c.h"
+#include "../interfaces/i2c.h"
+#include "device.h"
 
 /**
  * @file
@@ -11,16 +12,8 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class WindSensor
+class WindSensor : public Device
 {
-  /**
-   * @private
-   */
-private:
-  /**
-   * I2C Interface
-   */
-  std::unique_ptr<I2C> m_i2c_port;
   /**
    * @public
    */

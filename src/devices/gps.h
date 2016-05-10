@@ -1,7 +1,8 @@
 #ifndef INTERFACES_G_P_S_H
 #define INTERFACES_G_P_S_H
 
-#include "serial.h"
+#include "../interfaces/serial.h"
+#include "device.h"
 /**
  * @file
  * @class GPS
@@ -10,16 +11,8 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class GPS
+class GPS : public Device
 {
-  /**
-   * @private
-   */
-private:
-  /**
-   * Serial Interface
-   */
-  std::unique_ptr<Serial> m_serial_port;
   /**
    * @public
    */
