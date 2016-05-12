@@ -1,9 +1,8 @@
 #ifndef INTERFACES_SERIAL_H_
 #define INTERFACES_SERIAL_H_
 
+#define SERIAL_DEFAULT_FILE "/dev/ttyUSB0"
 #include "../../gnublin_wo_smtp.h"
-#include <iostream>
-
 #include "interface.h"
 
 /**
@@ -51,6 +50,11 @@ public:
    * @param baudrate is the value of the baudrate
    */
   Serial (char* device_file, int baudrate);
+  /**
+   * Constructor
+   * @param baudrate is the value of the baudrate
+   */
+  Serial (int baudrate);
   /**
    * Function to receive data
    * @param buf is a pointer to a buffer to write to data into

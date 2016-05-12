@@ -1,5 +1,5 @@
-#ifndef INTERFACES_COMPASS_H_
-#define INTERFACES_COMPASS_H_
+#ifndef DEVICES_COMPASS_H_
+#define DEVICES_COMPASS_H_
 
 #include "../interfaces/i2c.h"
 #include "device.h"
@@ -29,6 +29,20 @@ public:
     */
    Compass(int slave_address);
    /**
+    * Reads data from the compass for a given length
+    * @param buf is the buffer to save the data into
+    * @param length is the length of byte to read
+    * @return length on success, otherwise -1 on an Error
+    */
+   int read (unsigned char* buf, int length);
+   /**
+    * Writes data from the compas for a given length
+    * @param buf is the buffer with the data to write
+    * @param length is the length of the written bytes
+    * @return length on success, otherwise -1 on an Error
+    */
+   int write (unsigned char* buf, int length);
+   /**
     * Destructor
     */
    ~Compass();
@@ -36,4 +50,4 @@ public:
 
 
 
-#endif /* INTERFACES_COMPASS_H_ */
+#endif /* DEVICES_COMPASS_H_ */

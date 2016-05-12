@@ -4,8 +4,9 @@
 #include "../interfaces/interface.h"
 #include "../tlve/tlve_protocol.h"
 #include "device.h"
-#include "gps.h"
 #include "accelerometer.h"
+#include "compass.h"
+#include "gps.h"
 #include "gyroscope.h"
 #include "hygrometer.h"
 #include "wind_sensor.h"
@@ -29,13 +30,15 @@ public:
    */
   enum class Sensor
   {
-    GPS,
     ACCELEROMETER,
     COMPASS,
+    GPS,
     GYROSCOPE,
     HYGROMETER,
     WIND_SENSOR,
+#ifdef _TEST
     TEENSY_I2C,
+#endif
     NUM_DEVICES
   };
   /**
@@ -75,12 +78,17 @@ private:
   /**
    * Addresses of the Sensors
    */
-  enum class Sensor_Addr
+  enum class Sensor_Params
   {
-    TEENSY_I2C = 0x55, 		// Teensy Slave Address for I2C
-    COMPASS_I2C = 0x1e,		// Address of Digital Compass HMC5883L
-    ACC_I2C = 0x53,		// Address of Accelerometer ADXL345
-    GYRO_I2C = 0x68		// Address of Gyroscope ITG-3200
+#ifdef _TEST
+    TEENSY_ADDR = 0x55, 	// Teensy Slave Address for I2C
+#endif
+    COMPASS_ADDR = 0x1E,	// Address of Digital Compass HMC5883L
+    ACC_ADDR = 0x53,		// Address of Accelerometer ADXL345
+    GYRO_ADDR = 0x68,		// Address of Gyroscope ITG-3200
+    GPS_BAUD = 38400,		// Baudrate of GPS
+    //HYGRO_ADDR = 0x00,		// FILLER VALUE Address of Hygrometer
+    //WIND_SENSOR_ADDR = 0x00	// FILLER VALUE Address of Wind Sensor
   };
   /**
    * Map of Sensor Data
@@ -97,4 +105,4 @@ private:
 
 };
 
-#endif /* INTERFACES_INTERFACE_MANAGER_H_ */
+#endif /* DEVICES_DEVICE_MANAGER_H_ */

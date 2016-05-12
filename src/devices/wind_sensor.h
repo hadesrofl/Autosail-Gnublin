@@ -1,5 +1,5 @@
-#ifndef INTERFACES_WIND_SENSOR_H
-#define INTERFACES_WIND_SENSOR_H
+#ifndef DEVICES_WIND_SENSOR_H
+#define DEVICES_WIND_SENSOR_H
 
 #include "../interfaces/i2c.h"
 #include "device.h"
@@ -29,6 +29,20 @@ public:
    * @param slave_address is the address of the Windsensor Module
    */
   WindSensor(int slave_address);
+  /**
+   * Reads data from the wind sensor for a given length
+   * @param buf is the buffer to save the data into
+   * @param length is the length of byte to read
+   * @return length on success, otherwise -1 on an Error
+   */
+  int read (unsigned char* buf, int length);
+  /**
+   * Writes data from the wind sensor for a given length
+   * @param buf is the buffer with the data to write
+   * @param length is the length of the written bytes
+   * @return length on success, otherwise -1 on an Error
+   */
+  int write (unsigned char* buf, int length);
   /**
    * Destructor
    */

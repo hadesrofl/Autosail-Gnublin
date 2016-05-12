@@ -71,7 +71,8 @@ public:
   inline int
   set_address (int address)
   {
-    return 0;
+    m_slave_address = address;
+    return this->m_i2c_port->setAddress(address);
   }
   ;
 /**

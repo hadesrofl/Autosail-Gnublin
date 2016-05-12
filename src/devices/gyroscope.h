@@ -1,5 +1,5 @@
-#ifndef INTERFACES_GYROSCOPE_H_
-#define INTERFACES_GYROSCOPE_H_
+#ifndef DEVICES_GYROSCOPE_H_
+#define DEVICES_GYROSCOPE_H_
 
 #include "../interfaces/i2c.h"
 #include "device.h"
@@ -30,6 +30,20 @@ public:
     */
    Gyroscope(int slave_address);
    /**
+    * Reads data from the gyroscope for a given length
+    * @param buf is the buffer to save the data into
+    * @param length is the length of byte to read
+    * @return length on success, otherwise -1 on an Error
+    */
+   int read (unsigned char* buf, int length);
+   /**
+    * Writes data from the gyroscope for a given length
+    * @param buf is the buffer with the data to write
+    * @param length is the length of the written bytes
+    * @return length on success, otherwise -1 on an Error
+    */
+   int write (unsigned char* buf, int length);
+   /**
     * Destructor
     */
    ~Gyroscope();
@@ -37,4 +51,4 @@ public:
 
 
 
-#endif /* INTERFACES_GYROSCOPE_H_ */
+#endif /* DEVICES_GYROSCOPE_H_ */
