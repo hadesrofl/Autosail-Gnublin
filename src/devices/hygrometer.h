@@ -16,9 +16,9 @@ class Hygrometer : public Device
 {
 private:
   /**
-   * I2C Interface
+   * Inits the hygrometer, setting the configuration for the device
    */
-  std::unique_ptr<I2C> m_i2c_port;
+  int init();
 /**
  * @public
  */
@@ -40,14 +40,16 @@ public:
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
-  int read (unsigned char* buf, int length);
+  int
+  read (unsigned char* buf, int length);
   /**
    * Writes data from the hygrometer for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  int write (unsigned char* buf, int length);
+  int
+  write (unsigned char* buf, int length);
   /**
    * Destructor
    */

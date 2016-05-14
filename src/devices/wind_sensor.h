@@ -15,6 +15,15 @@
 class WindSensor : public Device
 {
   /**
+   * @private
+   */
+private:
+  /**
+   * Inits the wind sensor, setting the configuration for the device
+   */
+  int
+  init ();
+  /**
    * @public
    */
 public:
@@ -28,21 +37,23 @@ public:
    * Constructor
    * @param slave_address is the address of the Windsensor Module
    */
-  WindSensor(int slave_address);
+  WindSensor (int slave_address);
   /**
    * Reads data from the wind sensor for a given length
    * @param buf is the buffer to save the data into
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
-  int read (unsigned char* buf, int length);
+  int
+  read (unsigned char* buf, int length);
   /**
    * Writes data from the wind sensor for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  int write (unsigned char* buf, int length);
+  int
+  write (unsigned char* buf, int length);
   /**
    * Destructor
    */

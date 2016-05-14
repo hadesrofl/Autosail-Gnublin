@@ -1,5 +1,6 @@
 #ifdef _TEST
 #include "asserter.h"
+#include <iostream>
 
 bool
 Asserter::assert (unsigned char* send_data, unsigned char* received_data, int length)

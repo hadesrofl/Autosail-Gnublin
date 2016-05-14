@@ -13,6 +13,14 @@
  */
 class Compass : public Device
 {
+  /**
+   * @private
+   */
+private:
+  /**
+   * Inits the compass, setting the configuration for the device
+   */
+  int init();
 /**
  * @public
  */
@@ -34,14 +42,16 @@ public:
     * @param length is the length of byte to read
     * @return length on success, otherwise -1 on an Error
     */
-   int read (unsigned char* buf, int length);
+   int
+   read (unsigned char* buf, int length);
    /**
-    * Writes data from the compas for a given length
+    * Writes data from the compass for a given length
     * @param buf is the buffer with the data to write
     * @param length is the length of the written bytes
     * @return length on success, otherwise -1 on an Error
     */
-   int write (unsigned char* buf, int length);
+   int
+   write (unsigned char* buf, int length);
    /**
     * Destructor
     */

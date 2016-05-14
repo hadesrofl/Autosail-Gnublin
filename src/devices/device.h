@@ -2,6 +2,8 @@
 #define DEVICES_DEVICE_H_
 
 #include "../interfaces/interface.h"
+#include "sensor_params.h"
+
 /**
  * @file
  * @class Device
@@ -12,6 +14,15 @@
 class Device
 {
   /**
+   * @private
+   */
+private:
+  /**
+   * Virtual Function: Inits a device.
+   */
+  virtual int
+  init () = 0;
+  /**
    * @protected
    */
 protected:
@@ -19,26 +30,51 @@ protected:
    * Port of the used interface
    */
   std::unique_ptr<Interface> m_interface_port;
+  int m_device_id;
+  /**
+   * Sets the id of the device as specified in sensor params
+   * @param id is the id of this specific device
+   */
+  inline void set_device_id(int id){
+    m_device_id = id;
+  }
   /**
    * @public
    */
 public:
   /**
-   * Reads data from a device for a given length
+   * Virtual Function: Reads data from a device for a given length
    * @param buf is the buffer to save the data into
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
   virtual int
-    read (unsigned char* buf, int length) =0;
+  read (unsigned char* buf, int length)
+  {
+    return -2;
+  }
+  ;
   /**
-   * Writes data from a device for a given length
+   * Virtual Function: Writes data from a device for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
   virtual int
-    write (unsigned char* buf, int length) =0;
+  write (unsigned char* buf, int length)
+  {
+    return -2;
+  }
+  ;
+  /**
+   * Gets the id of this device
+   * @return the id of this specific device
+   */
+  inline int
+  get_device_id () const
+  {
+    return m_device_id;
+  }
   /**
    * Default Destructor
    */

@@ -1,5 +1,6 @@
 #include "../gnublin_wo_smtp.h"
 #include "devices/device_manager.h"
+#include "devices/device.h"
 
 #ifdef _TEST
 #define TEENSY_I2C_ 0x55
@@ -9,7 +10,6 @@
 #include "test/asserter.h"
 #include <vector>
 #endif
-
 
 /**
  * @mainpage Robotic-Sailing --- Port from a microprocessor to the gnublin platform
@@ -84,29 +84,33 @@ main (void)
     }
 #endif
   DeviceManager dmanager;
-  /*I2C* i2c_interface = new I2C(TEENSY_I2C_);
-   unsigned char tx[2] =
-   { 0x23, 0x25 };
-   std::cout << tx[0] << " " << tx[1] << std::endl;
-   std::cout << "TX ok" << std::endl;
-   unsigned char rx[4] =
-   { 0 };
-   std::cout << rx[0] << " " << rx[1] << std::endl;
-   std::cout << "RX ok" << std::endl;
-   while (true)
-   {
-   //set Register Access Pointer to Data Output X LSB Register
-   tx[0] = 0x3C; tx[1] = 0x01;
-   i2c_interface->send (tx, 2);
-   //set Register Access Pointer to Data Output X MSB Register
-   tx[0] = 0x3C; tx[1] = 0x03;
-   i2c_interface->send (tx, 2);
-   //Read Data Output X LSB Register
-   i2c_interface->receive (rx, 2);
-   std::cout << rx[0] << " " << rx[1] << std::endl;
-   std::cout << "Cycle done" << std::endl;
-   sleep (1);
-   }
-   */
+  Device* device = dmanager.get_sensor (Device_ID::ACCELEROMETER);
+  unsigned char tx[1] =
+    { 0 };
+  std::cout << tx[0] << " " << std::endl;
+  std::cout << "TX ok" << std::endl;
+  unsigned char rx[4] =
+    { 0 };
+  std::cout << rx[0] << " " << rx[1] << std::endl;
+  std::cout << "RX ok" << std::endl;
+  while (true)
+    {
+      //Set Register Pointer to first Data Register
+      tx[0] = 0x32;
+      device->write (tx, 1);
+      for (int i = 0; i < 6; i++)
+	{
+	  device->read (rx, 1);
+	  int k = rx[0];
+	  //int y = rx[1];
+	  std::cout << "Values: " << k << " "
+	      //<< y
+	      << std::endl;
+	}
+
+      //std::cout << "Read: " << rx[0] << " " << rx[1] << std::endl;
+      std::cout << "Cycle done" << std::endl;
+      sleep (1);
+    }
   return 0;
 }

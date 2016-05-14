@@ -1,6 +1,7 @@
 #ifndef DEVICES_DEVICE_MANAGER_H_
 #define DEVICES_DEVICE_MANAGER_H_
 #include <map>
+#include <vector>
 #include "../interfaces/interface.h"
 #include "../tlve/tlve_protocol.h"
 #include "device.h"
@@ -26,22 +27,6 @@ class DeviceManager
    */
 public:
   /**
-   * Enums of the Sensors
-   */
-  enum class Sensor
-  {
-    ACCELEROMETER,
-    COMPASS,
-    GPS,
-    GYROSCOPE,
-    HYGROMETER,
-    WIND_SENSOR,
-#ifdef _TEST
-    TEENSY_I2C,
-#endif
-    NUM_DEVICES
-  };
-  /**
    * Constructor
    */
   DeviceManager ();
@@ -60,7 +45,7 @@ public:
    * @param s is the sensor to get
    * @return a pointer to the sensor
    */
-  Device* get_sensor(Sensor s);
+  Device* get_sensor(Device_ID s);
   /**
    * Read Data from the SPI
    * @return read bytes
@@ -76,32 +61,24 @@ public:
    */
 private:
   /**
-   * Addresses of the Sensors
-   */
-  enum class Sensor_Params
-  {
-#ifdef _TEST
-    TEENSY_ADDR = 0x55, 	// Teensy Slave Address for I2C
-#endif
-    COMPASS_ADDR = 0x1E,	// Address of Digital Compass HMC5883L
-    ACC_ADDR = 0x53,		// Address of Accelerometer ADXL345
-    GYRO_ADDR = 0x68,		// Address of Gyroscope ITG-3200
-    GPS_BAUD = 38400,		// Baudrate of GPS
-    //HYGRO_ADDR = 0x00,		// FILLER VALUE Address of Hygrometer
-    //WIND_SENSOR_ADDR = 0x00	// FILLER VALUE Address of Wind Sensor
-  };
-  /**
    * Map of Sensor Data
    */
   std::map<char*, unsigned char*> m_data_map;
   /**
    * Map of Sensors
    */
-  std::map<Sensor, std::unique_ptr<Device>> m_devices;
+  std::map<Device_ID, std::unique_ptr<Device>> m_devices;
   /**
    * Pointer to the TLVE Protocol
    */
   std::unique_ptr<TLVEProtocol> m_protocol;
+  /**
+   * Allocates memory for a new pointer to the copied data and deletes the old pointer.
+   * @param src is the old pointer and source to the data
+   * @param length is the length of the data
+   * @return a new pointer pointing to the copied data.
+   */
+  unsigned char* copy_data(unsigned char* src, int length);
 
 };
 
