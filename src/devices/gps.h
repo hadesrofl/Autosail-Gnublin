@@ -49,6 +49,12 @@ public:
   int
   read (unsigned char* buf, int length);
   /**
+   * TODO: Comment with gps specific register
+   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
+   * pointer with allocated memory.
+   */
+  unsigned char* read_data();
+  /**
    * Writes data from the gps for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes

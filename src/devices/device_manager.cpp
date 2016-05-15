@@ -14,55 +14,58 @@ DeviceManager::get_data ()
     {
       Device* device;
       std::vector<Sensor_Value> device_values;
-      int read_length = 0;
       device = get_sensor (static_cast<Device_ID> (i));
       if (device != NULL)
 	{
 	  Device_ID id = static_cast<Device_ID> (device->get_device_id ());
+	  unsigned char* data;
 	  switch (id)
 	    {
 	    case Device_ID::ACCELEROMETER:
 	      {
 		//TODO: Call Read Method of Accelerometer for Sensor Data
-		read_length = 6; // magic number for accelerometer read
-		unsigned char* rx = new unsigned char[read_length];
-		if (device->read (rx, read_length > 0))
-		  {
-		    //TODO: Need to read data and save it into map
-		  }
-		delete[] rx;
+		data = device->read_data();
+
 		break;
 	      }
 	    case Device_ID::COMPASS:
 	      {
+		data = NULL;
 		break;
 	      }
 	    case Device_ID::GPS:
 	      {
+		data = NULL;
 		break;
 	      }
 	    case Device_ID::GYROSCOPE:
 	      {
+		data = NULL;
 		break;
 	      }
 	    case Device_ID::HYGROMETER:
 	      {
+		data = NULL;
 		break;
 	      }
 	    case Device_ID::WIND_SENSOR:
 	      {
+		data = NULL;
 		break;
 	      }
 	    case Device_ID::NUM_DEVICES:
 	      {
+		data = NULL;
 		return -1;
 	      }
 #ifdef _TEST
 	      case Device_ID::TEENSY_I2C:
 		{
+		  data = NULL;
 		  break;}
 #endif
 	    default:
+	      data = NULL;
 	      return -1;
 	    }
 	}
@@ -89,7 +92,7 @@ DeviceManager::init_sensors ()
       std::make_pair (
 	  Device_ID::ACCELEROMETER,
 	  std::unique_ptr<Accelerometer> (
-	      new Accelerometer (static_cast<int> (Sensor_Param::ACC_ADDR)))));
+	      new Accelerometer (static_cast<int> (Sensor_Param::ACC_ADDR), Sensor_Param::ACC_RANGE_2G))));
   m_devices.insert (
       std::make_pair (
 	  Device_ID::COMPASS,

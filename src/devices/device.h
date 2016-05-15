@@ -56,7 +56,15 @@ public:
   {
     return -2;
   }
-  ;
+  /**
+   * Virtual Function: Reads all data from the device
+   * @return on success returns a pointer with allocated memory leading to the data,
+   * otherwise returns a null pointer.
+   */
+  virtual unsigned char* read_data(){
+    unsigned char* data_ptr = NULL;
+    return data_ptr;
+  }
   /**
    * Virtual Function: Writes data from a device for a given length
    * @param buf is the buffer with the data to write
@@ -68,7 +76,6 @@ public:
   {
     return -2;
   }
-  ;
   /**
    * Gets the id of this device
    * @return the id of this specific device

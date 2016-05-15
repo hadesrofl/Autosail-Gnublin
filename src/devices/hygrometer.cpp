@@ -1,7 +1,9 @@
 #include "hygrometer.h"
 
 // Private Functions
-int Hygrometer::init(){
+int
+Hygrometer::init ()
+{
   return -1;
 }
 // Public Functions
@@ -20,6 +22,12 @@ int
 Hygrometer::read (unsigned char* buf, int length)
 {
   return -1;
+}
+unsigned char*
+Hygrometer::read_data ()
+{
+  unsigned char* data_ptr = NULL;
+  return data_ptr;
 }
 int
 Hygrometer::write (unsigned char* buf, int length)

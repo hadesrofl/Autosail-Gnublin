@@ -27,6 +27,12 @@ Compass::read (unsigned char* buf, int length)
     }
   return m_interface_port->receive (buf, length);
 }
+unsigned char*
+Compass::read_data ()
+{
+  unsigned char* data_ptr = NULL;
+  return data_ptr;
+}
 int
 Compass::write (unsigned char* buf, int length)
 {

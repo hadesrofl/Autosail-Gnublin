@@ -94,28 +94,22 @@ main (void)
   Device* device = dmanager.get_sensor (Device_ID::ACCELEROMETER);
   unsigned char tx[1] =
     { 0 };
-  std::cout << tx[0] << " " << std::endl;
-  std::cout << "TX ok" << std::endl;
-  unsigned char rx[4] =
+  unsigned char rx[6] =
     { 0 };
-  std::cout << rx[0] << " " << rx[1] << std::endl;
-  std::cout << "RX ok" << std::endl;
   while (true)
     {
       //Set Register Pointer to first Data Register
-      tx[0] = 0x32;
-      device->write (tx, 1);
-      for (int i = 0; i < 6; i++)
-	{
-	  device->read (rx, 1);
-	  int k = rx[0];
-	  //int y = rx[1];
-	  std::cout << "Values: " << k << " "
-	      //<< y
-	      << std::endl;
-	}
-
-      //std::cout << "Read: " << rx[0] << " " << rx[1] << std::endl;
+//      tx[0] = 0x32;
+//      device->write (tx, 1);
+      //for (int i = 0; i < 6; i++)
+      //{
+      device->read_data ();
+      //int k = rx[0];
+      /*for(int i = 0; i < 6; i++){
+       int k = rx[i];
+       std::cout << "Value: " << k << " "
+       << std::endl;
+       }*/
       std::cout << "Cycle done" << std::endl;
       sleep (1);
     }
