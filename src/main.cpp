@@ -19,6 +19,12 @@
  */
 
 #ifdef _TEST
+/**
+ * Test for the i2c interface with a Teensyduino. Sends two byte to the teensy, which is
+ * configured as echo client and checks if the same bytes are recceived.
+ * If all Cases pass the return value is 1 for success otherwise -1 for failure.
+ * @return 1 on success otherwise -1
+ */
 int
 i2c_teensy_test ()
   {
@@ -65,7 +71,7 @@ i2c_teensy_test ()
       }
     else
       {
-	return 0;
+	return -1;
       }
   }
 #endif
@@ -83,6 +89,7 @@ main (void)
       << std::endl;
     }
 #endif
+#ifndef _TEST
   DeviceManager dmanager;
   Device* device = dmanager.get_sensor (Device_ID::ACCELEROMETER);
   unsigned char tx[1] =
@@ -112,5 +119,6 @@ main (void)
       std::cout << "Cycle done" << std::endl;
       sleep (1);
     }
+#endif
   return 0;
 }

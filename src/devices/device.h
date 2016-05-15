@@ -30,12 +30,15 @@ protected:
    * Port of the used interface
    */
   std::unique_ptr<Interface> m_interface_port;
-  int m_device_id;
+  /**
+   * Id of the Device
+   */
+  Device_ID m_device_id;
   /**
    * Sets the id of the device as specified in sensor params
    * @param id is the id of this specific device
    */
-  inline void set_device_id(int id){
+  inline void set_device_id(Device_ID id){
     m_device_id = id;
   }
   /**
@@ -70,7 +73,7 @@ public:
    * Gets the id of this device
    * @return the id of this specific device
    */
-  inline int
+  inline Device_ID
   get_device_id () const
   {
     return m_device_id;

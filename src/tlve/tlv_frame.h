@@ -58,31 +58,46 @@ public:
    * @return tag byte of the frame
    */
   inline unsigned char
-  get_tag () const;
+  get_tag () const
+  {
+    return m_tag;
+  }
   /**
    * Gets the attribute field
    * @return attribute byte of the frame
    */
   inline unsigned char
-  get_attribute () const;
+  get_attribute () const
+  {
+    return m_attribute;
+  }
   /**
    * Gets the length of the payload
    * @return byte for the length of the payload
    */
   inline unsigned char
-  get_length () const;
+  get_length () const
+  {
+    return m_length;
+  }
   /**
    * Gets the bytes of the payload
    * @return a vector of the bytes of the payload
    */
   inline std::vector<unsigned char>
-  get_payload () const;
+  get_payload () const
+  {
+    return m_payload;
+  }
   /**
    * Gets the sync field
    * @return byte of the sync of the frame
    */
   inline unsigned char
-  get_sync () const;
+  get_sync () const
+  {
+    return m_sync;
+  }
   /**
    * Destructor
    */

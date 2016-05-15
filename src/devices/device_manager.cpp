@@ -13,7 +13,7 @@ DeviceManager::get_data ()
       i < static_cast<int> (Device_ID::NUM_DEVICES); i++)
     {
       Device* device;
-      std::vector<Sensor_Values> device_values;
+      std::vector<Sensor_Value> device_values;
       int read_length = 0;
       device = get_sensor (static_cast<Device_ID> (i));
       if (device != NULL)
@@ -23,7 +23,8 @@ DeviceManager::get_data ()
 	    {
 	    case Device_ID::ACCELEROMETER:
 	      {
-		read_length = static_cast<int> (Sensor_Params::ACC_READ_LENGTH);
+		//TODO: Call Read Method of Accelerometer for Sensor Data
+		read_length = 6; // magic number for accelerometer read
 		unsigned char* rx = new unsigned char[read_length];
 		if (device->read (rx, read_length > 0))
 		  {
@@ -88,22 +89,22 @@ DeviceManager::init_sensors ()
       std::make_pair (
 	  Device_ID::ACCELEROMETER,
 	  std::unique_ptr<Accelerometer> (
-	      new Accelerometer (static_cast<int> (Sensor_Params::ACC_ADDR)))));
+	      new Accelerometer (static_cast<int> (Sensor_Param::ACC_ADDR)))));
   m_devices.insert (
       std::make_pair (
 	  Device_ID::COMPASS,
 	  std::unique_ptr<Compass> (
-	      new Compass (static_cast<int> (Sensor_Params::COMPASS_ADDR)))));
+	      new Compass (static_cast<int> (Sensor_Param::COMPASS_ADDR)))));
   m_devices.insert (
       std::make_pair (
 	  Device_ID::GPS,
 	  std::unique_ptr<GPS> (
-	      new GPS (static_cast<int> (Sensor_Params::GPS_BAUD)))));
+	      new GPS (static_cast<int> (Sensor_Param::GPS_BAUD)))));
   m_devices.insert (
       std::make_pair (
 	  Device_ID::GYROSCOPE,
 	  std::unique_ptr<Gyroscope> (
-	      new Gyroscope (static_cast<int> (Sensor_Params::GYRO_ADDR)))));
+	      new Gyroscope (static_cast<int> (Sensor_Param::GYRO_ADDR)))));
   //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
   //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
 
@@ -111,18 +112,18 @@ DeviceManager::init_sensors ()
 }
 
 Device*
-DeviceManager::get_sensor (Device_ID s)
+DeviceManager::get_sensor (Device_ID id)
 {
   Device* dptr = NULL;
-  if (m_devices.count (s) > 0)
+  if (m_devices.count (id) > 0)
     {
-      dptr = &(*m_devices.at (s));
+      dptr = &(*m_devices.at (id));
     }
   return dptr;
 }
 
 int
-DeviceManager::read_spi ()
+DeviceManager::read_spi (unsigned char* buf, int length)
 {
   return 0;
 }

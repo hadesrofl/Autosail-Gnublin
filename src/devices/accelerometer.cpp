@@ -25,13 +25,13 @@ Accelerometer::Accelerometer (char* device_file, int slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (device_file, slave_address));
-  set_device_id (static_cast<int> (Device_ID::ACCELEROMETER));
+  set_device_id (Device_ID::ACCELEROMETER);
   init();
 }
 Accelerometer::Accelerometer (int slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (static_cast<int> (Device_ID::ACCELEROMETER));
+  set_device_id (Device_ID::ACCELEROMETER);
   init();
 }
 int

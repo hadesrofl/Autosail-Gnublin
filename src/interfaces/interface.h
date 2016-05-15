@@ -15,13 +15,24 @@
 class Interface
 {
   /**
-   * @private
+   * @protected
    */
-private:
+protected:
   /**
    * Name of the device file
    */
   const char* m_device_file;
+  /**
+   * Sets the name of the device file of this interface
+   * @param device_file is a constant char pointer containing the name of the file
+   * @return the name of the file
+   */
+  inline const char*
+  set_device_file (const char* device_file)
+  {
+    m_device_file = device_file;
+    return m_device_file;
+  }
   /**
    * @public
    */
@@ -49,17 +60,6 @@ public:
   inline const char*
   get_device_file ()
   {
-    return m_device_file;
-  }
-  /**
-   * Sets the name of the device file of this interface
-   * @param device_file is a constant char pointer containing the name of the file
-   * @return the name of the file
-   */
-  inline const char*
-  set_device_file (const char* device_file)
-  {
-    m_device_file = device_file;
     return m_device_file;
   }
   /**

@@ -19,10 +19,6 @@ class I2C : public Interface
    */
 private:
   /**
-   * Name of the device file
-   */
-  const char* m_device_file;
-  /**
    * Address of a connected slave
    */
   int m_slave_address;
@@ -30,6 +26,17 @@ private:
    * I2C port of the gnublin
    */
   std::unique_ptr<gnublin_i2c> m_i2c_port;
+  /**
+   * Inline function to set a new slave address
+   * @param address is the address of a slave
+   * @return the address of the slave, otherwise -1 as error
+   */
+    inline int
+    set_address (int address)
+    {
+      m_slave_address = address;
+      return this->m_i2c_port->setAddress(address);
+    }
 /**
  * @public
  */
@@ -63,18 +70,6 @@ public:
  */
   int
   send (unsigned char* buf, int length);
-/**
- * Inline function to set a new slave address
- * @param address is the address of a slave
- * @return the address of the slave, otherwise -1 as error
- */
-  inline int
-  set_address (int address)
-  {
-    m_slave_address = address;
-    return this->m_i2c_port->setAddress(address);
-  }
-  ;
 /**
  * Inline Function to get the address of the current slave
  * @return the address of the current slave

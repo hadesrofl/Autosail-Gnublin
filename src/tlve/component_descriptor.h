@@ -36,22 +36,35 @@ public:
    * @param attribute byte of the attribute field
    * @param number byte of the number field
    */
-  ComponentDescriptor (unsigned char component_class, unsigned char attribute, unsigned char number);
+  ComponentDescriptor (unsigned char component_class, unsigned char attribute,
+		       unsigned char number);
   /**
    * Gets the class of the component according to the TLVE Protocol
    * @return the byte of the class of the component
    */
-  unsigned char get_component_class() const;
+  inline unsigned char
+  get_component_class () const
+  {
+    return m_component_class;
+  }
   /**
    * Gets the attribute of the component according to the TLVE Protocol
    * @return the byte of the attribute of the component
    */
-  unsigned char get_component_attribute() const;
+  inline unsigned char
+  get_component_attribute () const
+  {
+    return m_component_attribute;
+  }
   /**
    * Gets the number of the component according to the TLVE Protocol
    * @return the byte of the number of the component
    */
-  unsigned char get_component_number() const;
+  inline unsigned char
+  get_component_number () const
+  {
+    return m_component_number;
+  }
   /**
    * Destructor
    */

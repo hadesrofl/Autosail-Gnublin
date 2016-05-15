@@ -42,16 +42,16 @@ public:
   get_data ();
   /**
    * Gets a single sensor
-   * @param s is the sensor to get
+   * @param id is the sensor to get
    * @return a pointer to the sensor
    */
-  Device* get_sensor(Device_ID s);
+  Device* get_sensor(Device_ID id);
   /**
    * Read Data from the SPI
    * @return read bytes
    */
   int
-  read_spi ();
+  read_spi (unsigned char* buf, int length);
   /**
    * Destructor
    */
@@ -63,7 +63,7 @@ private:
   /**
    * Map of Sensor Data
    */
-  std::map<char*, unsigned char*> m_data_map;
+  std::map<Sensor_Value, unsigned char*> m_data_map;
   /**
    * Map of Sensors
    */

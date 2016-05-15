@@ -19,10 +19,6 @@ class SPI : public Interface
    */
 private:
   /**
-   * Name of the device file
-   */
-  const char* m_device_file;
-  /**
    * Gnublin SPI Port
    */
   std::unique_ptr<gnublin_spi> m_spi_port;
@@ -33,6 +29,7 @@ public:
   /**
    * Constructor
    * @param device_file is the name of the file of the device
+   * @param spi_speed is the speed of the spi bus
    */
   SPI (char* device_file, unsigned int spi_speed);
   /**

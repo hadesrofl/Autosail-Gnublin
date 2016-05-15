@@ -38,8 +38,10 @@ private:
   /**
    * @param baudrate is the value of the baudrate
    */
-  void
-  set_baudrate (int baudrate);
+  inline void
+  set_baudrate (int baudrate){
+    m_baudrate = baudrate;
+  }
   /**
    * @public
    */

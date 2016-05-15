@@ -2,7 +2,7 @@
 
 SPI::SPI (char* device_file, unsigned int spi_speed)
 {
-  m_device_file = device_file;
+  m_device_file = Interface::set_device_file(device_file);
   m_spi_port = std::unique_ptr<gnublin_spi> (new gnublin_spi ());
   // SPI Mode 1
   m_spi_port->setMode (1);

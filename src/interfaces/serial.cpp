@@ -95,13 +95,4 @@ Serial::~Serial ()
 {
 }
 
-//
-// Private Functions
-//
-
-void
-Serial::set_baudrate (int baudrate)
-{
-  m_baudrate = baudrate;
-}
 
