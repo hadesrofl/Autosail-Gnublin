@@ -16,6 +16,7 @@ Accelerometer::init ()
     {
       return -1;
     }
+ /*
   // Set Latent for Tap Event
   register_address = 0x22;
   register_value = 0x15;
@@ -84,6 +85,7 @@ Accelerometer::init ()
     {
       return -1;
     }
+    */
   /**
   // Set Fifo Mode
   register_address = 0x38;
@@ -210,9 +212,9 @@ Accelerometer::read_data ()
   std::cout << "X-Axis in G: " << acc_x << std::endl;
   std::cout << "Y-Axis in G: " << acc_y << std::endl;
   std::cout << "Z-Axis in G: " << acc_z << std::endl;
-  std::cout << "X-Axis Meter: " << accel_meter_x << std::endl;
-  std::cout << "Y-Axis Meter: " << accel_meter_y << std::endl;
-  std::cout << "Z-Axis Meter: " << accel_meter_z << std::endl;
+  std::cout << "X-Axis m/s^2: " << accel_meter_x << std::endl;
+  std::cout << "Y-Axis m/s^2: " << accel_meter_y << std::endl;
+  std::cout << "Z-Axis m/s^2: " << accel_meter_z << std::endl;
   std::cout << "Z-Axis in G (MSB): " << static_cast<int> (msb_z) << std::endl;
   std::cout << "Z-Axis in G (LSB): " << static_cast<int> (lsb_z) << std::endl;
   std::cout << "X-Axis together as int16: " << static_cast<int> (tsb_x)
