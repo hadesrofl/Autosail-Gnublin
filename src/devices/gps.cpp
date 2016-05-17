@@ -24,21 +24,11 @@ GPS::GPS ()
       new Serial (static_cast<int> (Sensor_Param::GPS_BAUD)));
   set_device_id (Device_ID::GPS);
 }
-int
-GPS::read (unsigned char* buf, int length)
-{
-  return -1;
-}
 unsigned char*
 GPS::read_data ()
 {
   unsigned char* data_ptr = NULL;
   return data_ptr;
-}
-int
-GPS::write (unsigned char* buf, int length)
-{
-  return -1;
 }
 GPS::~GPS ()
 {

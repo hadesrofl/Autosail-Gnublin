@@ -18,21 +18,11 @@ Gyroscope::Gyroscope (int slave_address)
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
   set_device_id (Device_ID::GYROSCOPE);
 }
-int
-Gyroscope::read (unsigned char* buf, int length)
-{
-  return -1;
-}
 unsigned char*
 Gyroscope::read_data ()
 {
   unsigned char* data_ptr = NULL;
   return data_ptr;
-}
-int
-Gyroscope::write (unsigned char* buf, int length)
-{
-  return -1;
 }
 Gyroscope::~Gyroscope ()
 {

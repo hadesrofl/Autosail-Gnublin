@@ -37,27 +37,11 @@ public:
     */
    Compass(int slave_address);
    /**
-    * Reads data from the compass for a given length
-    * @param buf is the buffer to save the data into
-    * @param length is the length of byte to read
-    * @return length on success, otherwise -1 on an Error
-    */
-   int
-   read (unsigned char* buf, int length);
-   /**
     * TODO: Comment with compass specific register
     * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
     * pointer with allocated memory.
     */
    unsigned char* read_data();
-   /**
-    * Writes data from the compass for a given length
-    * @param buf is the buffer with the data to write
-    * @param length is the length of the written bytes
-    * @return length on success, otherwise -1 on an Error
-    */
-   int
-   write (unsigned char* buf, int length);
    /**
     * Destructor
     */

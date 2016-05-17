@@ -3,6 +3,7 @@
 
 #include "../interfaces/interface.h"
 #include "sensor_params.h"
+#include <iostream>
 
 /**
  * @file
@@ -46,15 +47,24 @@ protected:
    */
 public:
   /**
-   * Virtual Function: Reads data from a device for a given length
+   * Reads data from a device for a given length
    * @param buf is the buffer to save the data into
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
-  virtual int
+  int
   read (unsigned char* buf, int length)
   {
-    return -2;
+    if (buf == 0 || length < 1)
+      {
+        return -1;
+      }
+    int ret = m_interface_port->receive (buf, length);
+    if (ret > 0)
+      {
+        return ret;
+      }
+    return -1;
   }
   /**
    * Virtual Function: Reads all data from the device
@@ -66,15 +76,24 @@ public:
     return data_ptr;
   }
   /**
-   * Virtual Function: Writes data from a device for a given length
+   * Writes data from a device for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  virtual int
+  int
   write (unsigned char* buf, int length)
   {
-    return -2;
+    if (buf == 0 || length < 1)
+      {
+        return -1;
+      }
+    int ret = m_interface_port->send (buf, length);
+    if (ret > 0)
+      {
+        return ret;
+      }
+    return -1;
   }
   /**
    * Gets the id of this device

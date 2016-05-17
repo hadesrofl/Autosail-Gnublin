@@ -11,7 +11,7 @@ Accelerometer::init ()
   data[0] = register_address;
   data[1] = register_value;
   int ret;
-  ret = write (data, 2);
+  ret = Device::write (data, 2);
   if (ret < 0)
     {
       return -1;
@@ -124,7 +124,7 @@ Accelerometer::init ()
     }
   data[0] = register_address;
   data[1] = register_value;
-  ret = write (data, 2);
+  ret = Device::write (data, 2);
   if (ret < 0)
     {
       return -1;
@@ -148,28 +148,21 @@ Accelerometer::Accelerometer (int slave_address, Sensor_Param range)
   m_range = range;
   init ();
 }
-int
-Accelerometer::read (unsigned char* buf, int length)
-{
-  if (buf == 0 || length < 1)
-    {
-      return -1;
-    }
-  int ret = m_interface_port->receive (buf, length);
-  if (ret > 0)
-    {
-      return ret;
-    }
-  return -1;
-}
+
 unsigned char*
 Accelerometer::read_data ()
 {
   //Set Register Pointer to first Data Register
   unsigned char register_address = 0x32;
-  write (&register_address, 1);
+  Device::write (&register_address, 1);
   unsigned char* data = new unsigned char[Sensor_Param::ACC_DATA_LENGTH];
-  read (data, static_cast<int> (Sensor_Param::ACC_DATA_LENGTH));
+  Device::read (data, static_cast<int> (Sensor_Param::ACC_DATA_LENGTH));
+//  std::cout << "DATA 0: " << static_cast<int>(data[0]) << " " << std::endl;
+//  std::cout << "DATA 1: " << static_cast<int>(data[1]) << " " << std::endl;
+//  std::cout << "DATA 2: " << static_cast<int>(data[2]) << " " << std::endl;
+//  std::cout << "DATA 3: " << static_cast<int>(data[3]) << " " << std::endl;
+//  std::cout << "DATA 4: " << static_cast<int>(data[4]) << " " << std::endl;
+//  std::cout << "DATA 5: " << static_cast<int>(data[5]) << " " << std::endl;
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (data[1] << 8) | data[0];
   int16_t raw_y = (data[3] << 8) | data[2];
@@ -232,20 +225,7 @@ Accelerometer::read_data ()
   data[5] = lsb_z;
   return data;
 }
-int
-Accelerometer::write (unsigned char* buf, int length)
-{
-  if (buf == 0 || length < 1)
-    {
-      return -1;
-    }
-  int ret = m_interface_port->send (buf, length);
-  if (ret > 0)
-    {
-      return ret;
-    }
-  return -1;
-}
+
 Accelerometer::~Accelerometer ()
 {
 }

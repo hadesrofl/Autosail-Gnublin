@@ -18,29 +18,11 @@ Compass::Compass (int slave_address)
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
   set_device_id (Device_ID::COMPASS);
 }
-int
-Compass::read (unsigned char* buf, int length)
-{
-  if (buf == NULL || length == 0)
-    {
-      return -1;
-    }
-  return m_interface_port->receive (buf, length);
-}
 unsigned char*
 Compass::read_data ()
 {
   unsigned char* data_ptr = NULL;
   return data_ptr;
-}
-int
-Compass::write (unsigned char* buf, int length)
-{
-  if (buf == NULL || length == 0)
-    {
-      return -1;
-    }
-  return m_interface_port->send (buf, length);
 }
 Compass::~Compass ()
 {
