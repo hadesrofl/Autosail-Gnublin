@@ -64,8 +64,9 @@ enum class Device_ID
  * @details
  * <ul>
  * <li> ACC_ADDR - Address of the Accelerometer ADXL345</li>
- * <li> ACC_DATA_LENGTH - Length of byte to read to get sensor data </li>
+ * <li> ACC_DATA_LENGTH - Length of byte to read to get sensor data of the accelerometer</li>
  * <li> COMPASS_ADDR - Address of Digital Compass HMC5883L </li>
+ *  * <li> COMPASS_DATA_LENGTH - Length of byte to read to get sensor data of the compass</li>
  * <li> GYRO_ADDR - Address of Gyroscope ITG-3200 </li>
  * <li> GPS_BAUD - Baudrate of GPS </li>
  * <li> HYGRO_ADDR - FILLER VALUE Address of Hygrometer </li>
@@ -84,7 +85,7 @@ enum class Sensor_Param
    */
   ACC_ADDR = 0x53,
   /**
-   * Length of byte to read to get sensor data
+   * Length of byte to read to get sensor data of the accelerometer
    */
   ACC_DATA_LENGTH = 6,
   ACC_RANGE_2G = 2,
@@ -95,6 +96,10 @@ enum class Sensor_Param
    * Address of Digital Compass HMC5883L
    */
   COMPASS_ADDR = 0x1E,
+  /**
+   * Length of byte to read to get sensor data of the compass
+   */
+  COMPASS_DATA_LENGTH = 6,
   /**
    * Address of Gyroscope ITG-3200
    */

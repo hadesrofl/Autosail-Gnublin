@@ -77,42 +77,38 @@ i2c_teensy_test ()
 #endif
 int
 main (void)
-{
+  {
 #ifdef _TEST
-  if (i2c_teensy_test () == 1)
-    {
-      std::cout << "Test passed. I2C works fine!" << std::endl;
-    }
-  else
-    {
-      std::cout << "Test failed. I2C has errors while sending/receiving!"
-      << std::endl;
-    }
+    if (i2c_teensy_test () == 1)
+      {
+	std::cout << "Test passed. I2C works fine!" << std::endl;
+      }
+    else
+      {
+	std::cout << "Test failed. I2C has errors while sending/receiving!"
+	<< std::endl;
+      }
 #endif
 #ifndef _TEST
-  DeviceManager dmanager;
-  Device* device = dmanager.get_sensor (Device_ID::ACCELEROMETER);
-  unsigned char tx[1] =
-    { 0 };
-  unsigned char rx[6] =
-    { 0 };
-  while (true)
-    {
-      //Set Register Pointer to first Data Register
+    DeviceManager dmanager;
+    Device* device = dmanager.get_sensor (Device_ID::COMPASS);
+    while (true)
+      {
+	//Set Register Pointer to first Data Register
 //      tx[0] = 0x32;
 //      device->write (tx, 1);
-      //for (int i = 0; i < 6; i++)
-      //{
-      device->read_data ();
-      //int k = rx[0];
-      /*for(int i = 0; i < 6; i++){
-       int k = rx[i];
-       std::cout << "Value: " << k << " "
-       << std::endl;
-       }*/
-      std::cout << "Cycle done" << std::endl;
-      sleep (1);
-    }
+	//for (int i = 0; i < 6; i++)
+	//{
+	device->read_data ();
+	//int k = rx[0];
+	/*for(int i = 0; i < 6; i++){
+	 int k = rx[i];
+	 std::cout << "Value: " << k << " "
+	 << std::endl;
+	 }*/
+	std::cout << "Cycle done" << std::endl;
+	sleep (1);
+      }
 #endif
-  return 0;
-}
+    return 0;
+  }

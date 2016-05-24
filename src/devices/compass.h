@@ -3,6 +3,7 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+#include <stdint.h>
 /**
  * @file
  * @class Compass
@@ -17,6 +18,7 @@ class Compass : public Device
    * @private
    */
 private:
+  static uint8_t test;
   /**
    * Inits the compass, setting the configuration for the device
    */
