@@ -1,6 +1,7 @@
 #include "../gnublin_wo_smtp.h"
 #include "devices/device_manager.h"
 #include "devices/device.h"
+#include "bridge/timer.h"
 
 #ifdef _TEST
 #define TEENSY_I2C_ 0x55
@@ -77,38 +78,27 @@ i2c_teensy_test ()
 #endif
 int
 main (void)
-  {
+{
 #ifdef _TEST
-    if (i2c_teensy_test () == 1)
-      {
-	std::cout << "Test passed. I2C works fine!" << std::endl;
-      }
-    else
-      {
-	std::cout << "Test failed. I2C has errors while sending/receiving!"
-	<< std::endl;
-      }
+  if (i2c_teensy_test () == 1)
+    {
+      std::cout << "Test passed. I2C works fine!" << std::endl;
+    }
+  else
+    {
+      std::cout << "Test failed. I2C has errors while sending/receiving!"
+      << std::endl;
+    }
 #endif
 #ifndef _TEST
-    DeviceManager dmanager;
-    Device* device = dmanager.get_sensor (Device_ID::COMPASS);
-    while (true)
-      {
-	//Set Register Pointer to first Data Register
-//      tx[0] = 0x32;
-//      device->write (tx, 1);
-	//for (int i = 0; i < 6; i++)
-	//{
-	device->read_data ();
-	//int k = rx[0];
-	/*for(int i = 0; i < 6; i++){
-	 int k = rx[i];
-	 std::cout << "Value: " << k << " "
-	 << std::endl;
-	 }*/
-	std::cout << "Cycle done" << std::endl;
-	sleep (1);
-      }
+  DeviceManager dmanager;
+  Device* device = dmanager.get_sensor (Device_ID::COMPASS);
+  while (true)
+    {
+      device->read_data ();
+      std::cout << "Cycle done" << std::endl;
+      sleep (1);
+    }
 #endif
-    return 0;
-  }
+  return 0;
+}

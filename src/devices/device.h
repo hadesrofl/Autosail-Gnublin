@@ -21,7 +21,7 @@ private:
   /**
    * Virtual Function: Inits a device.
    */
-  virtual int
+  virtual int8_t
   init () = 0;
   /**
    * @protected
@@ -39,7 +39,9 @@ protected:
    * Sets the id of the device as specified in sensor params
    * @param id is the id of this specific device
    */
-  inline void set_device_id(Device_ID id){
+  inline void
+  set_device_id (Device_ID id)
+  {
     m_device_id = id;
   }
   /**
@@ -52,18 +54,24 @@ public:
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
-  int
-  read (unsigned char* buf, int length)
+  int8_t
+  read (unsigned char* buf, int16_t length)
   {
     if (buf == 0 || length < 1)
       {
-        return -1;
+#ifdef _DEBUG
+	std::cout << "ERROR: Buffer is empty!" << std::endl;
+#endif
+	return -1;
       }
-    int ret = m_interface_port->receive (buf, length);
+    int8_t ret = m_interface_port->receive (buf, length);
     if (ret > 0)
       {
-        return ret;
+	return ret;
       }
+#ifdef _DEBUG
+    std::cout << "Read Error of the Device!" << std::endl;
+#endif
     return -1;
   }
   /**
@@ -71,8 +79,10 @@ public:
    * @return on success returns a pointer with allocated memory leading to the data,
    * otherwise returns a null pointer.
    */
-  virtual unsigned char* read_data(){
-    unsigned char* data_ptr = NULL;
+  virtual uint8_t*
+  read_data ()
+  {
+    uint8_t* data_ptr = NULL;
     return data_ptr;
   }
   /**
@@ -81,18 +91,24 @@ public:
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  int
-  write (unsigned char* buf, int length)
+  int8_t
+  write (unsigned char* buf, int16_t length)
   {
     if (buf == 0 || length < 1)
       {
-        return -1;
+#ifdef _DEBUG
+	std::cout << "ERROR: Buffer is empty!" << std::endl;
+#endif
+	return -1;
       }
-    int ret = m_interface_port->send (buf, length);
+    int8_t ret = m_interface_port->send (buf, length);
     if (ret > 0)
       {
-        return ret;
+	return ret;
       }
+#ifdef _DEBUG
+    std::cout << "Write Error of the Device!" << std::endl;
+#endif
     return -1;
   }
   /**

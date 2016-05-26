@@ -21,7 +21,7 @@ private:
   /**
    * Address of a connected slave
    */
-  int m_slave_address;
+  uint8_t m_slave_address;
   /**
    * I2C port of the gnublin
    */
@@ -31,7 +31,7 @@ private:
    * @param address is the address of a slave
    * @return the address of the slave, otherwise -1 as error
    */
-    inline int
+    inline uint8_t
     set_address (int address)
     {
       m_slave_address = address;
@@ -46,12 +46,12 @@ public:
    * @param device_file is the name of the file of the device
    * @param address is the address of a connected slave
    */
-  I2C (char* device_file, int address);
+  I2C (char* device_file, uint8_t address);
   /**
    * Constructor
    * @param address is the slave address of a connected slave
    */
-  I2C (int address);
+  I2C (uint8_t address);
 /**
  * Receives data from the I2C Port of the Gnublin and saves it into the buffer. Reads
  * only as much bytes as specified in variable length
@@ -59,8 +59,8 @@ public:
  * @param length is the amount of bytes to read
  * @return the length on success, otherwise a -1 as error
  */
-  int
-  receive (unsigned char* buf, int length);
+  int16_t
+  receive (uint8_t* buf, int16_t length);
 /**
  * Sends data via the I2C Port of the Gnublin. The Buffer contains the bytes to write
  * and length indicates the amount of bytes to send
@@ -68,13 +68,13 @@ public:
  * @param length is the amount of bytes to send
  * @return the length on success, otherwise a -1 as error
  */
-  int
-  send (unsigned char* buf, int length);
+  int16_t
+  send (uint8_t* buf, int16_t length);
 /**
  * Inline Function to get the address of the current slave
  * @return the address of the current slave
  */
-  inline int
+  inline uint8_t
   get_address () const
   {
     return 0;

@@ -1,21 +1,22 @@
 #include "i2c.h"
 
-I2C::I2C (int address)
+I2C::I2C (char* device_file, uint8_t address)
 {
-  m_i2c_port = std::unique_ptr<gnublin_i2c> (new gnublin_i2c (address));
-  m_device_file = Interface::set_device_file(GNUBLIN_DEFAULT_I2C);
-  m_slave_address = m_i2c_port->getAddress ();
-}
-I2C::I2C (char* device_file, int address)
-{
-  m_device_file = Interface::set_device_file(static_cast<char*>(device_file));
+  m_device_file = Interface::set_device_file(device_file);
   m_slave_address = address;
   m_i2c_port = std::unique_ptr<gnublin_i2c> (
       new gnublin_i2c (device_file, address));
 }
 
-int
-I2C::receive (unsigned char* buf, int length)
+I2C::I2C (uint8_t address)
+{
+  m_i2c_port = std::unique_ptr<gnublin_i2c> (new gnublin_i2c (address));
+  m_device_file = Interface::set_device_file(GNUBLIN_DEFAULT_I2C);
+  m_slave_address = m_i2c_port->getAddress ();
+}
+
+int16_t
+I2C::receive (uint8_t* buf, int16_t length)
 {
   if (buf == 0)
     {
@@ -31,7 +32,7 @@ I2C::receive (unsigned char* buf, int length)
 #endif
       return -1;
     }
-  int ret = m_i2c_port->receive (buf, length);
+  int8_t ret = m_i2c_port->receive (buf, length);
 #ifdef _DEBUG
   if (ret != 1)
     {
@@ -41,7 +42,7 @@ I2C::receive (unsigned char* buf, int length)
   else
     {
       std::cout << "I2C Receive ok: ";
-      for (int i = 0; i < length; i++)
+      for (int16_t i = 0; i < length; i++)
 	{
 	  std::cout << buf[i] << " ";
 	}
@@ -51,8 +52,8 @@ I2C::receive (unsigned char* buf, int length)
   return ret;
 }
 
-int
-I2C::send (unsigned char* buf, int length)
+int16_t
+I2C::send (uint8_t* buf, int16_t length)
 {
   if (buf == 0)
     {
@@ -68,7 +69,7 @@ I2C::send (unsigned char* buf, int length)
 #endif
       return -1;
     }
-  int ret = m_i2c_port->send (buf, length);
+  int8_t ret = m_i2c_port->send (buf, length);
 #ifdef _DEBUG
   if (ret != 1)
     {
@@ -80,7 +81,7 @@ I2C::send (unsigned char* buf, int length)
     {
       std::cout << "I2C Send ok!" << std::endl;
       std::cout << "Send: ";
-      for (int i = 0; i < length; i++)
+      for (int16_t i = 0; i < length; i++)
 	{
 	  std::cout << buf[i] << " ";
 	}

@@ -2,6 +2,7 @@
 #define INTERFACES_INTERFACE_H_
 
 #include <memory>
+#include <stdint.h>
 
 /**
  * @file
@@ -43,16 +44,16 @@ public:
    * @param length is the length of the data to be read
    * @return on success returns the length, if there is an error -1 is returned
    */
-  virtual int
-  receive (unsigned char* buf, int length) =0;
+  virtual int16_t
+  receive (uint8_t* buf, int16_t length) =0;
   /**
    * Function to receive some data via an adapter
    * @param buf is a pointer to the target buffer
    * @param length is the length of the data to be read
    * @return on success returns the length, if there is an error -1 is returned
    */
-  virtual int
-  send (unsigned char* buf, int length) =0;
+  virtual int16_t
+  send (uint8_t* buf, int16_t length) =0;
   /**
    * Gets the name of the device file of this interface
    * @return the name of the device file as char pointer

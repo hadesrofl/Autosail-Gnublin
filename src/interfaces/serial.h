@@ -26,7 +26,7 @@ private:
   /**
    * Value of the baudrate
    */
-  int m_baudrate;
+  uint32_t m_baudrate;
   /**
    * @param device_file is the name of the file the device is listening to
    */
@@ -39,7 +39,7 @@ private:
    * @param baudrate is the value of the baudrate
    */
   inline void
-  set_baudrate (int baudrate){
+  set_baudrate (uint32_t baudrate){
     m_baudrate = baudrate;
   }
   /**
@@ -51,27 +51,27 @@ public:
    * @param device_file is the name of the file the device is listening to
    * @param baudrate is the value of the baudrate
    */
-  Serial (char* device_file, int baudrate);
+  Serial (char* device_file, uint32_t baudrate);
   /**
    * Constructor
    * @param baudrate is the value of the baudrate
    */
-  Serial (int baudrate);
+  Serial (uint32_t baudrate);
   /**
    * Function to receive data
    * @param buf is a pointer to a buffer to write to data into
    * @param length is the length of the data which shall be received
    * @return on success the length of the data, if there was an error -1 is returned
    */
-  int
-  receive (unsigned char* buf, int length);
+  int16_t
+  receive (uint8_t* buf, int16_t length);
   /**
    * @param buf is a pointer to a buffer with the data to be sent
    * @param length is the length of the data that shall be sent
    * @return on success the length of the data, if there was an error -1 is returned
    */
-  int
-  send (unsigned char* buf, int length);
+  int16_t
+  send (uint8_t* buf, int16_t length);
   /**
    * Destructor
    */

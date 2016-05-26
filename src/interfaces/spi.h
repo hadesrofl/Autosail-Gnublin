@@ -31,7 +31,7 @@ public:
    * @param device_file is the name of the file of the device
    * @param spi_speed is the speed of the spi bus
    */
-  SPI (char* device_file, unsigned int spi_speed);
+  SPI (char* device_file, uint16_t spi_speed);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read
@@ -39,24 +39,24 @@ public:
    * @param length is the amount of bytes to read
    * @return the length on success, otherwise -1 as error
    */
-  int
-  receive (unsigned char* buf, int length);
+  int16_t
+  receive (uint8_t* buf, int16_t length);
   /**
    * Sends data via the SPI Port
    * @param buf is the buffer containing the bytes to send
    * @param length is the length of bytes to send
    * @return the length on success, otherwise -1 as error
    */
-  int
-  send (unsigned char* buf, int length);
+  int16_t
+  send (uint8_t* buf, int16_t length);
 
   /**
    * Inline Function to set a new SPI mode
    * @param mode is the new mode
    * @return mode on success, otherwise -1 as error
    */
-  inline int
-  setMode (unsigned char mode)
+  inline int8_t
+  setMode (uint8_t mode)
   {
     return 0;
   }
@@ -65,7 +65,7 @@ public:
    * Inline Function to get the current SPI mode
    * @return the current SPI mode
    */
-  inline int
+  inline uint8_t
   getMode () const
   {
     return 0;
@@ -76,8 +76,8 @@ public:
    * @param lsb is the least significant bit
    * @return the LSB on success, otherwise -1 as error
    */
-  inline int
-  setLSB (unsigned char lsb)
+  inline int8_t
+  setLSB (uint8_t lsb)
   {
     return 0;
   }
@@ -87,7 +87,7 @@ public:
    * Inline Function to get the current LSB (least significant bit)
    * @return the LSB on success, otherwise -1 as error
    */
-  inline int
+  inline uint8_t
   getLSB () const
   {
     return 0;
@@ -99,8 +99,8 @@ public:
    * @param bits is the amount of bits per word
    * @return the new bits per word on success, otherwise -1 as error
    */
-  inline int
-  setLength (unsigned char bits)
+  inline int8_t
+  setLength (uint8_t bits)
   {
     return 0;
   }
@@ -109,7 +109,7 @@ public:
    * Inline Function to get the length of bits per word
    * @return the amount of bits per word
    */
-  inline int
+  inline uint16_t
   getLength () const
   {
     return 0;
@@ -120,8 +120,8 @@ public:
    * @param speed is the new speed of the SPI
    * @return speed on success, otherwise -1 as error
    */
-  inline int
-  setSpeed (unsigned int speed)
+  inline int8_t
+  setSpeed (uint16_t speed)
   {
     return 0;
   }
@@ -130,7 +130,7 @@ public:
    * Inline Function to get the current speed of the SPI Interface
    * @return the current speed
    */
-  inline int
+  inline uint16_t
   getSpeed () const
   {
     return 0;
@@ -141,8 +141,8 @@ public:
    * @param cs is the new chip select
    * @return chip select on success, otherwise -1 as error
    */
-  inline int
-  setCS (int cs)
+  inline int8_t
+  setCS (uint8_t cs)
   {
     return 0;
   }

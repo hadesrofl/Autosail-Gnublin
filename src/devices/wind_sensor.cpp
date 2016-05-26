@@ -1,27 +1,27 @@
 #include "wind_sensor.h"
 
 // Private Functions
-int
+int8_t
 WindSensor::init ()
 {
   return -1;
 }
 // Public Functions
-WindSensor::WindSensor (char* device_file, int slave_address)
+WindSensor::WindSensor (char* device_file, uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (device_file, slave_address));
   set_device_id (Device_ID::WIND_SENSOR);
 }
-WindSensor::WindSensor (int slave_address)
+WindSensor::WindSensor (uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
   set_device_id (Device_ID::WIND_SENSOR);
 }
-unsigned char*
+uint8_t*
 WindSensor::read_data ()
 {
-  unsigned char* data_ptr = NULL;
+  uint8_t* data_ptr = NULL;
   return data_ptr;
 }
 WindSensor::~WindSensor ()

@@ -26,7 +26,7 @@ private:
   /**
    * Inits the accelerometer, setting the configuration for the device
    */
-  int
+  int8_t
   init ();
   /**
    * Range of g for measurement
@@ -46,14 +46,14 @@ public:
    * @param slave_address is the address of the Accelerometer Module
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (char* device_file, int slave_address,
+  Accelerometer (char* device_file, uint8_t slave_address,
 		 Sensor_Param range);
   /**
    * Constructor
    * @param slave_address is the address of the Accelerometer Module
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (int slave_address, Sensor_Param range);
+  Accelerometer (uint8_t slave_address, Sensor_Param range);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory. The raw values will be transformed to mg where index
@@ -64,7 +64,7 @@ public:
    * Can be combined to a 2 byte value with: int16_t tsb_x = (data[0] << 8) | data[1];
    * @return pointer with axis values in mg as stated above.
    */
-  unsigned char*
+  uint8_t*
   read_data ();
   /**
    * Destructor

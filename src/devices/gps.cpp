@@ -1,19 +1,19 @@
 #include "gps.h"
 
 // Private Functions
-int
+int8_t
 GPS::init ()
 {
   return -1;
 }
 // Public Functions
-GPS::GPS (char* device_file, int baudrate)
+GPS::GPS (char* device_file, uint32_t baudrate)
 {
   m_interface_port = std::unique_ptr<Serial> (
       new Serial (device_file, baudrate));
   set_device_id (Device_ID::GPS);
 }
-GPS::GPS (int baudrate)
+GPS::GPS (uint32_t baudrate)
 {
   m_interface_port = std::unique_ptr<Serial> (new Serial (baudrate));
   set_device_id (Device_ID::GPS);
@@ -21,13 +21,13 @@ GPS::GPS (int baudrate)
 GPS::GPS ()
 {
   m_interface_port = std::unique_ptr<Serial> (
-      new Serial (static_cast<int> (Sensor_Param::GPS_BAUD)));
+      new Serial (static_cast<int32_t> (Sensor_Param::GPS_BAUD)));
   set_device_id (Device_ID::GPS);
 }
-unsigned char*
+uint8_t*
 GPS::read_data ()
 {
-  unsigned char* data_ptr = NULL;
+  uint8_t* data_ptr = NULL;
   return data_ptr;
 }
 GPS::~GPS ()

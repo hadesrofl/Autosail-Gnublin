@@ -20,7 +20,7 @@ private:
   /**
    * Inits the gps, setting the configuration for the device
    */
-  int init();
+  int8_t init();
   /**
    * @public
    */
@@ -30,12 +30,12 @@ public:
    * @param device_file is the name of the device
    * @param baudrate is the baudrate for communication
    */
-  GPS (char* device_file, int baudrate);
+  GPS (char* device_file, uint32_t baudrate);
   /**
    * Constructor
    * @param baudrate is the baudrate for communication
    */
-  GPS (int baudrate);
+  GPS (uint32_t baudrate);
   /**
    * Constructor. Sets the default device and baudrate as specified in sensor params.
    */
@@ -46,22 +46,22 @@ public:
    * @param length is the length of byte to read
    * @return length on success, otherwise -1 on an Error
    */
-  int
-  read (unsigned char* buf, int length);
+  int8_t
+  read (uint8_t* buf, int16_t length);
   /**
    * TODO: Comment with gps specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory.
    */
-  unsigned char* read_data();
+  uint8_t* read_data();
   /**
    * Writes data from the gps for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  int
-  write (unsigned char* buf, int length);
+  int8_t
+  write (uint8_t* buf, int16_t length);
   /**
    * Destructor
    */

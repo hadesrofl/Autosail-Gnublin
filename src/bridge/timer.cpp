@@ -1,26 +1,28 @@
 #include "timer.h"
 
 // Init statics
-uint8_t Timer::m_last_signal_id = 0;
+int32_t Timer::m_last_signal_id = 0;
 uint8_t Timer::m_last_timer_id = 0;
 // private functions
 timer_t
-Timer::create_timer (int signo)
+Timer::create_timer (int32_t sig_id)
 {
-  timer_t timerid;
+  timer_t timer_id;
   struct sigevent se;
   se.sigev_notify = SIGEV_SIGNAL;
-  se.sigev_signo = signo;
-  if (timer_create (CLOCK_REALTIME, &se, &timerid) == -1)
+  se.sigev_signo = sig_id;
+  if (timer_create (CLOCK_REALTIME, &se, &timer_id) == -1)
     {
+#ifdef _DEBUG
       std::cerr << "Failed to create timer" << std::endl;
+#endif
       return NULL;
     }
-  return timerid;
+  return timer_id;
 }
 void
-Timer::install_sighandler (int signo, void
-(*handler) (int))
+Timer::install_sighandler (int32_t signo, void
+(*handler) (int32_t))
 {
   sigset_t set;
   struct sigaction act;
@@ -39,8 +41,8 @@ Timer::install_sighandler (int signo, void
 }
 //public functions
 
-Timer::Timer (int seconds, int milliseconds, void
-(*handler) (int))
+Timer::Timer (uint32_t seconds, uint32_t milliseconds, void
+(*handler) (int32_t))
 {
   m_last_signal_id++;
   m_last_timer_id++;
@@ -57,9 +59,19 @@ Timer::Timer (int seconds, int milliseconds, void
       set_timer (0, 0);
     }
 }
-int
-Timer::set_timer (int seconds, int milliseconds)
+uint32_t
+Timer::set_timer (uint32_t seconds, uint32_t milliseconds)
 {
+
+  if (milliseconds > 1000)
+    {
+      uint16_t divider = milliseconds / 1000;
+      std::cout << "Divider: " << divider << std::endl;
+      for(int16_t i = 0; i < divider;i++){
+	  seconds++;
+	  milliseconds -= 1000;
+      }
+    }
   struct itimerspec timervals;
   timervals.it_value.tv_sec = seconds;
   timervals.it_value.tv_nsec = milliseconds * 1000000;
@@ -68,8 +80,10 @@ Timer::set_timer (int seconds, int milliseconds)
 
   if (timer_settime (m_timer, 0, &timervals, NULL) == -1)
     {
+#ifdef _DEBUG
       std::cerr << "Failed to start timer" << std::endl;
+#endif
       return -1;
     }
-  return timervals.it_interval.tv_sec;
+  return seconds*1000 + milliseconds;
 }

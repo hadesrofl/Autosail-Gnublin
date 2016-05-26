@@ -4,21 +4,21 @@
 // Public Functions
 //
 
-Serial::Serial (char* device_file, int baudrate)
+Serial::Serial (char* device_file, uint32_t baudrate)
 {
   Interface::set_device_file (device_file);
   set_baudrate (baudrate);
   m_serial_port = std::unique_ptr<gnublin_serial> (
       new gnublin_serial (device_file, baudrate));
 }
-Serial::Serial(int baudrate){
+Serial::Serial(uint32_t baudrate){
   Interface::set_device_file(SERIAL_DEFAULT_FILE);
   set_baudrate(baudrate);
   m_serial_port = std::unique_ptr<gnublin_serial> (new gnublin_serial(get_device_file(),baudrate));
 }
 
-int
-Serial::receive (unsigned char* buf, int length)
+int16_t
+Serial::receive (uint8_t* buf, int16_t length)
 {
   if (buf == 0)
     {
@@ -50,8 +50,8 @@ Serial::receive (unsigned char* buf, int length)
   return length;
 }
 
-int
-Serial::send (unsigned char* buf, int length)
+int16_t
+Serial::send (uint8_t* buf, int16_t length)
 {
   int result = 0;
   if (buf == 0)

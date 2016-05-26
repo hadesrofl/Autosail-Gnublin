@@ -18,7 +18,7 @@ private:
   /**
    * Inits the hygrometer, setting the configuration for the device
    */
-  int init();
+  int8_t init();
 /**
  * @public
  */
@@ -28,18 +28,18 @@ public:
    * @param device_file is the name of the file for the device
    * @param slave_address is the address of the Hygrometer Module
    */
-  Hygrometer (char* device_file, int slave_address);
+  Hygrometer (char* device_file, uint8_t slave_address);
   /**
    * Constructor
    * @param slave_address is the address of the Hygrometer Module
    */
-  Hygrometer(int slave_address);
+  Hygrometer(uint8_t slave_address);
   /**
    * TODO: Comment with hygrometer specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory.
    */
-  unsigned char* read_data();
+  uint8_t* read_data();
   /**
    * Destructor
    */

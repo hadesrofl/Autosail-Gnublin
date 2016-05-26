@@ -21,7 +21,7 @@ private:
   /**
    * Inits the wind sensor, setting the configuration for the device
    */
-  int
+  int8_t
   init ();
   /**
    * @public
@@ -32,18 +32,18 @@ public:
    * @param device_file is the name of the I2C Interface this devices listens to
    * @param slave_address is the address of the Windsensor Module
    */
-  WindSensor (char* device_file, int slave_address);
+  WindSensor (char* device_file, uint8_t slave_address);
   /**
    * Constructor
    * @param slave_address is the address of the Windsensor Module
    */
-  WindSensor (int slave_address);
+  WindSensor (uint8_t slave_address);
   /**
    * TODO: Comment with windsensor specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory.
    */
-  unsigned char* read_data();
+  uint8_t* read_data();
   /**
    * Destructor
    */

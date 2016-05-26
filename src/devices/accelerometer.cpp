@@ -1,13 +1,13 @@
 #include "accelerometer.h"
 
 // Private Functions
-int
+int8_t
 Accelerometer::init ()
 {
   // Address Power CTL Register to set Link Bit, Measure Bit, and Wake Up to 8Hz
-  unsigned char data[2];
-  unsigned char register_address = 0x2D;
-  unsigned char register_value = 0x38;
+  uint8_t data[2];
+  uint8_t register_address = 0x2D;
+  uint8_t register_value = 0x38;
   data[0] = register_address;
   data[1] = register_value;
   int ret;
@@ -132,7 +132,7 @@ Accelerometer::init ()
   return ret;
 }
 // Public Functions
-Accelerometer::Accelerometer (char* device_file, int slave_address,
+Accelerometer::Accelerometer (char* device_file, uint8_t slave_address,
 			      Sensor_Param range)
 {
   m_interface_port = std::unique_ptr<I2C> (
@@ -141,7 +141,7 @@ Accelerometer::Accelerometer (char* device_file, int slave_address,
   m_range = range;
   init ();
 }
-Accelerometer::Accelerometer (int slave_address, Sensor_Param range)
+Accelerometer::Accelerometer (uint8_t slave_address, Sensor_Param range)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
   set_device_id (Device_ID::ACCELEROMETER);
@@ -149,20 +149,14 @@ Accelerometer::Accelerometer (int slave_address, Sensor_Param range)
   init ();
 }
 
-unsigned char*
+uint8_t*
 Accelerometer::read_data ()
 {
   //Set Register Pointer to first Data Register
-  unsigned char register_address = 0x32;
+  uint8_t register_address = 0x32;
   Device::write (&register_address, 1);
-  unsigned char* data = new unsigned char[Sensor_Param::ACC_DATA_LENGTH];
-  Device::read (data, static_cast<int> (Sensor_Param::ACC_DATA_LENGTH));
-//  std::cout << "DATA 0: " << static_cast<int>(data[0]) << " " << std::endl;
-//  std::cout << "DATA 1: " << static_cast<int>(data[1]) << " " << std::endl;
-//  std::cout << "DATA 2: " << static_cast<int>(data[2]) << " " << std::endl;
-//  std::cout << "DATA 3: " << static_cast<int>(data[3]) << " " << std::endl;
-//  std::cout << "DATA 4: " << static_cast<int>(data[4]) << " " << std::endl;
-//  std::cout << "DATA 5: " << static_cast<int>(data[5]) << " " << std::endl;
+  uint8_t* data = new uint8_t[Sensor_Param::ACC_DATA_LENGTH];
+  Device::read (data, static_cast<int16_t> (Sensor_Param::ACC_DATA_LENGTH));
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (data[1] << 8) | data[0];
   int16_t raw_y = (data[3] << 8) | data[2];
@@ -172,12 +166,12 @@ Accelerometer::read_data ()
   int16_t acc_y = raw_y * m_scale_factor;
   int16_t acc_z = raw_z * m_scale_factor;
   // Split int16_t into unsigned char
-  unsigned char msb_x = acc_x >> 8;
-  unsigned char lsb_x = acc_x;
-  unsigned char msb_y = acc_y >> 8;
-  unsigned char lsb_y = acc_y;
-  unsigned char msb_z = acc_z >> 8;
-  unsigned char lsb_z = acc_z;
+  uint8_t msb_x = acc_x >> 8;
+  uint8_t lsb_x = acc_x;
+  uint8_t msb_y = acc_y >> 8;
+  uint8_t lsb_y = acc_y;
+  uint8_t msb_z = acc_z >> 8;
+  uint8_t lsb_z = acc_z;
 #ifdef _DEBUG
   // combine two unsigned chars into one int16_t
   int16_t tsb_x = (msb_x << 8) | lsb_x;
@@ -187,12 +181,12 @@ Accelerometer::read_data ()
   float accel_meter_x = acc_x * MG_SPEED;
   float accel_meter_y = acc_y * MG_SPEED;
   float accel_meter_z = acc_z * MG_SPEED;
-  int x0 = data[0];
-  int x1 = data[1];
-  int y0 = data[2];
-  int y1 = data[3];
-  int z0 = data[4];
-  int z1 = data[5];
+  uint8_t x0 = data[0];
+  uint8_t x1 = data[1];
+  uint8_t y0 = data[2];
+  uint8_t y1 = data[3];
+  uint8_t z0 = data[4];
+  uint8_t z1 = data[5];
   std::cout << "X-Axis LSB: " << x0 << " " << std::endl;
   std::cout << "X-Axis MSB: " << x1 << " " << std::endl;
   std::cout << "Y-Axis LSB: " << y0 << " " << std::endl;
@@ -208,13 +202,13 @@ Accelerometer::read_data ()
   std::cout << "X-Axis m/s^2: " << accel_meter_x << std::endl;
   std::cout << "Y-Axis m/s^2: " << accel_meter_y << std::endl;
   std::cout << "Z-Axis m/s^2: " << accel_meter_z << std::endl;
-  std::cout << "Z-Axis in G (MSB): " << static_cast<int> (msb_z) << std::endl;
-  std::cout << "Z-Axis in G (LSB): " << static_cast<int> (lsb_z) << std::endl;
-  std::cout << "X-Axis together as int16: " << static_cast<int> (tsb_x)
+  std::cout << "Z-Axis in G (MSB): " << static_cast<int32_t> (msb_z) << std::endl;
+  std::cout << "Z-Axis in G (LSB): " << static_cast<int32_t> (lsb_z) << std::endl;
+  std::cout << "X-Axis together as int16: " << static_cast<int16_t> (tsb_x)
       << std::endl;
-  std::cout << "Y-Axis together as int16: " << static_cast<int> (tsb_y)
+  std::cout << "Y-Axis together as int16: " << static_cast<int16_t> (tsb_y)
       << std::endl;
-  std::cout << "Z-Axis together as int16: " << static_cast<int> (tsb_z)
+  std::cout << "Z-Axis together as int16: " << static_cast<int16_t> (tsb_z)
       << std::endl;
 #endif
   data[0] = msb_x;
