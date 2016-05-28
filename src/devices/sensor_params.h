@@ -12,13 +12,13 @@
  * @brief Enum of an ID for a device.
  * @details
  * <ul>
- * <li> ACCELEROMETER - Internal id of the accelerometer </li>
- * <li> COMPASS - Internal id of the compass </li>
- * <li> GPS - Internal id of the gps </li>
- * <li> GYROSCOPE - Internal id of the gyroscope </li>
- * <li> HYGROMETER - Internal id of the hygrometer </li>
- * <li> WIND_SENSOR - Internal id of the windsensor  </li>
- * <li> NUM_DEVICES - Enum for the number of devices to iterate over it in loops </li>
+ * <li> ACCELEROMETER ( = 0) - Internal id of the accelerometer </li>
+ * <li> COMPASS ( = 1) - Internal id of the compass </li>
+ * <li> GPS ( = 2) - Internal id of the gps </li>
+ * <li> GYROSCOPE ( = 3) - Internal id of the gyroscope </li>
+ * <li> HYGROMETER ( = 4) - Internal id of the hygrometer </li>
+ * <li> WIND_SENSOR ( = 5) - Internal id of the windsensor  </li>
+ * <li> NUM_DEVICES ( = 6) - Enum for the number of devices to iterate over it in loops </li>
  * </ul>
  * @author Rene Kremer
  * @version 0.2
@@ -26,34 +26,34 @@
 enum class Device_ID
 {
   /**
-   * Internal id of the accelerometer
+   * Internal id of the accelerometer ( = 0)
    */
   ACCELEROMETER,
   /**
-   * Internal id of the compass
+   * Internal id of the compass ( = 1)
    */
   COMPASS,
   /**
-   * Internal id of the gps
+   * Internal id of the gps ( = 2)
    */
   GPS,
   /**
-   * Internal id of the gyroscope
+   * Internal id of the gyroscope ( = 3)
    */
   GYROSCOPE,
   /**
-   * Internal id of the hygrometer
+   * Internal id of the hygrometer ( = 4)
    */
   HYGROMETER,
   /**
-   * Internal id of the windsensor
+   * Internal id of the windsensor ( = 5)
    */
   WIND_SENSOR,
 #ifdef _TEST
   TEENSY_I2C,
 #endif
   /**
-   * Enum for the number of devices to iterate over it in loops
+   * Enum for the number of devices to iterate over it in loops ( = 6)
    */
   NUM_DEVICES
 };

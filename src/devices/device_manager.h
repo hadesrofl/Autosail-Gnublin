@@ -13,7 +13,18 @@
 #include <iostream>
 #include <fstream>
 
+/**
+ * Name of default config file for devices
+ */
 #define DEVICE_CONFIG "config/devices.conf"
+/**
+ * Shift for integer numbers ( 48 in ASCII = 0 )
+ */
+#define ASCII_SHIFT 48
+/**
+ * Shift for Decimal System Numbers to read one after another
+ */
+#define DECIMAL_SHIFT 10
 
 /**
  * @file
@@ -62,11 +73,14 @@ private:
    * @return 1 on success otherwise -1
    */
   int8_t
-  store_line (uint8_t* key, uint16_t key_length, uint8_t* value,
+  store_line (uint8_t* value,
 	      uint16_t value_length);
   /**
-   * Reads a given config file.
+   * Reads a given config file. The Id of a Device has to be the same number as given in Sensor_Params.h
    * With the following Syntax:
+   *
+   * Device = Accelerometer
+   * ID = 0
    *
    * @param fd is the config file to read
    * @param devices is an array containing all ids of the connected devices

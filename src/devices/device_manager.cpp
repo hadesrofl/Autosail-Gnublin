@@ -33,20 +33,18 @@ int8_t
 DeviceManager::init_sensors (Device_ID devices[])
 {
   uint16_t tmp, j;
-  for (uint32_t i = 0; i < m_config_values.size(); i = i + 2)
+  // i = i + 2 to skip the name of the device and go to the id
+  for (uint32_t i = 0; i < m_config_values.size (); i = i + 2)
     {
       tmp = 0;
       j = 0;
-      uint8_t* name = m_config_values[i];
-      std::cout << "Name: " << name << std::endl;
-      while(m_config_values[i+1][j] != '\0'){
-	  tmp = (tmp*10) +  static_cast<int16_t>(m_config_values[i+1][j] - 48);
-	  std::cout << "TMP after: " << tmp << std::endl;
+      while (m_config_values[i + 1][j] != '\0')
+	{
+	  tmp = (tmp * DECIMAL_SHIFT)
+	      + static_cast<int16_t> (m_config_values[i + 1][j] - ASCII_SHIFT);
 	  j++;
-      }
-      std::cout << "Temp Int: " << tmp << std::endl;
+	}
       Device_ID id = static_cast<Device_ID> (tmp);
-      std::cout << "Device ID: " << static_cast<int>(id) << std::endl;
       switch (id)
 	{
 	case Device_ID::ACCELEROMETER:
@@ -99,24 +97,14 @@ DeviceManager::init_sensors (Device_ID devices[])
 }
 
 int8_t
-DeviceManager::store_line (uint8_t* key, uint16_t key_length, uint8_t* value,
-			   uint16_t value_length)
+DeviceManager::store_line (uint8_t* value, uint16_t value_length)
 {
-  uint8_t* stored_key = new uint8_t[key_length];
-  for (uint16_t i = 0; i < key_length; i++)
-    {
-      stored_key[i] = key[i];
-    }
   uint8_t* stored_value = new uint8_t[value_length];
   for (uint16_t i = 0; i < value_length; i++)
     {
       stored_value[i] = value[i];
     }
   m_config_values.push_back (stored_value);
-  std::cout << "Stored Key: " << stored_key << std::endl;
-  std::cout << "Stored Value: "
-      << stored_value << std::endl;
-  std::cout << "Size of m_config_values: " << m_config_values.size() << std::endl;
   return 1;
 }
 
@@ -125,9 +113,8 @@ DeviceManager::read_config (const char* file, Device_ID devices[])
 {
   std::ifstream input;
   uint8_t length = 50;
-  uint16_t key_length = 0, value_length = 0;
+  uint16_t value_length = 0;
   bool equals_seen = false;
-  uint8_t* key = new uint8_t[length];
   uint8_t* value = new uint8_t[length];
   char temp_c;
 
@@ -139,13 +126,10 @@ DeviceManager::read_config (const char* file, Device_ID devices[])
 	  input.get (temp_c);
 	  if (temp_c == '\n')
 	    {
-	      if (array_is_empty (key, key_length) == false
-		  && array_is_empty (value, value_length) == false)
+	      if (array_is_empty (value, value_length) == false)
 		{
-		  store_line (key, key_length, value, value_length);
-		  clear_array (key, key_length);
+		  store_line (value, value_length);
 		  clear_array (value, value_length);
-		  key_length = 0;
 		  value_length = 0;
 		}
 	      equals_seen = false;
@@ -154,12 +138,7 @@ DeviceManager::read_config (const char* file, Device_ID devices[])
 	    {
 	      if (equals_seen == false)
 		{
-		  if (temp_c != '=')
-		    {
-		      key[key_length] = temp_c;
-		      key_length++;
-		    }
-		  else
+		  if (temp_c == '=')
 		    {
 		      equals_seen = true;
 		    }
@@ -177,11 +156,9 @@ DeviceManager::read_config (const char* file, Device_ID devices[])
   else
     {
       std::cout << "Error while opening file!" << std::endl;
-      delete[] key;
       delete[] value;
       return -1;
     }
-  delete[] key;
   delete[] value;
   return 1;
 }

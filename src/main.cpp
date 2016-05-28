@@ -1,6 +1,5 @@
 #include "../gnublin_wo_smtp.h"
 #include "devices/device_manager.h"
-#include "devices/device.h"
 #include "bridge/timer.h"
 
 #ifdef _TEST
@@ -92,7 +91,7 @@ main (void)
 #endif
 #ifndef _TEST
   DeviceManager dmanager;
-  Device* device_a = dmanager.get_sensor (Device_ID::COMPASS);
+  Device* device_a = dmanager.get_sensor (Device_ID::ACCELEROMETER);
   while (true)
     {
       device_a->read_data ();
