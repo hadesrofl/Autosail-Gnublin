@@ -3,7 +3,6 @@
 #include <map>
 #include <vector>
 #include "../interfaces/interface.h"
-#include "../tlve/tlve_protocol.h"
 #include "device.h"
 #include "accelerometer.h"
 #include "compass.h"
@@ -11,12 +10,15 @@
 #include "gyroscope.h"
 #include "hygrometer.h"
 #include "wind_sensor.h"
+#include <iostream>
+#include <fstream>
+
+#define DEVICE_CONFIG "config/devices.conf"
 
 /**
  * @file
  * @class DeviceManager
- * @brief Class for the Device Manager. Administrates all devices and reads data or
- * returns devices for special usage.
+ * @brief Class for the Device Manager. Administrates all devices and returns devices for special usage.
  * @author Rene Kremer
  * @version 0.2
  */
@@ -31,27 +33,12 @@ public:
    */
   DeviceManager ();
   /**
-   * Inits the Sensors
-   */
-  int
-  init_sensors ();
-  /**
-   * Gets all data from the sensors
-   */
-  int
-  get_data ();
-  /**
    * Gets a single sensor
    * @param id is the sensor to get
    * @return a pointer to the sensor
    */
-  Device* get_sensor(Device_ID id);
-  /**
-   * Read Data from the SPI
-   * @return read bytes
-   */
-  int
-  read_spi (unsigned char* buf, int length);
+  Device*
+  get_sensor (Device_ID id);
   /**
    * Destructor
    */
@@ -61,24 +48,56 @@ public:
    */
 private:
   /**
-   * Map of Sensor Data
-   */
-  std::map<Sensor_Value, unsigned char*> m_data_map;
-  /**
    * Map of Sensors
    */
   std::map<Device_ID, std::unique_ptr<Device>> m_devices;
   /**
-   * Pointer to the TLVE Protocol
+   * Map to store the config values to a certain key
    */
-  std::unique_ptr<TLVEProtocol> m_protocol;
+  std::vector<uint8_t*> m_config_values;
   /**
-   * Allocates memory for a new pointer to the copied data and deletes the old pointer.
-   * @param src is the old pointer and source to the data
-   * @param length is the length of the data
-   * @return a new pointer pointing to the copied data.
+   * Stores a line of the config file into the map of values
+   * @param key is the key of this key-value pair
+   * @param value is the value of this key-value pair
+   * @return 1 on success otherwise -1
    */
-  unsigned char* copy_data(unsigned char* src, int length);
+  int8_t
+  store_line (uint8_t* key, uint16_t key_length, uint8_t* value,
+	      uint16_t value_length);
+  /**
+   * Reads a given config file.
+   * With the following Syntax:
+   *
+   * @param fd is the config file to read
+   * @param devices is an array containing all ids of the connected devices
+   * @return on success 1, otherwise -1
+   */
+  int8_t
+  read_config (const char* file, Device_ID devices[]);
+
+  /**
+   * Inits the Sensors
+   * @param devices is an array of device ids
+   * @return on succes 1, otherwise -1
+   */
+  int8_t
+  init_sensors (Device_ID devices[]);
+  /**
+   * Clears the content of an array for a given length. Writes 0 into the index of the given array
+   * @param array is the array to be cleared
+   * @param length is the length to clear
+   * @return the length of cleared byte
+   */
+  uint16_t
+  clear_array (uint8_t array[], uint16_t length);
+  /**
+   * Checks if an array is empty. An array is empty if there is no other character than 0 stored in every index.
+   * @param array is the array to check
+   * @param length is the length of the array
+   * @return true if it is empty, otherwise false
+   */
+  bool
+  array_is_empty (uint8_t array[], uint16_t length);
 
 };
 

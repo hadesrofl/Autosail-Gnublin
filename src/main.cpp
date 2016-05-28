@@ -13,7 +13,7 @@
 #endif
 
 /**
- * @mainpage Robotic-Sailing --- Port from a microprocessor to the gnublin platform
+ * @mainpage Autosail --- Port of the firmware from a microprocessor to the gnublin platform for an autonomous sailboat
  *
  * Bachelor Thesis by Rene Kremer
  *
@@ -92,10 +92,10 @@ main (void)
 #endif
 #ifndef _TEST
   DeviceManager dmanager;
-  Device* device = dmanager.get_sensor (Device_ID::COMPASS);
+  Device* device_a = dmanager.get_sensor (Device_ID::COMPASS);
   while (true)
     {
-      device->read_data ();
+      device_a->read_data ();
       std::cout << "Cycle done" << std::endl;
       sleep (1);
     }

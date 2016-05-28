@@ -1,117 +1,14 @@
 #include "device_manager.h"
 
-DeviceManager::DeviceManager () :
-    m_protocol (new TLVEProtocol ())
-{
-  init_sensors ();
-}
+//Public Functions
 
-int
-DeviceManager::get_data ()
+DeviceManager::DeviceManager ()
 {
-  for (int i = static_cast<int> (Device_ID::ACCELEROMETER);
-      i < static_cast<int> (Device_ID::NUM_DEVICES); i++)
+  Device_ID devices[static_cast<int> (Device_ID::NUM_DEVICES)];
+  if ((read_config (DEVICE_CONFIG, devices)) > 0)
     {
-      Device* device;
-      std::vector<Sensor_Value> device_values;
-      device = get_sensor (static_cast<Device_ID> (i));
-      if (device != NULL)
-	{
-	  Device_ID id = static_cast<Device_ID> (device->get_device_id ());
-	  unsigned char* data;
-	  switch (id)
-	    {
-	    case Device_ID::ACCELEROMETER:
-	      {
-		//TODO: Call Read Method of Accelerometer for Sensor Data
-		data = device->read_data();
-
-		break;
-	      }
-	    case Device_ID::COMPASS:
-	      {
-		data = NULL;
-		break;
-	      }
-	    case Device_ID::GPS:
-	      {
-		data = NULL;
-		break;
-	      }
-	    case Device_ID::GYROSCOPE:
-	      {
-		data = NULL;
-		break;
-	      }
-	    case Device_ID::HYGROMETER:
-	      {
-		data = NULL;
-		break;
-	      }
-	    case Device_ID::WIND_SENSOR:
-	      {
-		data = NULL;
-		break;
-	      }
-	    case Device_ID::NUM_DEVICES:
-	      {
-		data = NULL;
-		return -1;
-	      }
-#ifdef _TEST
-	      case Device_ID::TEENSY_I2C:
-		{
-		  data = NULL;
-		  break;}
-#endif
-	    default:
-	      data = NULL;
-	      return -1;
-	    }
-	}
+      init_sensors (devices);
     }
-  return 0;
-}
-
-unsigned char*
-DeviceManager::copy_data (unsigned char* src, int length)
-{
-  unsigned char* target = new unsigned char[length];
-  for (int i = 0; i < length; i++)
-    {
-      target[i] = src[i];
-    }
-  delete[] src;
-  return target;
-}
-
-int
-DeviceManager::init_sensors ()
-{
-  m_devices.insert (
-      std::make_pair (
-	  Device_ID::ACCELEROMETER,
-	  std::unique_ptr<Accelerometer> (
-	      new Accelerometer (static_cast<int> (Sensor_Param::ACC_ADDR), Sensor_Param::ACC_RANGE_2G))));
-  m_devices.insert (
-      std::make_pair (
-	  Device_ID::COMPASS,
-	  std::unique_ptr<Compass> (
-	      new Compass (static_cast<int> (Sensor_Param::COMPASS_ADDR)))));
-  m_devices.insert (
-      std::make_pair (
-	  Device_ID::GPS,
-	  std::unique_ptr<GPS> (
-	      new GPS (static_cast<int> (Sensor_Param::GPS_BAUD)))));
-  m_devices.insert (
-      std::make_pair (
-	  Device_ID::GYROSCOPE,
-	  std::unique_ptr<Gyroscope> (
-	      new Gyroscope (static_cast<int> (Sensor_Param::GYRO_ADDR)))));
-  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
-  //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
-
-  return 0;
 }
 
 Device*
@@ -125,15 +22,189 @@ DeviceManager::get_sensor (Device_ID id)
   return dptr;
 }
 
-int
-DeviceManager::read_spi (unsigned char* buf, int length)
-{
-  return 0;
-}
-
 DeviceManager::~DeviceManager ()
 {
-  m_data_map.clear ();
   m_devices.clear ();
 }
 
+// Private Functions
+
+int8_t
+DeviceManager::init_sensors (Device_ID devices[])
+{
+  uint16_t tmp, j;
+  for (uint32_t i = 0; i < m_config_values.size(); i = i + 2)
+    {
+      tmp = 0;
+      j = 0;
+      uint8_t* name = m_config_values[i];
+      std::cout << "Name: " << name << std::endl;
+      while(m_config_values[i+1][j] != '\0'){
+	  tmp = (tmp*10) +  static_cast<int16_t>(m_config_values[i+1][j] - 48);
+	  std::cout << "TMP after: " << tmp << std::endl;
+	  j++;
+      }
+      std::cout << "Temp Int: " << tmp << std::endl;
+      Device_ID id = static_cast<Device_ID> (tmp);
+      std::cout << "Device ID: " << static_cast<int>(id) << std::endl;
+      switch (id)
+	{
+	case Device_ID::ACCELEROMETER:
+	  m_devices.insert (
+	      std::make_pair (
+		  Device_ID::ACCELEROMETER,
+		  std::unique_ptr<Accelerometer> (
+		      new Accelerometer (
+			  static_cast<int> (Sensor_Param::ACC_ADDR),
+			  Sensor_Param::ACC_RANGE_2G))));
+	  std::cout << "Accelerometer DONE!" << std::endl;
+	  break;
+	case Device_ID::COMPASS:
+	  m_devices.insert (
+	      std::make_pair (
+		  Device_ID::COMPASS,
+		  std::unique_ptr<Compass> (
+		      new Compass (
+			  static_cast<int> (Sensor_Param::COMPASS_ADDR)))));
+	  std::cout << "Compass DONE!" << std::endl;
+	  break;
+	case Device_ID::GPS:
+	  m_devices.insert (
+	      std::make_pair (
+		  Device_ID::GPS,
+		  std::unique_ptr<GPS> (
+		      new GPS (static_cast<int> (Sensor_Param::GPS_BAUD)))));
+	  break;
+	case Device_ID::GYROSCOPE:
+	  m_devices.insert (
+	      std::make_pair (
+		  Device_ID::GYROSCOPE,
+		  std::unique_ptr<Gyroscope> (
+		      new Gyroscope (
+			  static_cast<int> (Sensor_Param::GYRO_ADDR)))));
+	  break;
+	case Device_ID::HYGROMETER:
+	  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
+	  break;
+	case Device_ID::WIND_SENSOR:
+
+	  //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
+	  break;
+	default:
+	  std::cerr << "False ID!" << std::endl;
+	  break;
+	}
+    }
+  return 1;
+}
+
+int8_t
+DeviceManager::store_line (uint8_t* key, uint16_t key_length, uint8_t* value,
+			   uint16_t value_length)
+{
+  uint8_t* stored_key = new uint8_t[key_length];
+  for (uint16_t i = 0; i < key_length; i++)
+    {
+      stored_key[i] = key[i];
+    }
+  uint8_t* stored_value = new uint8_t[value_length];
+  for (uint16_t i = 0; i < value_length; i++)
+    {
+      stored_value[i] = value[i];
+    }
+  m_config_values.push_back (stored_value);
+  std::cout << "Stored Key: " << stored_key << std::endl;
+  std::cout << "Stored Value: "
+      << stored_value << std::endl;
+  std::cout << "Size of m_config_values: " << m_config_values.size() << std::endl;
+  return 1;
+}
+
+int8_t
+DeviceManager::read_config (const char* file, Device_ID devices[])
+{
+  std::ifstream input;
+  uint8_t length = 50;
+  uint16_t key_length = 0, value_length = 0;
+  bool equals_seen = false;
+  uint8_t* key = new uint8_t[length];
+  uint8_t* value = new uint8_t[length];
+  char temp_c;
+
+  input.open (file);
+  if (input.is_open () == true)
+    {
+      while (input.eof () == false)
+	{
+	  input.get (temp_c);
+	  if (temp_c == '\n')
+	    {
+	      if (array_is_empty (key, key_length) == false
+		  && array_is_empty (value, value_length) == false)
+		{
+		  store_line (key, key_length, value, value_length);
+		  clear_array (key, key_length);
+		  clear_array (value, value_length);
+		  key_length = 0;
+		  value_length = 0;
+		}
+	      equals_seen = false;
+	    }
+	  if (!(isspace (temp_c)) && temp_c != 0)
+	    {
+	      if (equals_seen == false)
+		{
+		  if (temp_c != '=')
+		    {
+		      key[key_length] = temp_c;
+		      key_length++;
+		    }
+		  else
+		    {
+		      equals_seen = true;
+		    }
+		}
+	      else
+		{
+		  value[value_length] = temp_c;
+		  value_length++;
+		}
+	    }
+	}
+      equals_seen = false;
+      input.close ();
+    }
+  else
+    {
+      std::cout << "Error while opening file!" << std::endl;
+      delete[] key;
+      delete[] value;
+      return -1;
+    }
+  delete[] key;
+  delete[] value;
+  return 1;
+}
+
+uint16_t
+DeviceManager::clear_array (uint8_t array[], uint16_t length)
+{
+  for (int16_t i = 0; i < length; i++)
+    {
+      array[i] = 0;
+    }
+  return length;
+}
+
+bool
+DeviceManager::array_is_empty (uint8_t array[], uint16_t length)
+{
+  for (uint16_t i = 0; i < length; i++)
+    {
+      if (array[i] != 0)
+	{
+	  return false;
+	}
+    }
+  return true;
+}
