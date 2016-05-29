@@ -105,6 +105,10 @@ enum class Sensor_Param
    */
   GYRO_ADDR = 0x68,
   /**
+   * Length of byte to read to get sensor data of the gyroscope
+   */
+  GYROSCOPE_DATA_LENGTH = 6,
+  /**
    * Baudrate of GPS
    */
   GPS_BAUD = 38400,

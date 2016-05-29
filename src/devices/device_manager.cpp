@@ -72,6 +72,7 @@ DeviceManager::init_sensors (Device_ID devices[])
 		  Device_ID::GPS,
 		  std::unique_ptr<GPS> (
 		      new GPS (static_cast<int> (Sensor_Param::GPS_BAUD)))));
+	  std::cout << "GPS DONE!" << std::endl;
 	  break;
 	case Device_ID::GYROSCOPE:
 	  m_devices.insert (
@@ -80,6 +81,7 @@ DeviceManager::init_sensors (Device_ID devices[])
 		  std::unique_ptr<Gyroscope> (
 		      new Gyroscope (
 			  static_cast<int> (Sensor_Param::GYRO_ADDR)))));
+	  std::cout << "Gyroscope DONE!" << std::endl;
 	  break;
 	case Device_ID::HYGROMETER:
 	  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));

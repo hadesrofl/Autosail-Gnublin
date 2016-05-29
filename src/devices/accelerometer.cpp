@@ -5,101 +5,18 @@ int8_t
 Accelerometer::init ()
 {
   // Address Power CTL Register to set Link Bit, Measure Bit, and Wake Up to 8Hz
-  uint8_t data[2];
-  uint8_t register_address = 0x2D;
-  uint8_t register_value = 0x38;
-  data[0] = register_address;
-  data[1] = register_value;
+  uint8_t data[2] =
+    { 0 };
+  data[0] = ACC_POWER_CTL_REGISTER_ADDR;
+  data[1] = ACC_POWER_CTL_REGISTER_VALUE;
   int ret;
   ret = Device::write (data, 2);
   if (ret < 0)
     {
       return -1;
     }
- /*
-  // Set Latent for Tap Event
-  register_address = 0x22;
-  register_value = 0x15;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // Set Window between Tap Events
-  register_address = 0x23;
-  register_value = 0x12;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // Set Thresh Active
-  register_address = 0x24;
-  register_value = 0x04;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // Set Thresh Inactive
-  register_address = 0x25;
-  register_value = 0x02;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // ACT INACT Control
-  register_address = 0x27;
-  register_value = 0xFF;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // Set Thresh Free Fall
-  register_address = 0x28;
-  register_value = 0x07;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-  // Set Time Free Fall
-  register_address = 0x29;
-  register_value = 0x25;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-    */
-  /**
-  // Set Fifo Mode
-  register_address = 0x38;
-  register_value = 0x40;
-  data[0] = register_address;
-  data[1] = register_value;
-  ret = write (data, 2);
-  if (ret < 0)
-    {
-      return -1;
-    }
-    */
   // Set Data Format
-  register_address = 0x31;
+  uint8_t register_value;
   switch (m_range)
     {
     case Sensor_Param::ACC_RANGE_2G:
@@ -122,7 +39,7 @@ Accelerometer::init ()
       register_value = 0x00;
       m_scale_factor = 3.9;
     }
-  data[0] = register_address;
+  data[0] = ACC_DATA_FORMAT_REGISTER_ADDR;
   data[1] = register_value;
   ret = Device::write (data, 2);
   if (ret < 0)
@@ -153,7 +70,7 @@ uint8_t*
 Accelerometer::read_data ()
 {
   //Set Register Pointer to first Data Register
-  uint8_t register_address = 0x32;
+  uint8_t register_address = ACC_X_LSB_REGISTER_ADDR;
   Device::write (&register_address, 1);
   uint8_t* data = new uint8_t[Sensor_Param::ACC_DATA_LENGTH];
   Device::read (data, static_cast<int16_t> (Sensor_Param::ACC_DATA_LENGTH));

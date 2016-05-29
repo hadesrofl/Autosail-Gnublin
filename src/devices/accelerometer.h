@@ -3,6 +3,24 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+
+/**
+ * Address of Power CTL Register
+ */
+#define ACC_POWER_CTL_REGISTER_ADDR 0x2D
+/**
+ * Value to set Register to Link Bit, Measure Bit, and Wake Up to 8Hz
+ */
+#define ACC_POWER_CTL_REGISTER_VALUE 0x38
+/**
+ * Address of the Data Format Register
+ */
+#define ACC_DATA_FORMAT_REGISTER_ADDR 0x31
+/**
+ * Address of the first Data Register
+ */
+#define ACC_X_LSB_REGISTER_ADDR 0x32
+
 #ifdef _DEBUG
 /**
  * Speed of milli g. 1G = 9.81 m / s^2
@@ -46,8 +64,7 @@ public:
    * @param slave_address is the address of the Accelerometer Module
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (char* device_file, uint8_t slave_address,
-		 Sensor_Param range);
+  Accelerometer (char* device_file, uint8_t slave_address, Sensor_Param range);
   /**
    * Constructor
    * @param slave_address is the address of the Accelerometer Module

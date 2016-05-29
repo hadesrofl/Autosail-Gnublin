@@ -3,6 +3,38 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+
+/**
+ * Address of Config A Register
+ */
+#define COMPASS_CONFIG_A_REGISTER_ADDR 0x00
+/**
+ * Set Configuration Register A (1 samples average, 15hz, normal measurement)
+ */
+#define COMPASS_CONFIG_A_REGISTER_VALUE 0x10
+/**
+ * Address of Config B Register
+ */
+#define COMPASS_CONFIG_B_REGISTER_ADDR 0x01
+/**
+ * Set Configuration Register B (Gain = 2, Range: +- 1.3 Ga (Scale Factor: 0.92))
+ */
+#define COMPASS_CONFIG_B_REGISTER_VALUE 0x40
+/**
+ * Address of the Mode Register
+ */
+#define COMPASS_MODE_REGISTER_ADDR 0x02
+/**
+ * Set Mode Register to Continous Measurement Mode
+ */
+#define COMPASS_MODE_REGISTER_VALUE 0x00
+#define COMPASS_X_MSB_REGISTER_ADDR 0x03
+/**
+ * Scaling Factor to calculate LSB to mg
+ */
+#define COMPASS_SCALING_FACTOR 0.92
+
+
 /**
  * @file
  * @class Compass
@@ -21,7 +53,6 @@ private:
    * Inits the compass, setting the configuration for the device
    */
   int8_t init();
-  float m_scaling_factor;
 /**
  * @public
  */
