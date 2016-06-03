@@ -19,6 +19,8 @@
  * <li> HYGROMETER ( = 4) - Descriptor of the hygrometer </li>
  * <li> WIND_SENSOR ( = 5) - Descriptor of the windsensor  </li>
  * <li> SERIAL_LINK        - Descriptor of the Serial Link </li>
+ * <li> SAIL		   - Descriptor of the Sail </li>
+ * <li> RUDDER		   - Descriptor of the Rudder </li>
  * <li> NUM_DEVICES ( = 6) - Enum for the number of devices to iterate over it in loops </li>
  * </ul>
  * @author Rene Kremer
@@ -54,6 +56,14 @@ enum class Descriptor
    * Descriptor of the Serial Link
    */
   SERIAL_LINK,
+  /**
+   * Descriptor of the Sail
+   */
+  SAIL,
+  /**
+   * Descriptor of the Rudder
+   */
+  RUDDER,
 #ifdef _TEST
   TEENSY_I2C,
 #endif
