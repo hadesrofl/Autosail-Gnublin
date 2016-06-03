@@ -46,13 +46,11 @@ public:
    * @param attribute is the value of the attribute field
    * @param length is the amount of bytes of the payload field
    * @param payload is a Byte Vector containing the data of the payload
-   * @param sync is the value of the sync field
    * @return a TLVFrame packed with the data
    */
   TLVFrame*
-  create_frame (unsigned char tag, unsigned char attribute,
-		unsigned char length, std::vector<unsigned char> payload,
-		unsigned char sync);
+  create_frame (uint8_t tag, uint8_t attribute,
+		uint8_t length, std::vector<uint8_t> payload);
   /**
    * Destructor
    */

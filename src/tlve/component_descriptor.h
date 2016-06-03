@@ -1,5 +1,8 @@
 #ifndef TLVE_COMPONENT_DESCRIPTOR_H
 #define TLVE_COMPONENT_DESCRIPTOR_H
+
+#include <stdint.h>
+
 /**
  * @file
  * @class ComponentDescriptor
@@ -17,15 +20,15 @@ private:
   /**
    * Byte containing the component class as specified in the TLVE4-Protocol
    */
-  unsigned char m_component_class;
+  uint8_t m_component_class;
   /**
    * Byte containing the component attribute as specified in the TLVE4-Protocol
    */
-  unsigned char m_component_attribute;
+  uint8_t m_component_attribute;
   /**
    * Byte containing the component number as specified in the TLVE4-Protocol
    */
-  unsigned char m_component_number;
+  uint8_t m_component_number;
   /**
    * @public
    */
@@ -36,13 +39,13 @@ public:
    * @param attribute byte of the attribute field
    * @param number byte of the number field
    */
-  ComponentDescriptor (unsigned char component_class, unsigned char attribute,
-		       unsigned char number);
+  ComponentDescriptor (uint8_t component_class, uint8_t attribute,
+		       uint8_t number);
   /**
    * Gets the class of the component according to the TLVE Protocol
    * @return the byte of the class of the component
    */
-  inline unsigned char
+  inline uint8_t
   get_component_class () const
   {
     return m_component_class;
@@ -51,7 +54,7 @@ public:
    * Gets the attribute of the component according to the TLVE Protocol
    * @return the byte of the attribute of the component
    */
-  inline unsigned char
+  inline uint8_t
   get_component_attribute () const
   {
     return m_component_attribute;
@@ -60,7 +63,7 @@ public:
    * Gets the number of the component according to the TLVE Protocol
    * @return the byte of the number of the component
    */
-  inline unsigned char
+  inline uint8_t
   get_component_number () const
   {
     return m_component_number;

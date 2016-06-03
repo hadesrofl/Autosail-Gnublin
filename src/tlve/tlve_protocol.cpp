@@ -10,15 +10,15 @@ TLVEProtocol::TLVEProtocol()
 
 TLVFrame TLVEProtocol::get_boat_description()
 {
-  unsigned char tag = 0, attribute = 0, length = 0, sync = 0;
-  std::vector<unsigned char> payload;
+  uint8_t tag = 0, attribute = 0, length = 0;
+  std::vector<uint8_t> payload;
 
-	return TLVFrame(tag, attribute, length, payload, sync);
+	return TLVFrame(tag, attribute, length, payload);
 }
 
-TLVFrame* TLVEProtocol::create_frame(unsigned char tag, unsigned char attribute, unsigned char length, std::vector<unsigned char> payload, unsigned char sync)
+TLVFrame* TLVEProtocol::create_frame(uint8_t tag, uint8_t attribute, uint8_t length, std::vector<uint8_t> payload)
 {
-	return new TLVFrame(tag, attribute, length, payload, sync);
+	return new TLVFrame(tag, attribute, length, payload);
 }
 
 TLVEProtocol::~TLVEProtocol(){}

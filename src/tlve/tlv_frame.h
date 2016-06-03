@@ -2,6 +2,9 @@
 #define TLVE_T_L_V_FRAME_H
 
 #include <vector>
+#include <stdint.h>
+
+#define SYNC_BIT 0x01
 
 /**
  * @file
@@ -19,26 +22,22 @@ private:
   /**
    * Byte containing the tag
    */
-  unsigned char m_tag;
+  uint8_t m_tag;
   /**
    * Byte containing the attribute
    */
 
-  unsigned char m_attribute;
+  uint8_t m_attribute;
   /**
    * Byte containing the length of the payload of the frame
    */
 
-  unsigned char m_length;
+  uint8_t m_length;
   /**
    * Byte Vector of containing all bytes of the payload. Size is specified by m_length
    */
 
-  std::vector<unsigned char> m_payload;
-  /**
-   * Byte containing the sync
-   */
-  unsigned char m_sync;
+  std::vector<uint8_t> m_payload;
   /**
    * @public
    */
@@ -49,15 +48,14 @@ public:
    * @param attribute byte of the attribute field
    * @param length byte of the length of the payload
    * @param payload vector of bytes for the payload of the frame
-   * @param sync byte of the sync field
    */
-  TLVFrame (unsigned char tag, unsigned char attribute, unsigned char length,
-	    std::vector<unsigned char> payload, unsigned char sync);
+  TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length,
+	    std::vector<uint8_t> payload);
   /**
    * Gets the tag field
    * @return tag byte of the frame
    */
-  inline unsigned char
+  inline uint8_t
   get_tag () const
   {
     return m_tag;
@@ -66,7 +64,7 @@ public:
    * Gets the attribute field
    * @return attribute byte of the frame
    */
-  inline unsigned char
+  inline uint8_t
   get_attribute () const
   {
     return m_attribute;
@@ -75,7 +73,7 @@ public:
    * Gets the length of the payload
    * @return byte for the length of the payload
    */
-  inline unsigned char
+  inline uint8_t
   get_length () const
   {
     return m_length;
@@ -84,19 +82,10 @@ public:
    * Gets the bytes of the payload
    * @return a vector of the bytes of the payload
    */
-  inline std::vector<unsigned char>
+  inline std::vector<uint8_t>
   get_payload () const
   {
     return m_payload;
-  }
-  /**
-   * Gets the sync field
-   * @return byte of the sync of the frame
-   */
-  inline unsigned char
-  get_sync () const
-  {
-    return m_sync;
   }
   /**
    * Destructor
