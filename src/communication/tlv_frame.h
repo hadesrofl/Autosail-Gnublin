@@ -1,5 +1,5 @@
-#ifndef TLVE_T_L_V_FRAME_H
-#define TLVE_T_L_V_FRAME_H
+#ifndef COMMUNICATION_T_L_V_FRAME_H
+#define COMMUNICATION_T_L_V_FRAME_H
 
 #include <vector>
 #include <stdint.h>

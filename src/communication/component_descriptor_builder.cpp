@@ -1,4 +1,4 @@
-#include "component_descriptor_builder.h"
+#include "../communication/component_descriptor_builder.h"
 
 ComponentDescriptorBuilder::ComponentDescriptorBuilder ()
 {

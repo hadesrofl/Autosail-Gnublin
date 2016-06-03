@@ -1,8 +1,9 @@
-#ifndef TLVE_T_L_V_E_PROTOCOL_H
-#define TLVE_T_L_V_E_PROTOCOL_H
+#ifndef COMMUNICATION_T_L_V_E_PROTOCOL_H
+#define COMMUNICATION_T_L_V_E_PROTOCOL_H
 
 #include <vector>
-#include "tlv_frame.h"
+
+#include "../communication/tlv_frame.h"
 
 /**
  * @file

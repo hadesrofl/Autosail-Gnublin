@@ -1,7 +1,6 @@
 #include "tlve_protocol.h"
-#include "tlv_frame.h"
-
 #include <vector>
+#include "tlv_frame.h"
 
 TLVEProtocol::TLVEProtocol()
 {
