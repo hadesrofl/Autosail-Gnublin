@@ -12,7 +12,7 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class SPI : public Interface
+class SPIMasterSelect : public Interface
 {
   /**
    * @private
@@ -31,7 +31,7 @@ public:
    * @param device_file is the name of the file of the device
    * @param spi_speed is the speed of the spi bus
    */
-  SPI (char* device_file, uint16_t spi_speed);
+  SPIMasterSelect (char* device_file, uint16_t spi_speed);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read
@@ -150,7 +150,7 @@ public:
   /**
    * Destructor
    */
-  ~SPI ();
+  ~SPIMasterSelect ();
 
 };
 #endif

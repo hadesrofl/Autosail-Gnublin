@@ -1,6 +1,6 @@
-#include "spi.h"
+#include "spimasterselect.h"
 
-SPI::SPI (char* device_file, uint16_t spi_speed)
+SPIMasterSelect::SPIMasterSelect (char* device_file, uint16_t spi_speed)
 {
   m_device_file = Interface::set_device_file(device_file);
   m_spi_port = std::unique_ptr<gnublin_spi> (new gnublin_spi ());
@@ -11,7 +11,7 @@ SPI::SPI (char* device_file, uint16_t spi_speed)
 }
 
 int16_t
-SPI::receive (uint8_t* buf, int16_t length)
+SPIMasterSelect::receive (uint8_t* buf, int16_t length)
 {
   int result = m_spi_port->receive ((char*) buf, length);
 #ifdef _DEBUG
@@ -22,7 +22,7 @@ SPI::receive (uint8_t* buf, int16_t length)
 }
 
 int16_t
-SPI::send (uint8_t* buf, int16_t length)
+SPIMasterSelect::send (uint8_t* buf, int16_t length)
 {
   int result = m_spi_port->send (buf, length);
 #ifdef _DEBUG
@@ -32,7 +32,7 @@ SPI::send (uint8_t* buf, int16_t length)
   return result;
 }
 
-SPI::~SPI ()
+SPIMasterSelect::~SPIMasterSelect ()
 {
 }
 
