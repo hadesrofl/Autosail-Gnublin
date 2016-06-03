@@ -8,13 +8,6 @@ I2C::I2C (char* device_file, uint8_t address)
       new gnublin_i2c (device_file, address));
 }
 
-I2C::I2C (uint8_t address)
-{
-  m_i2c_port = std::unique_ptr<gnublin_i2c> (new gnublin_i2c (address));
-  m_device_file = Interface::set_device_file(GNUBLIN_DEFAULT_I2C);
-  m_slave_address = m_i2c_port->getAddress ();
-}
-
 int16_t
 I2C::receive (uint8_t* buf, int16_t length)
 {

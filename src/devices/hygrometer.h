@@ -3,6 +3,7 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+#include "i2c_parameter.h"
 
 /**
  * @file
@@ -12,7 +13,7 @@
  * @author Rene Kremer
  * @version 0.3
  */
-class Hygrometer : public Device
+class Hygrometer : virtual public Device
 {
 private:
   /**
@@ -25,15 +26,9 @@ private:
 public:
   /**
    * Constructor
-   * @param device_file is the name of the file for the device
-   * @param slave_address is the address of the Hygrometer Module
+   * @param interface_parameter are the parameters for the I2C Interface
    */
-  Hygrometer (char* device_file, uint8_t slave_address);
-  /**
-   * Constructor
-   * @param slave_address is the address of the Hygrometer Module
-   */
-  Hygrometer(uint8_t slave_address);
+  Hygrometer (I2CParameter *interface_parameter);
   /**
    * TODO: Comment with hygrometer specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a

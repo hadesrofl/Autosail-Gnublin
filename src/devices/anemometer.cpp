@@ -7,13 +7,14 @@ Anemometer::init ()
   return -1;
 }
 // Public Functions
-Anemometer::Anemometer (char* device_file, uint8_t slave_address)
+Anemometer::Anemometer (I2CParameter *interface_parameter)
 {
-
-}
-Anemometer::Anemometer (uint8_t slave_address)
-{
-
+  m_interface_port = std::unique_ptr<I2C> (
+      new I2C (interface_parameter->get_device_file (),
+	       interface_parameter->get_address ()));
+  set_device_id (Descriptor::ANEMOMETER);
+  m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
+  init ();
 }
 uint8_t*
 Anemometer::read_data ()
@@ -24,6 +25,4 @@ Anemometer::read_data ()
 Anemometer::~Anemometer ()
 {
 }
-
-
 

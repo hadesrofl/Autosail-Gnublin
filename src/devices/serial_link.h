@@ -3,6 +3,7 @@
 
 #include "../interfaces/spi_master_select.h"
 #include "device.h"
+#include "serial_parameter.h"
 
 /**
  * @file
@@ -10,9 +11,9 @@
  * @brief Class for a SerialLink module. Uses a SPIMasterSelect Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
-class SerialLink : public Device
+class SerialLink : virtual public Device
 {
   /**
    * @private
@@ -29,15 +30,9 @@ private:
 public:
   /**
    * Constructor
-   * @param device_file is the name of the SPIMasterSelect Interface this devices listens to
-   * @param speed is the speed of the used SPI Bus
+   * @param interface_parameter are the parameters of the Serial Interface
    */
-  SerialLink (char* device_file, uint16_t speed);
-  /**
-   * Constructor
-   * @param speed is the speed of the used SPI Bus
-   */
-  SerialLink (uint16_t speed);
+  SerialLink (SerialParameter *interface_parameter);
   /**
    * TODO: Comment with SerialLink specific register
    * Reads the Data X, Y and Z Register of the SerialLink and returns them as a

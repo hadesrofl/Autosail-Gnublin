@@ -11,11 +11,6 @@ Serial::Serial (char* device_file, uint32_t baudrate)
   m_serial_port = std::unique_ptr<gnublin_serial> (
       new gnublin_serial (device_file, baudrate));
 }
-Serial::Serial(uint32_t baudrate){
-  Interface::set_device_file(SERIAL_DEFAULT_FILE);
-  set_baudrate(baudrate);
-  m_serial_port = std::unique_ptr<gnublin_serial> (new gnublin_serial(get_device_file(),baudrate));
-}
 
 int16_t
 Serial::receive (uint8_t* buf, int16_t length)

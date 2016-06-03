@@ -3,6 +3,7 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+#include "i2c_parameter.h"
 
 /**
  * Address of Config A Register
@@ -28,6 +29,9 @@
  * Set Mode Register to Continous Measurement Mode
  */
 #define COMPASS_MODE_REGISTER_VALUE 0x00
+/**
+ * Address for the first Data Register
+ */
 #define COMPASS_X_MSB_REGISTER_ADDR 0x03
 /**
  * Scaling Factor to calculate LSB to mg
@@ -41,9 +45,9 @@
  * @brief Class for a Compass Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
-class Compass : public Device
+class Compass : virtual public Device
 {
   /**
    * @private
@@ -59,15 +63,10 @@ private:
 public:
    /**
     * Constructor
-    * @param device_file is the name of the file for the I2C Interface
-    * @param slave_address is the address of the Compass Module
+    * @param interface_parameter is the parameter of the I2C Interface
+    * @param gain is the range of the measurements
     */
-   Compass(char* device_file, uint8_t slave_address);
-   /**
-    * Constructor
-    * @param slave_address is the address of the Compass Module
-    */
-   Compass(uint8_t slave_address);
+   Compass(I2CParameter *interface_parameter, Device_Config gain);
    /**
     * TODO: Comment with compass specific register
     * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a

@@ -4,15 +4,13 @@
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
 
-#define GNUBLIN_SPI_DEVICE "/dev/spidev0.0"
-
 /**
  * @file
- * @class SPI
+ * @class SPIMasterSelect
  * @brief Class for a SPI Interface. Implements the abstract Interface class and
  * adds some specific functions of a SPI Interface.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class SPIMasterSelect : public Interface
 {
@@ -34,11 +32,6 @@ public:
    * @param spi_speed is the speed of the spi bus
    */
   SPIMasterSelect (char* device_file, uint16_t spi_speed);
-  /**
-   * Constructor
-   * @param spi_speed is the speed of the spi bus
-   */
-  SPIMasterSelect (uint16_t spi_speed);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read

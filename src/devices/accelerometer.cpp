@@ -49,18 +49,13 @@ Accelerometer::init ()
   return ret;
 }
 // Public Functions
-Accelerometer::Accelerometer (char* device_file, uint8_t slave_address,
+Accelerometer::Accelerometer (I2CParameter *interface_parameter,
 			      Device_Config range)
 {
+
   m_interface_port = std::unique_ptr<I2C> (
-      new I2C (device_file, slave_address));
-  set_device_id (Descriptor::ACCELEROMETER);
-  m_range = range;
-  init ();
-}
-Accelerometer::Accelerometer (uint8_t slave_address, Device_Config range)
-{
-  m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
+      new I2C (interface_parameter->get_device_file(), interface_parameter->get_address()));
+  m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   set_device_id (Descriptor::ACCELEROMETER);
   m_range = range;
   init ();

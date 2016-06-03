@@ -7,14 +7,16 @@ WindVane::init ()
   return -1;
 }
 // Public Functions
-WindVane::WindVane (char* device_file, uint8_t slave_address)
+WindVane::WindVane (I2CParameter *interface_parameter)
 {
-
+  m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
+  m_interface_port = std::unique_ptr<I2C> (
+      new I2C (interface_parameter->get_device_file (),
+	       interface_parameter->get_address ()));
+  set_device_id (Descriptor::WIND_VANE);
+  init ();
 }
-WindVane::WindVane (uint8_t slave_address)
-{
 
-}
 uint8_t*
 WindVane::read_data ()
 {
@@ -24,6 +26,4 @@ WindVane::read_data ()
 WindVane::~WindVane ()
 {
 }
-
-
 

@@ -53,9 +53,14 @@ DeviceManager::init_sensors (Descriptor devices[])
 		  Descriptor::ACCELEROMETER,
 		  std::unique_ptr<Accelerometer> (
 		      new Accelerometer (
-			  static_cast<int> (Device_Config::ACC_ADDR),
+			  new I2CParameter (
+			      static_cast<uint8_t> (Device_Config::ACC_ADDR)),
 			  Device_Config::ACC_RANGE_2G))));
+
 	  std::cout << "Accelerometer DONE!" << std::endl;
+	  break;
+	case Descriptor::ANEMOMETER:
+	  // TODO: Create Object
 	  break;
 	case Descriptor::COMPASS:
 	  m_devices.insert (
@@ -63,7 +68,10 @@ DeviceManager::init_sensors (Descriptor devices[])
 		  Descriptor::COMPASS,
 		  std::unique_ptr<Compass> (
 		      new Compass (
-			  static_cast<int> (Device_Config::COMPASS_ADDR)))));
+			  new I2CParameter (
+			      static_cast<int> (Device_Config::COMPASS_ADDR)),
+			  Device_Config::COMPASS_GAIN_DEFAULT))));
+
 	  std::cout << "Compass DONE!" << std::endl;
 	  break;
 	case Descriptor::GPS:
@@ -71,7 +79,9 @@ DeviceManager::init_sensors (Descriptor devices[])
 	      std::make_pair (
 		  Descriptor::GPS,
 		  std::unique_ptr<GPS> (
-		      new GPS (static_cast<int> (Device_Config::GPS_BAUD)))));
+		      new GPS (
+			  new SerialParameter (
+			      static_cast<int> (Device_Config::GPS_BAUD))))));
 	  std::cout << "GPS DONE!" << std::endl;
 	  break;
 	case Descriptor::GYROSCOPE:
@@ -80,15 +90,20 @@ DeviceManager::init_sensors (Descriptor devices[])
 		  Descriptor::GYROSCOPE,
 		  std::unique_ptr<Gyroscope> (
 		      new Gyroscope (
-			  static_cast<int> (Device_Config::GYRO_ADDR)))));
+			  new I2CParameter (
+			      static_cast<int> (Device_Config::GYRO_ADDR))))));
 	  std::cout << "Gyroscope DONE!" << std::endl;
 	  break;
 	case Descriptor::HYGROMETER:
+	  // TODO: Create Object
 	  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
 	  break;
-	case Descriptor::WIND_SENSOR:
-
+	case Descriptor::WESTON_ANEMOMETER:
+	  // TODO: Create Object
 	  //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
+	  break;
+	case Descriptor::WIND_VANE:
+	  // TODO: Create Object
 	  break;
 	default:
 	  std::cerr << "False ID!" << std::endl;

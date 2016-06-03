@@ -3,15 +3,16 @@
 
 #include "../interfaces/serial.h"
 #include "device.h"
+#include "serial_parameter.h"
 /**
  * @file
  * @class GPS
  * @brief Class for a GPS Module. Uses a Serial Port for communication but has some
  * functions to handle and transform received data.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
-class GPS : public Device
+class GPS : virtual public Device
 {
   /**
    * @private
@@ -27,19 +28,9 @@ private:
 public:
   /**
    * Constructor
-   * @param device_file is the name of the device
-   * @param baudrate is the baudrate for communication
+   * @param interface_parameter are the parameters for the interface
    */
-  GPS (char* device_file, uint32_t baudrate);
-  /**
-   * Constructor
-   * @param baudrate is the baudrate for communication
-   */
-  GPS (uint32_t baudrate);
-  /**
-   * Constructor. Sets the default device and baudrate as specified in sensor params.
-   */
-  GPS ();
+  GPS (SerialParameter *interface_parameter);
   /**
    * Reads data from the gps for a given length
    * @param buf is the buffer to save the data into

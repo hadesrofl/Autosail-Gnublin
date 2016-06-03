@@ -30,7 +30,7 @@
  * @class DeviceManager
  * @brief Class for the Device Manager. Administrates all devices and returns devices for special usage.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class DeviceManager
 {

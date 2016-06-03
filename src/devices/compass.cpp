@@ -30,17 +30,12 @@ Compass::init ()
   return ret;
 }
 // Public Functions
-Compass::Compass (char* device_file, uint8_t slave_address)
+Compass::Compass (I2CParameter *interface_parameter, Device_Config gain)
 {
   m_interface_port = std::unique_ptr<I2C> (
-      new I2C (device_file, slave_address));
+      new I2C (interface_parameter->get_device_file(), interface_parameter->get_address()));
   set_device_id (Descriptor::COMPASS);
-  init ();
-}
-Compass::Compass (uint8_t slave_address)
-{
-  m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (Descriptor::COMPASS);
+  m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   init ();
 }
 uint8_t*

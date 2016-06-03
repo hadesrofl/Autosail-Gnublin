@@ -3,6 +3,7 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+#include "i2c_parameter.h"
 
 /**
  * @file
@@ -12,7 +13,7 @@
  * @author Rene Kremer
  * @version 0.2
  */
-class Anemometer : public Device
+class Anemometer : virtual public Device
 {
   /**
    * @private
@@ -29,15 +30,9 @@ private:
 public:
   /**
    * Constructor
-   * @param device_file is the name of the I2C Interface this devices listens to
-   * @param slave_address is the address of the anemometer module
+   * @param interface_parameter is the parameter of the I2C Interface
    */
-  Anemometer (char* device_file, uint8_t slave_address);
-  /**
-   * Constructor
-   * @param slave_address is the address of the anemometer module
-   */
-  Anemometer (uint8_t slave_address);
+  Anemometer (I2CParameter *interface_parameter);
   /**
    * TODO: Comment with anemometer specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a

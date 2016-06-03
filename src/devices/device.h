@@ -3,14 +3,17 @@
 
 #include "../interfaces/interface.h"
 #include <iostream>
-#include "device_params.h"
+
+#include "device_config.h"
+#include "descriptor.h"
+#include "interface_parameter.h"
 
 /**
  * @file
  * @class Device
  * @brief Class for a Device. A device is some kind of sensor and uses some kind of interface.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class Device
 {
@@ -35,6 +38,10 @@ protected:
    * Id of the Device
    */
   Descriptor m_device_id;
+  /**
+   * Parameter of the Devices Interface
+   */
+  std::unique_ptr<InterfaceParameter> m_device_parameter;
   /**
    * Sets the id of the device as specified in device params
    * @param id is the id of this specific device
@@ -119,6 +126,15 @@ public:
   get_device_id () const
   {
     return m_device_id;
+  }
+  /**
+   * Gets the Parameter of the Device
+   * @return the Device Parameter
+   */
+  inline InterfaceParameter
+  get_device_parameter () const
+  {
+    return *m_device_parameter;
   }
   /**
    * Default Destructor

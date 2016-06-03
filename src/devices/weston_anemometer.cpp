@@ -7,13 +7,14 @@ WestonAnemometer::init ()
   return -1;
 }
 // Public Functions
-WestonAnemometer::WestonAnemometer (char* device_file, uint8_t slave_address)
+WestonAnemometer::WestonAnemometer (I2CParameter *interface_parameter)
 {
-
-}
-WestonAnemometer::WestonAnemometer (uint8_t slave_address)
-{
-
+  m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
+  m_interface_port = std::unique_ptr<I2C> (
+      new I2C (interface_parameter->get_device_file (),
+	       interface_parameter->get_address ()));
+  set_device_id (Descriptor::WESTON_ANEMOMETER);
+  init ();
 }
 uint8_t*
 WestonAnemometer::read_data ()
@@ -24,6 +25,4 @@ WestonAnemometer::read_data ()
 WestonAnemometer::~WestonAnemometer ()
 {
 }
-
-
 

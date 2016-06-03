@@ -3,6 +3,7 @@
 
 #include "../interfaces/i2c.h"
 #include "device.h"
+#include "i2c_parameter.h"
 
 /**
  * Address of Power CTL Register
@@ -26,6 +27,7 @@
  * Speed of milli g. 1G = 9.81 m / s^2
  */
 #define MG_SPEED 0.00981
+
 #endif
 /**
  * @file
@@ -33,7 +35,7 @@
  * @brief Class for a Accelerometer Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class Accelerometer : virtual public Device
 {
@@ -60,17 +62,10 @@ private:
 public:
   /**
    * Constructor
-   * @param device_file is the name of the file for the I2C Interface
-   * @param slave_address is the address of the Accelerometer Module
+   * @param interface_parameter are the parameters for the interface
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (char* device_file, uint8_t slave_address, Device_Config range);
-  /**
-   * Constructor
-   * @param slave_address is the address of the Accelerometer Module
-   * @param range is the range for measurement of the accelerometer
-   */
-  Accelerometer (uint8_t slave_address, Device_Config range);
+  Accelerometer (I2CParameter *interface_parameter, Device_Config range);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory. The raw values will be transformed to mg where index

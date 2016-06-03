@@ -3,14 +3,15 @@
 
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
-#define GNUBLIN_DEFAULT_I2C "/dev/i2c-1"
+
+
 /**
  * @file
  * @class I2C
  * @brief Class for the I2C Interface. Implements the abstract Interface class and
  * has some more I2C specific functions.
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class I2C : public Interface
 {
@@ -47,11 +48,6 @@ public:
    * @param address is the address of a connected slave
    */
   I2C (char* device_file, uint8_t address);
-  /**
-   * Constructor
-   * @param address is the slave address of a connected slave
-   */
-  I2C (uint8_t address);
 /**
  * Receives data from the I2C Port of the Gnublin and saves it into the buffer. Reads
  * only as much bytes as specified in variable length

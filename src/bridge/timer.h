@@ -8,10 +8,13 @@
 /**
  * @file
  * @class Timer
- * @brief Class for a Timer. A Timer uses the system clock of linux to arm a timer and fire signals as software interrupts.
+ * @brief Class for a Timer. A Timer uses the system clock of linux to arm a timer
+ * and fire signals as software interrupts.
+ *
  * Signal Handler is a function like: void signal_handler(int32_t signo)
  *
- * It needs to be a function with void as return value and an integer value for the signo. This function will be called if the interrupt is fired.
+ * It needs to be a function with void as return value and an integer value
+ * for the signo. This function will be called if the interrupt is fired.
  * @author Rene Kremer
  * @version 0.2
  * @note Base Idea from http://stackoverflow.com/questions/4883411/multiple-timer-to-one-process-without-linking-to-rt

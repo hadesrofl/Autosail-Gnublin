@@ -7,16 +7,13 @@ Hygrometer::init ()
   return -1;
 }
 // Public Functions
-Hygrometer::Hygrometer (char* device_file, uint8_t slave_address)
+Hygrometer::Hygrometer (I2CParameter *interface_parameter)
 {
   m_interface_port = std::unique_ptr<I2C> (
-      new I2C (device_file, slave_address));
+      new I2C (interface_parameter->get_device_file(), interface_parameter->get_address()));
   set_device_id (Descriptor::HYGROMETER);
-}
-Hygrometer::Hygrometer (uint8_t slave_address)
-{
-  m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (Descriptor::HYGROMETER);
+  m_device_parameter = std::unique_ptr<I2CParameter>(interface_parameter);
+  init();
 }
 uint8_t*
 Hygrometer::read_data ()

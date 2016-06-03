@@ -1,7 +1,6 @@
 #ifndef INTERFACES_SERIAL_H_
 #define INTERFACES_SERIAL_H_
 
-#define SERIAL_DEFAULT_FILE "/dev/ttyUSB0"
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
 
@@ -11,7 +10,7 @@
  * @brief Interface Class to set up a Serial Device and provide
  * a send and receive function
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class Serial : public Interface
 {
@@ -52,11 +51,6 @@ public:
    * @param baudrate is the value of the baudrate
    */
   Serial (char* device_file, uint32_t baudrate);
-  /**
-   * Constructor
-   * @param baudrate is the value of the baudrate
-   */
-  Serial (uint32_t baudrate);
   /**
    * Function to receive data
    * @param buf is a pointer to a buffer to write to data into

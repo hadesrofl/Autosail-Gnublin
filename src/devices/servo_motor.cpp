@@ -7,18 +7,14 @@ ServoMotor::init ()
   return -1;
 }
 // Public Functions
-ServoMotor::ServoMotor (char* device_file, uint16_t speed, Descriptor desc)
+ServoMotor::ServoMotor (SPIParameter *interface_parameter, Descriptor desc)
 {
   m_interface_port = std::unique_ptr<SPIMasterSelect> (
-      new SPIMasterSelect (device_file, speed));
+      new SPIMasterSelect (interface_parameter->get_device_file(), interface_parameter->get_speed()));
   set_device_id (desc);
   m_descriptor = desc;
-}
-ServoMotor::ServoMotor (uint16_t speed, Descriptor desc)
-{
-  m_interface_port = std::unique_ptr<SPIMasterSelect> (new SPIMasterSelect (speed));
-  set_device_id (desc);
-  m_descriptor = desc;
+  m_device_parameter = std::unique_ptr<SPIParameter> (interface_parameter);
+  init();
 }
 uint8_t*
 ServoMotor::read_data ()
