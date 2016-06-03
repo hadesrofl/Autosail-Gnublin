@@ -12,12 +12,13 @@
  * @brief Enum of a descriptor of a Device.
  * @details
  * <ul>
- * <li> ACCELEROMETER ( = 0) - Internal id of the accelerometer </li>
- * <li> COMPASS ( = 1) - Internal id of the compass </li>
- * <li> GPS ( = 2) - Internal id of the gps </li>
- * <li> GYROSCOPE ( = 3) - Internal id of the gyroscope </li>
- * <li> HYGROMETER ( = 4) - Internal id of the hygrometer </li>
- * <li> WIND_SENSOR ( = 5) - Internal id of the windsensor  </li>
+ * <li> ACCELEROMETER ( = 0) - Descriptor of the accelerometer </li>
+ * <li> COMPASS ( = 1) - Descriptor of the compass </li>
+ * <li> GPS ( = 2) - Descriptor of the gps </li>
+ * <li> GYROSCOPE ( = 3) - Descriptor of the gyroscope </li>
+ * <li> HYGROMETER ( = 4) - Descriptor of the hygrometer </li>
+ * <li> WIND_SENSOR ( = 5) - Descriptor of the windsensor  </li>
+ * <li> SERIAL_LINK        - Descriptor of the Serial Link </li>
  * <li> NUM_DEVICES ( = 6) - Enum for the number of devices to iterate over it in loops </li>
  * </ul>
  * @author Rene Kremer
@@ -26,29 +27,33 @@
 enum class Descriptor
 {
   /**
-   * Internal id of the accelerometer ( = 0)
+   * Descriptor of the accelerometer ( = 0)
    */
   ACCELEROMETER,
   /**
-   * Internal id of the compass ( = 1)
+   * Descriptor of the compass ( = 1)
    */
   COMPASS,
   /**
-   * Internal id of the gps ( = 2)
+   * Descriptor of the gps ( = 2)
    */
   GPS,
   /**
-   * Internal id of the gyroscope ( = 3)
+   * Descriptor of the gyroscope ( = 3)
    */
   GYROSCOPE,
   /**
-   * Internal id of the hygrometer ( = 4)
+   * Descriptor of the hygrometer ( = 4)
    */
   HYGROMETER,
   /**
-   * Internal id of the windsensor ( = 5)
+   * Descriptor of the windsensor ( = 5)
    */
   WIND_SENSOR,
+  /**
+   * Descriptor of the Serial Link
+   */
+  SERIAL_LINK,
 #ifdef _TEST
   TEENSY_I2C,
 #endif

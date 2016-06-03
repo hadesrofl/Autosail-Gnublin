@@ -36,7 +36,7 @@ protected:
    */
   Descriptor m_device_id;
   /**
-   * Sets the id of the device as specified in sensor params
+   * Sets the id of the device as specified in device params
    * @param id is the id of this specific device
    */
   inline void

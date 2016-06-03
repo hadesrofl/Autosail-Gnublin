@@ -1,8 +1,10 @@
-#ifndef INTERFACES_S_P_I_H
-#define INTERFACES_S_P_I_H
+#ifndef INTERFACES_S_P_I_MASTER_SELECT_H
+#define INTERFACES_S_P_I_MASTER_SELECT_H
 
 #include "../../gnublin_wo_smtp.h"
 #include "interface.h"
+
+#define GNUBLIN_SPI_DEVICE "/dev/spidev0.0"
 
 /**
  * @file
@@ -32,6 +34,11 @@ public:
    * @param spi_speed is the speed of the spi bus
    */
   SPIMasterSelect (char* device_file, uint16_t spi_speed);
+  /**
+   * Constructor
+   * @param spi_speed is the speed of the spi bus
+   */
+  SPIMasterSelect (uint16_t spi_speed);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read
