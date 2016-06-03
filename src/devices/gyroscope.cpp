@@ -25,13 +25,13 @@ Gyroscope::Gyroscope (char* device_file, uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (device_file, slave_address));
-  set_device_id (Device_ID::GYROSCOPE);
+  set_device_id (Descriptor::GYROSCOPE);
   init ();
 }
 Gyroscope::Gyroscope (uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (Device_ID::GYROSCOPE);
+  set_device_id (Descriptor::GYROSCOPE);
   init ();
 }
 uint8_t*
@@ -39,15 +39,15 @@ Gyroscope::read_data ()
 {
   uint8_t register_address = GYRO_X_MSB_REGISTER;
   uint8_t* data =
-      new unsigned char[static_cast<int8_t> (Sensor_Param::GYROSCOPE_DATA_LENGTH)];
+      new unsigned char[static_cast<int8_t> (Device_Config::GYROSCOPE_DATA_LENGTH)];
   for (int16_t i = 0;
-      i < static_cast<int16_t> (Sensor_Param::GYROSCOPE_DATA_LENGTH); i++)
+      i < static_cast<int16_t> (Device_Config::GYROSCOPE_DATA_LENGTH); i++)
     {
       data[i] = 0;
     }
   Device::write (&register_address, 1);
   Device::read (data,
-		static_cast<int8_t> (Sensor_Param::GYROSCOPE_DATA_LENGTH));
+		static_cast<int8_t> (Device_Config::GYROSCOPE_DATA_LENGTH));
   int16_t x = (data[1] << 8) | data[0];
   int16_t y = (data[3] << 8) | data[2];
   int16_t z = (data[5] << 8) | data[4];

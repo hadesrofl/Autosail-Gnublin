@@ -92,9 +92,9 @@ main (void)
 #endif
 #ifndef _TEST
   DeviceManager dmanager;
-  Device* device_a = dmanager.get_sensor (Device_ID::GYROSCOPE);
-  Device* device_b = dmanager.get_sensor (Device_ID::ACCELEROMETER);
-  Device* device_c = dmanager.get_sensor(Device_ID::COMPASS);
+  Device* device_a = dmanager.get_sensor (Descriptor::GYROSCOPE);
+  Device* device_b = dmanager.get_sensor (Descriptor::ACCELEROMETER);
+  Device* device_c = dmanager.get_sensor(Descriptor::COMPASS);
   uint8_t *acc_data, *gyro_data, *compass_data;
   /*float roll = 0, pitch = 0, yaw = 0;
   timeval now, before;

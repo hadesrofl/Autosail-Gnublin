@@ -1,5 +1,5 @@
-#ifndef DEVICES_SENSOR_PARAMS_H_
-#define DEVICES_SENSOR_PARAMS_H_
+#ifndef DEVICES_DEVICE_PARAMS_H_
+#define DEVICES_DEVICE_PARAMS_H_
 /**
  * @file
  * @brief Header File for some Params of the Sensors. Here are the Sensors described
@@ -8,8 +8,8 @@
  * @version 0.2
  */
 /**
- * @class Device_ID
- * @brief Enum of an ID for a device.
+ * @class Descriptor
+ * @brief Enum of a descriptor of a Device.
  * @details
  * <ul>
  * <li> ACCELEROMETER ( = 0) - Internal id of the accelerometer </li>
@@ -23,7 +23,7 @@
  * @author Rene Kremer
  * @version 0.2
  */
-enum class Device_ID
+enum class Descriptor
 {
   /**
    * Internal id of the accelerometer ( = 0)
@@ -59,8 +59,8 @@ enum class Device_ID
 };
 
 /**
- * @class Sensor_Param
- * @brief Enum for the params of the sensors
+ * @class Device Config
+ * @brief Enum for the params of the devices
  * @details
  * <ul>
  * <li> ACC_ADDR - Address of the Accelerometer ADXL345</li>
@@ -75,7 +75,7 @@ enum class Device_ID
  * @author Rene Kremer
  * @version 0.2
  */
-enum class Sensor_Param
+enum class Device_Config
 {
 #ifdef _TEST
   TEENSY_ADDR = 0x55, 		// Teensy Slave Address for I2C
@@ -122,32 +122,4 @@ enum class Sensor_Param
   WIND_SENSOR_ADDR = 0x00
 };
 
-/**
- * @class Sensor_Value
- * @brief Enum for the specific values of the sensors
- * @author Rene Kremer
- * @version 0.2
- */
-enum class Sensor_Value
-{
-  ACC_X,
-  ACC_Y,
-  ACC_Z,
-  COMPASS_X,
-  COMPASS_Y,
-  COMPASS_Z,
-  GYRO_X,
-  GYRO_Y,
-  GYRO_Z,
-  GPS_X,
-  GPS_Y,
-  GPS_Z,
-  HYGRO_X,
-  HYGRO_Y,
-  HYGRO_Z,
-  WIND_SENSOR_X,
-  WIND_SENSOR_Y,
-  WIND_SENSOR_Z
-};
-
-#endif /* DEVICES_SENSOR_PARAMS_H_ */
+#endif /* DEVICES_DEVICE_PARAMS_H_ */

@@ -19,19 +19,19 @@ Accelerometer::init ()
   uint8_t register_value;
   switch (m_range)
     {
-    case Sensor_Param::ACC_RANGE_2G:
+    case Device_Config::ACC_RANGE_2G:
       register_value = 0x00;
       m_scale_factor = 3.9;
       break;
-    case Sensor_Param::ACC_RANGE_4G:
+    case Device_Config::ACC_RANGE_4G:
       register_value = 0x01;
       m_scale_factor = 7.8;
       break;
-    case Sensor_Param::ACC_RANGE_8G:
+    case Device_Config::ACC_RANGE_8G:
       register_value = 0x02;
       m_scale_factor = 15.6;
       break;
-    case Sensor_Param::ACC_RANGE_16G:
+    case Device_Config::ACC_RANGE_16G:
       register_value = 0x03;
       m_scale_factor = 31.2;
       break;
@@ -50,18 +50,18 @@ Accelerometer::init ()
 }
 // Public Functions
 Accelerometer::Accelerometer (char* device_file, uint8_t slave_address,
-			      Sensor_Param range)
+			      Device_Config range)
 {
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (device_file, slave_address));
-  set_device_id (Device_ID::ACCELEROMETER);
+  set_device_id (Descriptor::ACCELEROMETER);
   m_range = range;
   init ();
 }
-Accelerometer::Accelerometer (uint8_t slave_address, Sensor_Param range)
+Accelerometer::Accelerometer (uint8_t slave_address, Device_Config range)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (Device_ID::ACCELEROMETER);
+  set_device_id (Descriptor::ACCELEROMETER);
   m_range = range;
   init ();
 }
@@ -72,8 +72,8 @@ Accelerometer::read_data ()
   //Set Register Pointer to first Data Register
   uint8_t register_address = ACC_X_LSB_REGISTER_ADDR;
   Device::write (&register_address, 1);
-  uint8_t* data = new uint8_t[Sensor_Param::ACC_DATA_LENGTH];
-  Device::read (data, static_cast<int16_t> (Sensor_Param::ACC_DATA_LENGTH));
+  uint8_t* data = new uint8_t[Device_Config::ACC_DATA_LENGTH];
+  Device::read (data, static_cast<int16_t> (Device_Config::ACC_DATA_LENGTH));
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (data[1] << 8) | data[0];
   int16_t raw_y = (data[3] << 8) | data[2];

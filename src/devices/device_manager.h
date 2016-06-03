@@ -9,7 +9,6 @@
 #include "gps.h"
 #include "gyroscope.h"
 #include "hygrometer.h"
-#include "wind_sensor.h"
 #include <iostream>
 #include <fstream>
 
@@ -49,7 +48,7 @@ public:
    * @return a pointer to the sensor
    */
   Device*
-  get_sensor (Device_ID id);
+  get_sensor (Descriptor id);
   /**
    * Destructor
    */
@@ -61,7 +60,7 @@ private:
   /**
    * Map of Sensors
    */
-  std::map<Device_ID, std::unique_ptr<Device>> m_devices;
+  std::map<Descriptor, std::unique_ptr<Device>> m_devices;
   /**
    * Map to store the config values to a certain key
    */
@@ -87,7 +86,7 @@ private:
    * @return on success 1, otherwise -1
    */
   int8_t
-  read_config (const char* file, Device_ID devices[]);
+  read_config (const char* file, Descriptor devices[]);
 
   /**
    * Inits the Sensors
@@ -95,7 +94,7 @@ private:
    * @return on succes 1, otherwise -1
    */
   int8_t
-  init_sensors (Device_ID devices[]);
+  init_sensors (Descriptor devices[]);
   /**
    * Clears the content of an array for a given length. Writes 0 into the index of the given array
    * @param array is the array to be cleared

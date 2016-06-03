@@ -34,13 +34,13 @@ Compass::Compass (char* device_file, uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (device_file, slave_address));
-  set_device_id (Device_ID::COMPASS);
+  set_device_id (Descriptor::COMPASS);
   init ();
 }
 Compass::Compass (uint8_t slave_address)
 {
   m_interface_port = std::unique_ptr<I2C> (new I2C (slave_address));
-  set_device_id (Device_ID::COMPASS);
+  set_device_id (Descriptor::COMPASS);
   init ();
 }
 uint8_t*
@@ -48,12 +48,12 @@ Compass::read_data ()
 {
   uint8_t register_data[2] = {0};
   uint8_t* data = new unsigned char[6];
-  for (int16_t i = 0; i < static_cast<int16_t> (Sensor_Param::COMPASS_DATA_LENGTH); i++)
+  for (int16_t i = 0; i < static_cast<int16_t> (Device_Config::COMPASS_DATA_LENGTH); i++)
     {
       data[i] = 0;
     }
   register_data[0] = COMPASS_X_MSB_REGISTER_ADDR;
-  register_data[1] = static_cast<uint8_t>(Sensor_Param::COMPASS_DATA_LENGTH);
+  register_data[1] = static_cast<uint8_t>(Device_Config::COMPASS_DATA_LENGTH);
   Device::write (register_data, 2);
   Device::read (data, 6);
   int16_t x = (data[1] << 8) | data[0];

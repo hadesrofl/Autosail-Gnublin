@@ -4,7 +4,7 @@
 
 DeviceManager::DeviceManager ()
 {
-  Device_ID devices[static_cast<int> (Device_ID::NUM_DEVICES)];
+  Descriptor devices[static_cast<int> (Descriptor::NUM_DEVICES)];
   if ((read_config (DEVICE_CONFIG, devices)) > 0)
     {
       init_sensors (devices);
@@ -12,7 +12,7 @@ DeviceManager::DeviceManager ()
 }
 
 Device*
-DeviceManager::get_sensor (Device_ID id)
+DeviceManager::get_sensor (Descriptor id)
 {
   Device* dptr = NULL;
   if (m_devices.count (id) > 0)
@@ -30,7 +30,7 @@ DeviceManager::~DeviceManager ()
 // Private Functions
 
 int8_t
-DeviceManager::init_sensors (Device_ID devices[])
+DeviceManager::init_sensors (Descriptor devices[])
 {
   uint16_t tmp, j;
   // i = i + 2 to skip the name of the device and go to the id
@@ -44,49 +44,49 @@ DeviceManager::init_sensors (Device_ID devices[])
 	      + static_cast<int16_t> (m_config_values[i + 1][j] - ASCII_SHIFT);
 	  j++;
 	}
-      Device_ID id = static_cast<Device_ID> (tmp);
+      Descriptor id = static_cast<Descriptor> (tmp);
       switch (id)
 	{
-	case Device_ID::ACCELEROMETER:
+	case Descriptor::ACCELEROMETER:
 	  m_devices.insert (
 	      std::make_pair (
-		  Device_ID::ACCELEROMETER,
+		  Descriptor::ACCELEROMETER,
 		  std::unique_ptr<Accelerometer> (
 		      new Accelerometer (
-			  static_cast<int> (Sensor_Param::ACC_ADDR),
-			  Sensor_Param::ACC_RANGE_2G))));
+			  static_cast<int> (Device_Config::ACC_ADDR),
+			  Device_Config::ACC_RANGE_2G))));
 	  std::cout << "Accelerometer DONE!" << std::endl;
 	  break;
-	case Device_ID::COMPASS:
+	case Descriptor::COMPASS:
 	  m_devices.insert (
 	      std::make_pair (
-		  Device_ID::COMPASS,
+		  Descriptor::COMPASS,
 		  std::unique_ptr<Compass> (
 		      new Compass (
-			  static_cast<int> (Sensor_Param::COMPASS_ADDR)))));
+			  static_cast<int> (Device_Config::COMPASS_ADDR)))));
 	  std::cout << "Compass DONE!" << std::endl;
 	  break;
-	case Device_ID::GPS:
+	case Descriptor::GPS:
 	  m_devices.insert (
 	      std::make_pair (
-		  Device_ID::GPS,
+		  Descriptor::GPS,
 		  std::unique_ptr<GPS> (
-		      new GPS (static_cast<int> (Sensor_Param::GPS_BAUD)))));
+		      new GPS (static_cast<int> (Device_Config::GPS_BAUD)))));
 	  std::cout << "GPS DONE!" << std::endl;
 	  break;
-	case Device_ID::GYROSCOPE:
+	case Descriptor::GYROSCOPE:
 	  m_devices.insert (
 	      std::make_pair (
-		  Device_ID::GYROSCOPE,
+		  Descriptor::GYROSCOPE,
 		  std::unique_ptr<Gyroscope> (
 		      new Gyroscope (
-			  static_cast<int> (Sensor_Param::GYRO_ADDR)))));
+			  static_cast<int> (Device_Config::GYRO_ADDR)))));
 	  std::cout << "Gyroscope DONE!" << std::endl;
 	  break;
-	case Device_ID::HYGROMETER:
+	case Descriptor::HYGROMETER:
 	  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
 	  break;
-	case Device_ID::WIND_SENSOR:
+	case Descriptor::WIND_SENSOR:
 
 	  //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
 	  break;
@@ -111,7 +111,7 @@ DeviceManager::store_line (uint8_t* value, uint16_t value_length)
 }
 
 int8_t
-DeviceManager::read_config (const char* file, Device_ID devices[])
+DeviceManager::read_config (const char* file, Descriptor devices[])
 {
   std::ifstream input;
   uint8_t length = 50;

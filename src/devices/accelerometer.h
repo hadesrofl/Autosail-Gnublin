@@ -49,7 +49,7 @@ private:
   /**
    * Range of g for measurement
    */
-  Sensor_Param m_range;
+  Device_Config m_range;
   /**
    * Scale Factor to multiply with LSB to get G value
    */
@@ -64,13 +64,13 @@ public:
    * @param slave_address is the address of the Accelerometer Module
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (char* device_file, uint8_t slave_address, Sensor_Param range);
+  Accelerometer (char* device_file, uint8_t slave_address, Device_Config range);
   /**
    * Constructor
    * @param slave_address is the address of the Accelerometer Module
    * @param range is the range for measurement of the accelerometer
    */
-  Accelerometer (uint8_t slave_address, Sensor_Param range);
+  Accelerometer (uint8_t slave_address, Device_Config range);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory. The raw values will be transformed to mg where index
