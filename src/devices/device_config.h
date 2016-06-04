@@ -1,8 +1,8 @@
-#ifndef DEVICES_DEVICE_PARAMS_H_
-#define DEVICES_DEVICE_PARAMS_H_
+#ifndef DEVICES_DEVICE_CONFIG_H_
+#define DEVICES_DEVICE_CONFIG_H_
 /**
  * @file
- * @class Device Config
+ * @class DeviceConfig
  * @brief Enum for the params of the devices
  * @details
  * <ul>
@@ -70,4 +70,4 @@ enum class Device_Config
   WIND_SENSOR_ADDR = 0x00
 };
 
-#endif /* DEVICES_DEVICE_PARAMS_H_ */
+#endif /* DEVICES_DEVICE_CONFIG_H_ */
