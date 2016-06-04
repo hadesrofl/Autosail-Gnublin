@@ -6,6 +6,9 @@
  * @file
  * @class MedianFilter
  * @brief Class for a MedianFilter. Filters Values via median calculation.
+ * @note Idea for Filters mentioned in Bachelor Thesis "Entwurf, Implementierung
+ * und Test eines Autopiloten für die Steuerung eines Modellsegelbootes
+ * mit einem Android-Smartphone" by Hannes Range (October 2015)
  * @author Rene Kremer
  * @version 0.2
  */

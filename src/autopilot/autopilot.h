@@ -9,7 +9,7 @@
  * @file
  * @class AutoPilot
  * @brief Class for the Autopilot. Shall be realized in an own thread. Furthermore
- * an AutoPilot contains a SailRegulator and CourseRegalutor each realized in an own
+ * an AutoPilot contains a SailRegulator and CourseRegulator each realized in an own
  * thread to regulate Sail and Course autonomously for setting and holding a course.
  *
  * @note Idea for AutoPilot mentioned in Bachelor Thesis "Entwurf, Implementierung

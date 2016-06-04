@@ -7,6 +7,9 @@
  * @file
  * @class Filter
  * @brief Virtual Class for Filter class (MedianFilter and AverageFilter).
+ * @note Idea for Filters mentioned in Bachelor Thesis "Entwurf, Implementierung
+ * und Test eines Autopiloten für die Steuerung eines Modellsegelbootes
+ * mit einem Android-Smartphone" by Hannes Range (October 2015)
  * @author Rene Kremer
  * @version 0.2
  */
