@@ -22,38 +22,34 @@
  */
 int8_t spi_interrupt_test()
   {
-    SPIMasterSelect* spi = new SPIMasterSelect ((char*) "/dev/spidev0.0", 16000, true);
+    SPIMasterSelect* spi_a = new SPIMasterSelect ((char*) "/dev/spidev0.0", 16000, 11);
     SPIMasterSelect* spi_b = new SPIMasterSelect ((char*) "/dev/spidev0.0",
-	16000, false);
-    pthread_t interrupt_thread;
-    struct SPIThreadParam params_t;
-    params_t.spi_ptr = spi;
+	16000, 0);
+    pthread_t interrupt_thread_a;
+    struct SPIThreadParam params_a;
+    params_a.spi_ptr = spi_a;
     int i = 0;
-    while(i < 5){
-    pthread_create (&interrupt_thread, NULL, spi->pin_change_interrupt,
-	&params_t);
-
-    pthread_join (interrupt_thread, NULL);
-    i++;
-    std::cout << "Interrupts: " << i << std::endl;
-    }
-
+    while(i < 5)
+      {
+	pthread_create (&interrupt_thread_a, NULL, spi_a->pin_change_interrupt,
+	    &params_a);
+	pthread_join (interrupt_thread_a, NULL);
+	i++;
+	std::cout << "Interrupts: " << i << std::endl;
+      }
     std::cout << "SPI A: " << std::endl;
-    std::cout << " SPI Trigger Type Set: " << spi->get_trigger_type_set()
-    << std::endl;
     std::cout << " SPI Trigger Action: "
-    << static_cast<char*> (spi->get_trigger_action()) << std::endl;
-    std::cout << " SPI Interrupted: " << spi->get_interrupt_state () << std::endl;
+    << static_cast<char*> (spi_a->get_trigger_action()) << std::endl;
+    std::cout << " SPI Interrupted: " << spi_a->get_interrupt_state () << std::endl;
 
     std::cout << "SPI B: " << std::endl;
-    std::cout << " SPI Trigger Type: " << spi_b->get_trigger_type_set() << std::endl;
     std::cout << " SPI Trigger Action: "
     << static_cast<char*> (spi_b->get_trigger_action()) << std::endl;
     std::cout << " SPI Interrupted: " << spi_b->get_interrupt_state ()
     << std::endl;
 
     std::cout << "Delete SPI A" << std::endl;
-    delete spi;
+    delete spi_a;
     std::cout << "Delete SPI B" << std::endl;
     delete spi_b;
     return 1;
@@ -115,37 +111,15 @@ i2c_teensy_test ()
       }
   }
 #endif
-
-/*pthread_mutex_t region_mutex = PTHREAD_MUTEX_INITIALIZER;
- bool interrupted = false;
- struct pollfd *poll_fd;
- */
-
-/*int
- set_trigger_type (int pin_num)
- {
- gnublin_gpio gpio;
- gpio.pinMode (pin_num, INPUT);
- char* dir = (char*) "/sys/class/gpio/gpio11/edge";
- ofstream file (dir);
- if (file < 0)
- {
- return 0;
- cout << "cannot open file: " << dir << endl;
- }
- file << "falling";
- file.close ();
- return 1;
- }*/
-
 int
 main (void)
 {
 #ifdef _TEST
   int8_t ret = spi_interrupt_test();
-  if(ret == 1){
+  if(ret == 1)
+    {
       std::cout << "Test passed. SPI Interrupt works fine!" << std::endl;
-  }
+    }
   /*if (i2c_teensy_test () == 1)
    {
    std::cout << "Test passed. I2C works fine!" << std::endl;
@@ -161,12 +135,9 @@ main (void)
   //Device* device_a = dmanager.get_sensor (Descriptor::GYROSCOPE);
   //Device* device_b = dmanager.get_sensor (Descriptor::ACCELEROMETER);
   //Device* device_c = dmanager.get_sensor (Descriptor::COMPASS);
-
   //uint8_t *acc_data, *gyro_data, *compass_data;
   //while (counter != 1)
   //{
-  //gnublin_gpio gpio;
-  //int value = gpio.digitalRead(11);
   //gyro_data = device_a->read_data ();
   //device_a->read_data ();
   //sleep (1);
@@ -177,10 +148,8 @@ main (void)
   //device_c->read_data ();
 
   //std::cout << "Cycle done" << std::endl;
-  //std::cout << "Pin 11: " << value << std::endl;
   //sleep (1);
   //}
-
 #endif
   return 0;
 }

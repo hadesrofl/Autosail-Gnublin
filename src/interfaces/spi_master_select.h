@@ -7,17 +7,21 @@
 #include <pthread.h>
 
 /**
- * File to set the trigger type to
+ * Prefix of the Trigger File for the Master Select
  */
-#define PIN_MS_TRIGGER_FILE "/sys/class/gpio/gpio11/edge"
+#define PIN_MS_PRE_TRIGGER_FILE "/sys/class/gpio/gpio"
 /**
- * File to read the value of the Master Select pin from
+ * Suffix of the Trigger File for the Master Select
  */
-#define PIN_MS_VALUE_FILE "/sys/class/gpio/gpio11/value"
+#define PIN_MS_SUFF_TRIGGER_FILE "/edge"
 /**
- * Number of the GPIO Pin for the Master Select
+ * Prefix of the Value File for the Master Select
  */
-#define PIN_MS 11;
+#define PIN_MS_PRE_VALUE_FILE "/sys/class/gpio/gpio"
+/**
+ * Prefix of the Value File for the Master Select
+ */
+#define PIN_MS_SUFF_VALUE_FILE "/value"
 /**
  * Trigger on falling edge
  */
@@ -33,7 +37,7 @@
  * @brief Class for a SPI Interface. Implements the abstract Interface class and
  * adds some specific functions of a SPI Interface.
  * @author Rene Kremer
- * @version 0.3
+ * @version 0.35
  */
 class SPIMasterSelect : public Interface
 {
@@ -58,18 +62,9 @@ private:
    */
   uint8_t m_pin_ms;
   /**
-   * Is the trigger type set to the PIN_MS ?
-   */
-  static bool m_trigger_type_set;
-  /**
    * Trigger Action (TRIGGER_FALLING or TRIGGER_RISING)
    */
   char* m_trigger_action;
-  /**
-   * Use count of the instances of this class.
-   * Needed to unexport GPIO Pin for Master Select
-   */
-  static uint8_t m_use_count;
 
   /**
    * Sets the trigger type for an interrupt to the gpio pin
@@ -87,9 +82,10 @@ public:
    * Constructor
    * @param device_file is the name of the file of the device
    * @param spi_speed is the speed of the spi bus
-   * @param interrupt_check shall this interface check for the master select pin?
+   * @param pin_no number of the pin for the master select. If no pin is
+   * needed for master select just set pin_no to 0
    */
-  SPIMasterSelect (char* device_file, uint16_t spi_speed, bool interrupt_check);
+  SPIMasterSelect (char* device_file, uint16_t spi_speed, uint8_t pin_no);
   /**
    * Receives data from the SPI Port and writes it into the buffer
    * Length indicates the amount of bytes to read
@@ -244,27 +240,16 @@ public:
   set_trigger_action (char* trigger)
   {
     m_trigger_action = trigger;
-    uint8_t pin_ms = PIN_MS
-    ;
-    set_trigger_type (pin_ms, m_trigger_action);
+    set_trigger_type (m_pin_ms, m_trigger_action);
   }
   /**
-   * Gets the total amount of SPIMasterSelect Devices
-   * @return the number of SPIMasterSelect Devices
+   * Getter for the pin of the master select
+   * @return the number of the pin of the master select
    */
   inline uint8_t
-  get_use_count () const
+  get_pin_ms () const
   {
-    return m_use_count;
-  }
-  /**
-   * Gets the boolean to determine if the trigger type is set
-   * @return true if it is, otherwise false
-   */
-  inline bool
-  get_trigger_type_set () const
-  {
-    return m_trigger_type_set;
+    return m_pin_ms;
   }
   /**
    * Destructor
