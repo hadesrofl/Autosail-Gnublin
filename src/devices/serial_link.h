@@ -3,7 +3,7 @@
 
 #include "../interfaces/spi_master_select.h"
 #include "device.h"
-#include "serial_parameter.h"
+#include "spi_parameter.h"
 
 /**
  * @file
@@ -30,9 +30,9 @@ private:
 public:
   /**
    * Constructor
-   * @param interface_parameter are the parameters of the Serial Interface
+   * @param interface_parameter are the parameters of the SPI Interface
    */
-  SerialLink (SerialParameter *interface_parameter);
+  SerialLink (SPIParameter *interface_parameter);
   /**
    * TODO: Comment with SerialLink specific register
    * Reads the Data X, Y and Z Register of the SerialLink and returns them as a
