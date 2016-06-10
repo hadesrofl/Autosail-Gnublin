@@ -1,11 +1,12 @@
 #include "filtered_accelerometer.h"
 
-FilteredAccelerometer::FilteredAccelerometer (I2CParameter* interface_parameter,
-					      Device_Config device_config,
-					      Filter* filter)
+FilteredAccelerometer::FilteredAccelerometer (Device* device, Filter* filter)
 {
-  m_device = std::unique_ptr<Device> (new Accelerometer (interface_parameter, device_config));
-  m_filter = std::unique_ptr<Filter> (filter);
+  m_device = std::unique_ptr<Device*> (&device);
+  m_filter = std::unique_ptr<Filter*> (&filter);
+}
+uint8_t* FilteredAccelerometer::get_filtered_data(){
+  return NULL;
 }
 FilteredAccelerometer::~FilteredAccelerometer ()
 {
