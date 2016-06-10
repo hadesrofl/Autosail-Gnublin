@@ -11,8 +11,8 @@
  * @brief Class for an abstract FilteredDevice . Uses the data from a Device and filters
  * it with some Filter.
  * @author Rene Kremer
- * @note might need some buffer for read data to insert into the filter to get
- * better results
+ * @note It might need some more functions and attributes to read raw data and add
+ * it to the filter to improve the quality of the filtered data!
  * @version 0.2
  */
 class FilteredDevice
