@@ -31,8 +31,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters of the SPI Interface
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  SerialLink (SPIParameter *interface_parameter);
+  SerialLink (SPIParameter *interface_parameter, ComponentDescriptor descriptor);
   /**
    * TODO: Comment with SerialLink specific register
    * Reads the Data X, Y and Z Register of the SerialLink and returns them as a

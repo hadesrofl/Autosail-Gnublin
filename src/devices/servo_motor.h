@@ -25,19 +25,15 @@ private:
   int8_t
   init ();
   /**
-   * Descriptor of this ServoMotor as it could be the motor for the sail, rudder etc.
-   */
-  Descriptor m_descriptor;
-  /**
    * @public
    */
 public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the SPI Interface
-   * @param desc is the descriptor of this ServoMotor
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  ServoMotor (SPIParameter *interface_parameter, Descriptor desc);
+  ServoMotor (SPIParameter *interface_parameter, ComponentDescriptor descriptor);
   /**
    * TODO: Comment with SerialLink specific register
    * Reads the Data X, Y and Z Register of the SerialLink and returns them as a

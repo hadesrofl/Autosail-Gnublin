@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <fstream>
-#include "../devices/descriptor.h"
 #include <iostream>
 #include <stdint.h>
 
@@ -15,6 +14,11 @@
  * Shift for Decimal System Numbers to read one after another
  */
 #define DECIMAL_SHIFT 10
+
+/**
+ * Name of default config file for devices
+ */
+#define DEVICE_CONFIG "config/devices.conf"
 
 /**
  * @file
@@ -87,9 +91,10 @@ public:
   ConfReader (const char* file);
   /**
    * Gets a vector with all descriptors listed in the config file
-   * @return a vector with all descriptors of the config file
+   * @return a vector with all descriptors of the config file in
+   * 3 byte representation (class, attribute, number)
    */
-  std::vector<Descriptor>
+  std::vector<uint8_t>
   get_descriptors ();
   /**
    * Destructor

@@ -1,5 +1,5 @@
-#ifndef BRIDGE_TIMER_H_
-#define BRIDGE_TIMER_H_
+#ifndef UTILS_TIMER_H_
+#define UTILS_TIMER_H_
 
 #include <signal.h>
 #include <time.h>
@@ -105,4 +105,4 @@ public:
   }
 };
 
-#endif /* BRIDGE_TIMER_H_ */
+#endif /* UTILS_TIMER_H_ */

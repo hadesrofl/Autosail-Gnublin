@@ -7,11 +7,11 @@ GPS::init ()
   return -1;
 }
 // Public Functions
-GPS::GPS (SerialParameter *interface_parameter)
+GPS::GPS (SerialParameter *interface_parameter, ComponentDescriptor descriptor)
 {
   m_interface_port = std::unique_ptr<Serial> (
       new Serial (interface_parameter->get_device_file(), interface_parameter->get_baudrate()));
-  set_device_id (Descriptor::GPS);
+  set_component_descriptor (descriptor);
   m_device_parameter = std::unique_ptr<SerialParameter> (interface_parameter);
   init();
 }

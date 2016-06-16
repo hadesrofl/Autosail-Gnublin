@@ -1,7 +1,7 @@
 #ifndef DEVICES_STREAM_GENERATOR_H_
 #define DEVICES_STREAM_GENERATOR_H_
 
-#include "../bridge/timer.h"
+#include "../utils/timer.h"
 #include <stdint.h>
 #include <memory>
 

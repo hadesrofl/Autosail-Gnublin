@@ -2,14 +2,17 @@
 #define COMMUNICATION_PROTOCOL_ENGINE_H
 
 #include <vector>
-#include <map>
-#include <memory>
-#include "frame.h"
-#include "communication_number.h"
 #include "component_descriptor_builder.h"
-#include "../devices/descriptor.h"
 #include "frame_interpreter.h"
-
+#include <memory>
+/**
+ * Max Communication Numbers to determine array length
+ */
+#define MAX_COMMUNICATION_NUMBER 30
+/**
+ * Bitmask to extract the Communication Number out of the Attribute byte
+ */
+#define COMMUNICATION_NUMBER_BITMASK 0x1F
 /**
  * @file
  * @class ProtocolEngine
@@ -35,11 +38,15 @@ protected:
   /**
    * Builder for the component descriptors
    */
-  std::unique_ptr<ComponentDescriptorBuilder> m_descriptor_builder;
+  std::shared_ptr<ComponentDescriptorBuilder> m_descriptor_builder;
   /**
-   * Datastructure to map a descriptor to a communication number
+   * Map to assign a ComponentDescriptor to a communication number
    */
-  std::map<Descriptor, CommunicationNumber> m_communication_table;
+  std::map<std::shared_ptr<ComponentDescriptor>, uint8_t> m_communication_table_forward;
+  /**
+   * Array where each index is a communication number mapping to a Device pointer
+   */
+  Device* m_communication_table_backward[MAX_COMMUNICATION_NUMBER];
   /**
    * Interpreter for the Frames
    */
@@ -92,11 +99,71 @@ public:
    * calls the function described by the command in the Frame.
    * @param frame is a pointer to the frame which shall be interpreted
    */
-  void
+  inline void
   interpret_frame (Frame* frame)
   {
-    m_interpreter->interpret_frame (frame);
+    uint8_t communication_number =
+	frame->get_attribute () & COMMUNICATION_NUMBER_BITMASK;
+    m_interpreter->interpret_frame (
+	m_communication_table_backward[communication_number], frame);
   }
+  /**
+   * Gets the ComponentDescriptorBuilder of the ProtocolEngine
+   * @return the ComponentDescriptorBuilder
+   */
+  inline ComponentDescriptorBuilder*
+  get_descriptor_builder () const
+  {
+    return &(*m_descriptor_builder);
+  }
+  /**
+   * Gets the forward communication table
+   * @return the communication table mapping ComponentDescriptor to communication number
+   */
+  inline std::map<std::shared_ptr<ComponentDescriptor>, uint8_t>
+  get_communication_table_forward () const
+  {
+    return m_communication_table_forward;
+  }
+  /**
+   * Inserts a ComponentDescriptor with a communication number into the forward
+   * communication table (Key: ComponentDescriptor, Value: Communication Number)
+   * @param descriptor is the ComponentDescriptor as key to the communication table
+   * @param communication_number is the communication number and value of the table
+   */
+  inline void
+  insert_communication_table_forward (ComponentDescriptor* descriptor,
+				      uint8_t communication_number)
+  {
+    m_communication_table_forward.insert (
+	std::make_pair (std::shared_ptr<ComponentDescriptor> (descriptor),
+			communication_number));
+
+  }
+  /**
+   * Inserts a communication number with a pointer to a Device into the backward
+   * communication table (array where the index is the communication number)
+   * @param communication_number is the index of the array
+   * @param device is a pointer to the Device assigned to the communication_number
+   */
+  inline void
+  insert_communication_table_backward (uint8_t communication_number,
+				       Device* device)
+  {
+    if (communication_number <= MAX_COMMUNICATION_NUMBER)
+      {
+	m_communication_table_backward[communication_number] = device;
+      }
+  }
+  /**
+   * Sets a DeviceManager to the FrameInterpreter
+   * @param dm is a pointer to the DeviceManager
+   */
+  /* inline void
+   set_device_manager (DeviceManager* dm)
+   {
+   m_interpreter->set_device_manager (dm);
+   }*/
   /**
    * Destructor
    */

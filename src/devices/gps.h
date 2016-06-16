@@ -21,7 +21,8 @@ private:
   /**
    * Inits the gps, setting the configuration for the device
    */
-  int8_t init();
+  int8_t
+  init ();
   /**
    * @public
    */
@@ -29,8 +30,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the interface
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  GPS (SerialParameter *interface_parameter);
+  GPS (SerialParameter *interface_parameter, ComponentDescriptor descriptor);
   /**
    * Reads data from the gps for a given length
    * @param buf is the buffer to save the data into
@@ -44,7 +46,8 @@ public:
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory.
    */
-  uint8_t* read_data();
+  uint8_t*
+  read_data ();
   /**
    * Writes data from the gps for a given length
    * @param buf is the buffer with the data to write

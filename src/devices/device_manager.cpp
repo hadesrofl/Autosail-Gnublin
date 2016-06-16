@@ -2,26 +2,22 @@
 
 //Public Functions
 
-DeviceManager::DeviceManager ()
+DeviceManager::DeviceManager (ProtocolEngine* protocol_engine, std::vector<uint8_t> descriptor_bytes)
 {
-  std::vector<Descriptor> descriptors;
-  ConfReader* reader = new ConfReader (DEVICE_CONFIG);
-  descriptors = reader->get_descriptors();
-  if (descriptors.empty() == false)
+  if (descriptor_bytes.empty () == false)
     {
-      init_sensors (descriptors);
+      init_sensors (protocol_engine, descriptor_bytes);
     }
-  delete reader;
-  descriptors.clear();
+  descriptor_bytes.clear ();
 }
 
 Device*
-DeviceManager::get_sensor (Descriptor id)
+DeviceManager::get_device (ComponentDescriptor* descriptor)
 {
   Device* dptr = NULL;
-  if (m_devices.count (id) > 0)
+  if (m_devices.count (descriptor) > 0)
     {
-      dptr = &(*m_devices.at (id));
+      dptr = &(*m_devices.at (descriptor));
     }
   return dptr;
 }
@@ -34,73 +30,56 @@ DeviceManager::~DeviceManager ()
 // Private Functions
 
 int8_t
-DeviceManager::init_sensors (std::vector<Descriptor> descriptors)
+DeviceManager::init_sensors (ProtocolEngine* protocol_engine, std::vector<uint8_t> descriptor_bytes)
 {
-  for (uint32_t i = 0; i < descriptors.size (); i++)
+  /* TODO: After reading the config file, switch case the component descriptor
+   and create a device as well as add an entry to the communication table
+   */
+  ComponentDescriptorEnum descriptor_enum;
+  uint8_t component_class, component_attribute, component_number;
+  for (uint32_t i = 0; i < descriptor_bytes.size (); i = i + 3)
     {
-      Descriptor id = descriptors.at (i);
-      switch (id)
+      component_class = descriptor_bytes.at (i);
+      component_attribute = descriptor_bytes.at (i + 1);
+      component_number = descriptor_bytes.at (i + 2);
+      descriptor_enum = static_cast<ComponentDescriptorEnum> (component_class
+	  + component_attribute);
+      ComponentDescriptor descriptor =  protocol_engine->get_descriptor_builder()->create_descriptor (
+	  component_class, component_attribute, component_number);
+      switch (descriptor_enum)
 	{
-	case Descriptor::ACCELEROMETER:
+	case ComponentDescriptorEnum::ACCELEROMETER:
 	  m_devices.insert (
 	      std::make_pair (
-		  Descriptor::ACCELEROMETER,
-		  std::unique_ptr<Accelerometer> (
+		  &descriptor,
+		  std::shared_ptr<Accelerometer> (
 		      new Accelerometer (
 			  new I2CParameter (
 			      static_cast<uint8_t> (Device_Config::ACC_ADDR)),
-			  Device_Config::ACC_RANGE_2G))));
+			  Device_Config::ACC_RANGE_2G, descriptor))));
 
-	  std::cout << "Accelerometer DONE!" << std::endl;
-	  break;
-	case Descriptor::ANEMOMETER:
-	  // TODO: Create Object
-	  break;
-	case Descriptor::COMPASS:
-	  m_devices.insert (
-	      std::make_pair (
-		  Descriptor::COMPASS,
-		  std::unique_ptr<Compass> (
-		      new Compass (
-			  new I2CParameter (
-			      static_cast<int> (Device_Config::COMPASS_ADDR)),
-			  Device_Config::COMPASS_GAIN_DEFAULT))));
 
-	  std::cout << "Compass DONE!" << std::endl;
 	  break;
-	case Descriptor::GPS:
-	  m_devices.insert (
-	      std::make_pair (
-		  Descriptor::GPS,
-		  std::unique_ptr<GPS> (
-		      new GPS (
-			  new SerialParameter (
-			      static_cast<int> (Device_Config::GPS_BAUD))))));
-	  std::cout << "GPS DONE!" << std::endl;
+	case ComponentDescriptorEnum::ANEMOMETER:
 	  break;
-	case Descriptor::GYROSCOPE:
-	  m_devices.insert (
-	      std::make_pair (
-		  Descriptor::GYROSCOPE,
-		  std::unique_ptr<Gyroscope> (
-		      new Gyroscope (
-			  new I2CParameter (
-			      static_cast<int> (Device_Config::GYRO_ADDR))))));
-	  std::cout << "Gyroscope DONE!" << std::endl;
+	case ComponentDescriptorEnum::COMPASS:
 	  break;
-	case Descriptor::HYGROMETER:
-	  // TODO: Create Object
-	  //m_devices.insert(std::make_pair(Sensor::HYGROMETER, std::unique_ptr<Hygrometer> (new Hygrometer(static_cast<int>(Sensor_Params::HYGRO_ADDR)))));
+	case ComponentDescriptorEnum::GPS:
 	  break;
-	case Descriptor::WESTON_ANEMOMETER:
-	  // TODO: Create Object
-	  //m_devices.insert(std::make_pair(Sensor::WIND_SENSOR, std::unique_ptr<WindSensor> (new WindSensor(static_cast<int>(Sensor_Params::WIND_SENSOR_ADDR)))));
+	case ComponentDescriptorEnum::HYGROMETER:
 	  break;
-	case Descriptor::WIND_VANE:
-	  // TODO: Create Object
+	case ComponentDescriptorEnum::SERIAL_LINK:
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR:
+	  break;
+	case ComponentDescriptorEnum::STREAM_GENERATOR:
+	  break;
+	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
+	  break;
+	case ComponentDescriptorEnum::WIND_VANE:
 	  break;
 	default:
-	  std::cerr << "False ID!" << std::endl;
+	  // TODO: Something fancy
 	  break;
 	}
     }

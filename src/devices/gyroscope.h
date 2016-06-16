@@ -21,9 +21,9 @@
  *  FS_SEL_1 = 1<<4;
  */
 #define GYRO_DLPF_FS_REGISTER_VALUE 0x1B
-  /**
-   * Scaling factor to calculate LSB in degrees/second
-   */
+/**
+ * Scaling factor to calculate LSB in degrees/second
+ */
 #define GYRO_SCALING_FACTOR 14.375
 
 /**
@@ -52,8 +52,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the I2C Interface
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  Gyroscope (I2CParameter *interface_parameter);
+  Gyroscope (I2CParameter *interface_parameter, ComponentDescriptor descriptor);
   /**
    * TODO: Comment with gyroscope specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a

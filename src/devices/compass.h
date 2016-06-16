@@ -38,7 +38,6 @@
  */
 #define COMPASS_SCALING_FACTOR 0.92
 
-
 /**
  * @file
  * @class Compass
@@ -56,29 +55,30 @@ private:
   /**
    * Inits the compass, setting the configuration for the device
    */
-  int8_t init();
-/**
- * @public
- */
+  int8_t
+  init ();
+  /**
+   * @public
+   */
 public:
-   /**
-    * Constructor
-    * @param interface_parameter is the parameter of the I2C Interface
-    * @param gain is the range of the measurements
-    */
-   Compass(I2CParameter *interface_parameter, Device_Config gain);
-   /**
-    * TODO: Comment with compass specific register
-    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
-    * pointer with allocated memory.
-    */
-   uint8_t* read_data();
-   /**
-    * Destructor
-    */
-   ~Compass();
+  /**
+   * Constructor
+   * @param interface_parameter is the parameter of the I2C Interface
+   * @param gain is the range of the measurements
+   * @param descriptor is the ComponentDescriptor of this device
+   */
+  Compass (I2CParameter *interface_parameter, Device_Config gain, ComponentDescriptor descriptor);
+  /**
+   * TODO: Comment with compass specific register
+   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
+   * pointer with allocated memory.
+   */
+  uint8_t*
+  read_data ();
+  /**
+   * Destructor
+   */
+  ~Compass ();
 };
-
-
 
 #endif /* DEVICES_COMPASS_H_ */

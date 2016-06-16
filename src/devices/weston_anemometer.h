@@ -31,8 +31,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the I2C Interface
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  WestonAnemometer (I2CParameter *interface_parameter);
+  WestonAnemometer (I2CParameter *interface_parameter, ComponentDescriptor descriptor);
   /**
    * TODO: Comment with WestonAnemometer specific register
    * Reads the Data X, Y and Z Register of the WestonAnemometer and returns them as a

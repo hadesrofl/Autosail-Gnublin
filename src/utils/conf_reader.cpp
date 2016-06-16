@@ -96,11 +96,14 @@ ConfReader::ConfReader (const char* file)
 {
   m_file = file;
 }
-std::vector<Descriptor>
+/*TODO: Return Value integer values for class, attribute and number of descriptors
+ First Value class, second attribute, third number
+ */
+std::vector<uint8_t>
 ConfReader::get_descriptors ()
 {
   uint16_t tmp, j;
-  std::vector<Descriptor> descriptors;
+  std::vector<uint8_t> descriptors;
   if (read_config () > 0)
     {
       // i = i + 2 to skip the name of the device and go to the id
@@ -113,7 +116,8 @@ ConfReader::get_descriptors ()
 	      tmp = (tmp * DECIMAL_SHIFT)
 		  + static_cast<int16_t> (m_config_values[i + 1][j]
 		      - ASCII_SHIFT);
-	      descriptors.push_back (static_cast<Descriptor> (tmp));
+	      //FIXME! commented so that it compiles for now
+	      //descriptors.push_back (static_cast<Descriptor> (tmp));
 	      j++;
 	    }
 	}

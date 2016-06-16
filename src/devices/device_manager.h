@@ -2,21 +2,21 @@
 #define DEVICES_DEVICE_MANAGER_H_
 #include <map>
 #include <vector>
+#include "../communication/protocol_engine.h"
 #include "../interfaces/interface.h"
 #include "device.h"
 #include "accelerometer.h"
+#include "anemometer.h"
 #include "compass.h"
 #include "gps.h"
 #include "gyroscope.h"
 #include "hygrometer.h"
+#include "serial_link.h"
+#include "servo_motor.h"
+#include "weston_anemometer.h"
+#include "wind_vane.h"
 #include <iostream>
 #include <fstream>
-#include "../utils/conf_reader.h"
-
-/**
- * Name of default config file for devices
- */
-#define DEVICE_CONFIG "config/devices.conf"
 
 /**
  * @file
@@ -28,39 +28,43 @@
 class DeviceManager
 {
   /**
-   * @public
-   */
-public:
-  /**
-   * Constructor
-   */
-  DeviceManager ();
-  /**
-   * Gets a single sensor
-   * @param id is the sensor to get
-   * @return a pointer to the sensor
-   */
-  Device*
-  get_sensor (Descriptor id);
-  /**
-   * Destructor
-   */
-  ~DeviceManager ();
-  /**
    * @private
    */
 private:
   /**
    * Map of Sensors
    */
-  std::map<Descriptor, std::unique_ptr<Device>> m_devices;
+  std::map<ComponentDescriptor*, std::shared_ptr<Device>> m_devices;
   /**
    * Inits the Sensors
-   * @param devices is a vector of Descriptors
+   * @param protocol_engine is the ProtocolEngine for the communication
+   * @param devices is a vector of ComponentDescriptor
    * @return on succes 1, otherwise -1
    */
   int8_t
-  init_sensors (std::vector<Descriptor> devices);
+  init_sensors (ProtocolEngine* protocol_engine, std::vector<uint8_t> devices);
+  /**
+   * @public
+   */
+public:
+  /**
+   * Constructor
+   * @param protocol_engine is the ProtocolEngine for the communication
+   * @param descriptor_bytes is a vector of multiple 3 byte uint8_t values
+   * These 3 values together are one ComponentDescriptor in it's raw form
+   */
+  DeviceManager (ProtocolEngine* protocol_engine, std::vector<uint8_t> descriptor_bytes);
+  /**
+   * Gets a single device
+   * @param descriptor is a pointer to the ComponentDescriptor of the device to get
+   * @return a pointer to the device
+   */
+  Device*
+  get_device (ComponentDescriptor* descriptor);
+  /**
+   * Destructor
+   */
+  ~DeviceManager ();
 };
 
 #endif /* DEVICES_DEVICE_MANAGER_H_ */

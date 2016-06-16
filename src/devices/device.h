@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "device_config.h"
-#include "descriptor.h"
+#include "../communication/component_descriptor.h"
 #include "interface_parameter.h"
 
 /**
@@ -35,21 +35,21 @@ protected:
    */
   std::unique_ptr<Interface> m_interface_port;
   /**
-   * Id of the Device
+   * ComponentDescriptor of the device
    */
-  Descriptor m_device_id;
+  ComponentDescriptor m_descriptor;
   /**
    * Parameter of the Devices Interface
    */
   std::unique_ptr<InterfaceParameter> m_device_parameter;
   /**
-   * Sets the id of the device as specified in device params
-   * @param id is the id of this specific device
+   * Sets the ComponentDescriptor of this Device
+   * @param descriptor is the ComponentDescriptor of this device
    */
   inline void
-  set_device_id (Descriptor id)
+  set_component_descriptor (ComponentDescriptor descriptor)
   {
-    m_device_id = id;
+    m_descriptor = descriptor;
   }
   /**
    * @public
@@ -119,13 +119,13 @@ public:
     return -1;
   }
   /**
-   * Gets the id of this device
-   * @return the id of this specific device
+   * Gets the ComponentDescriptor of this specific Device
+   * @return the descriptor of this specific device
    */
-  inline Descriptor
-  get_device_id () const
+  inline ComponentDescriptor
+  get_component_descriptor () const
   {
-    return m_device_id;
+    return m_descriptor;
   }
   /**
    * Gets the Parameter of the Device

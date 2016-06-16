@@ -64,8 +64,10 @@ public:
    * Constructor
    * @param interface_parameter are the parameters for the interface
    * @param range is the range for measurement of the accelerometer
+   * @param descriptor is the ComponentDescriptor of this device
    */
-  Accelerometer (I2CParameter *interface_parameter, Device_Config range);
+  Accelerometer (I2CParameter *interface_parameter, Device_Config range,
+		 ComponentDescriptor descriptor);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory. The raw values will be transformed to mg where index

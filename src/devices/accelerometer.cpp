@@ -50,13 +50,13 @@ Accelerometer::init ()
 }
 // Public Functions
 Accelerometer::Accelerometer (I2CParameter *interface_parameter,
-			      Device_Config range)
+			      Device_Config range, ComponentDescriptor descriptor)
 {
 
   m_interface_port = std::unique_ptr<I2C> (
       new I2C (interface_parameter->get_device_file(), interface_parameter->get_address()));
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
-  set_device_id (Descriptor::ACCELEROMETER);
+  set_component_descriptor (descriptor);
   m_range = range;
   init ();
 }

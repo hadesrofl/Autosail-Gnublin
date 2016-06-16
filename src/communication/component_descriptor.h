@@ -34,6 +34,10 @@ private:
    */
 public:
   /**
+   * Default Constructor
+   */
+  ComponentDescriptor();
+  /**
    * Constructor
    * @param component_class byte of the class field
    * @param attribute byte of the attribute field
@@ -51,6 +55,13 @@ public:
     return m_component_class;
   }
   /**
+   * Sets the component class
+   * @param component_class is the new component class of this descriptor
+   */
+  inline void set_component_class(uint8_t component_class){
+    m_component_class = component_class;
+  }
+  /**
    * Gets the attribute of the component according to the TLVE Protocol
    * @return the byte of the attribute of the component
    */
@@ -60,6 +71,13 @@ public:
     return m_component_attribute;
   }
   /**
+   * Sets the component attribute
+   * @param component_attribute is the new component attribute of this descriptor
+   */
+  inline void set_component_attribute(uint8_t component_attribute){
+    m_component_attribute = component_attribute;
+  }
+  /**
    * Gets the number of the component according to the TLVE Protocol
    * @return the byte of the number of the component
    */
@@ -67,6 +85,13 @@ public:
   get_component_number () const
   {
     return m_component_number;
+  }
+  /**
+   * Sets the component number
+   * @param component_number is the new component number of this descriptor
+   */
+  inline void set_component_number(uint8_t component_number){
+    m_component_number = component_number;
   }
   /**
    * Destructor
