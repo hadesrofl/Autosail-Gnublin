@@ -4,7 +4,7 @@ TLVInterpreter::TLVInterpreter ()
 {
 
 }
-void
+Frame*
 TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 {
   uint8_t data_structure_id = frame->get_attribute () >> 5;
@@ -62,6 +62,7 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 	}
       break;
     }
+  return NULL;
 }
 TLVInterpreter::~TLVInterpreter ()
 {

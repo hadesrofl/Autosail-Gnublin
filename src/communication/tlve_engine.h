@@ -55,6 +55,13 @@ public:
   TLVFrame*
   create_frame ();
   /**
+   * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
+   * calls the function described by the command in the Frame.
+   * @param frame is a pointer to the frame which shall be interpreted
+   */
+  void
+  interpret_frame (Frame* frame);
+  /**
    * Destructor
    */
   ~TLVEEngine ();

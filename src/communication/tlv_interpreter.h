@@ -36,8 +36,9 @@ public:
    * of the Frame
    * @param device a pointer to the device mentioned in the frame
    * @param frame is a pointer to the TLVFrame holding the data and command
+   * @return a frame with data to send or NULL if no frame has to be sent
    */
-  void
+  Frame*
   interpret_frame (Device* device, TLVFrame* frame);
   /**
    * Destructor

@@ -4,7 +4,12 @@
 #include "../utils/timer.h"
 #include <stdint.h>
 #include <memory>
+#include "../communication/protocol_engine.h"
 
+/*
+ * Forward Declaration because of recursive include of header files
+ */
+class ProtocolEngine;
 /**
  * @file
  * @class StreamGenerator
@@ -32,6 +37,7 @@ class StreamGenerator
    * @private
    */
 private:
+  std::shared_ptr<ProtocolEngine> m_protocol_engine;
   /**
    * Counts how many interrupts happened
    */
@@ -74,8 +80,7 @@ public:
   /**
    * Destructor
    */
-  ~StreamGenerator();
+  ~StreamGenerator ();
 };
-
 
 #endif /* DEVICES_STREAM_GENERATOR_H_ */

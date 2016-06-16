@@ -5,6 +5,7 @@
 #include "component_descriptor_builder.h"
 #include "frame_interpreter.h"
 #include <memory>
+
 /**
  * Max Communication Numbers to determine array length
  */
@@ -13,6 +14,10 @@
  * Bitmask to extract the Communication Number out of the Attribute byte
  */
 #define COMMUNICATION_NUMBER_BITMASK 0x1F
+/*
+ * Forward Declaration because of recursive include of header files
+ */
+class FrameInterpreter;
 /**
  * @file
  * @class ProtocolEngine
@@ -99,14 +104,8 @@ public:
    * calls the function described by the command in the Frame.
    * @param frame is a pointer to the frame which shall be interpreted
    */
-  inline void
-  interpret_frame (Frame* frame)
-  {
-    uint8_t communication_number =
-	frame->get_attribute () & COMMUNICATION_NUMBER_BITMASK;
-    m_interpreter->interpret_frame (
-	m_communication_table_backward[communication_number], frame);
-  }
+  virtual void
+  interpret_frame (Frame* frame) = 0;
   /**
    * Gets the ComponentDescriptorBuilder of the ProtocolEngine
    * @return the ComponentDescriptorBuilder
@@ -155,15 +154,6 @@ public:
 	m_communication_table_backward[communication_number] = device;
       }
   }
-  /**
-   * Sets a DeviceManager to the FrameInterpreter
-   * @param dm is a pointer to the DeviceManager
-   */
-  /* inline void
-   set_device_manager (DeviceManager* dm)
-   {
-   m_interpreter->set_device_manager (dm);
-   }*/
   /**
    * Destructor
    */
