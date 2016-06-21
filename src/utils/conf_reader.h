@@ -7,6 +7,11 @@
 #include <stdint.h>
 
 /**
+ * Size of an entry of a component in the config file
+ */
+#define DATA_ENTRIES_PER_COMPONENT 6
+
+/**
  * Shift for integer numbers ( 48 in ASCII = 0 )
  */
 #define ASCII_SHIFT 48
@@ -24,6 +29,52 @@
  * @file
  * @class ConfReader
  * @brief Class for a ConfReader. Reads the config file for the devices.
+ * A Conf File starts in the first line and then has a name of a device followed
+ * by 6 data lines. It ends with a new line. If some data is not specified it has to
+ * be coded with '0x00'. Single Digits and Hex are allowed,
+ * no double digits supported. Syntax examples:
+ * <br/>
+ * <br/>
+ * Device = [Name]
+ * <br/>
+ * Component Class = 0x[First Number][Second Number]
+ * <br/>
+ * Component Attribute = 0x[First Number][Second Number]
+ * <br/>
+ * Component Number = 0x[First Number][Second Number]
+ * <br/>
+ * Communication Number = 0x[First Number][Second Number]
+ * <br/>
+ * Config = [Number specified in Device]
+ * <br/>
+ * [new line (needed!)]
+ * <br/>
+ *
+ * Example Code:
+ *  <pre>
+ *   <code>
+ * Device = Accelerometer
+ * Component Class = 0x55
+ * Component Attribute = 0x07
+ * Component Number = 1
+ * Communication Number = 1
+ * Config = 2
+ *
+ * Device = Compass
+ * Component Class = 0x55
+ * Component Attribute = 0x06
+ * Component Number = 1
+ * Communication Number = 2
+ * Config = 0
+ *
+ * Device = Gyroscope
+ * Component Class = 0x55
+ * Component Attribute = 0x05
+ * Component Number = 1
+ * Communication Number = 3
+ * Config = 0
+ *   </code>
+ *  </pre>
  * @author Rene Kremer
  * @version 0.2
  */
@@ -49,6 +100,14 @@ private:
    */
   int8_t
   store_line (uint8_t* value, uint16_t value_length);
+  /**
+   * Reads a line of the raw config values called m_config_values and adds them to
+   * the vector called values
+   * @param values is a vector containing the parsed values
+   * @param index is the current index of m_config_values
+   */
+  void
+  read_line (std::vector<uint8_t> values, uint32_t index);
   /**
    * Reads a given config file. The Id of a Device has to be the same number as given in Sensor_Params.h
    * With the following Syntax:

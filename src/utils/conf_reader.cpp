@@ -4,12 +4,14 @@
 int8_t
 ConfReader::store_line (uint8_t* value, uint16_t value_length)
 {
-  uint8_t* stored_value = new uint8_t[value_length];
+  uint8_t* stored_value = new uint8_t[value_length + 1];
   for (uint16_t i = 0; i < value_length; i++)
     {
       stored_value[i] = value[i];
     }
+  stored_value[value_length] = '\0';
   m_config_values.push_back (stored_value);
+
   return 1;
 }
 
@@ -33,13 +35,14 @@ ConfReader::read_config ()
 	    {
 	      if (array_is_empty (value, value_length) == false)
 		{
+		  std::cout << "Value: " << value << std::endl;
 		  store_line (value, value_length);
-		  clear_array (value, value_length);
+		  clear_array (value, length);
 		  value_length = 0;
 		}
 	      equals_seen = false;
 	    }
-	  if (!(isspace (temp_c)) && temp_c != 0)
+	  if (!(isspace (temp_c)))
 	    {
 	      if (equals_seen == false)
 		{
@@ -102,27 +105,64 @@ ConfReader::ConfReader (const char* file)
 std::vector<uint8_t>
 ConfReader::get_descriptors ()
 {
-  uint16_t tmp, j;
   std::vector<uint8_t> descriptors;
   if (read_config () > 0)
     {
       // i = i + 2 to skip the name of the device and go to the id
-      for (uint32_t i = 0; i < m_config_values.size (); i = i + 2)
+      for (uint32_t i = 0;
+	  i < m_config_values.size () / DATA_ENTRIES_PER_COMPONENT; i++)
 	{
-	  tmp = 0;
-	  j = 0;
-	  while (m_config_values[i + 1][j] != '\0')
+	  std::cout << "Integer I: " << i << std::endl;
+	  if (i == 0)
 	    {
-	      tmp = (tmp * DECIMAL_SHIFT)
-		  + static_cast<int16_t> (m_config_values[i + 1][j]
-		      - ASCII_SHIFT);
-	      //FIXME! commented so that it compiles for now
-	      //descriptors.push_back (static_cast<Descriptor> (tmp));
-	      j++;
+	      for (uint32_t j = 1; j < DATA_ENTRIES_PER_COMPONENT; j++)
+		{
+		  read_line (descriptors, j);
+		}
+	    }
+	  else
+	    {
+	      for (uint32_t j = i * DATA_ENTRIES_PER_COMPONENT + 1;
+		  j
+		      < i * DATA_ENTRIES_PER_COMPONENT
+			  + DATA_ENTRIES_PER_COMPONENT; j++)
+		{
+		  std::cout << "Integer J: " << j << std::endl;
+		  std::cout << "Max J : "
+		      << (i * DATA_ENTRIES_PER_COMPONENT
+			  + DATA_ENTRIES_PER_COMPONENT) << std::endl;
+		  read_line (descriptors, j);
+		}
 	    }
 	}
+      std::cout << "Done" << std::endl;
     }
   return descriptors;
+}
+void
+ConfReader::read_line (std::vector<uint8_t> values, uint32_t index)
+{
+  uint16_t j = 0;
+  uint8_t first_value = 0;
+  bool pushed = false;
+  while (m_config_values[index][j + 1] != '\0')
+    {
+      if (m_config_values[index][j] == '0'
+	  && m_config_values[index][j + 1] == 'x')
+	{
+	  j = j + 2;
+	}
+      first_value = m_config_values[index][j] * 16
+	  + m_config_values[index][j + 1] - ASCII_SHIFT;
+      values.push_back (first_value);
+      pushed = true;
+      j++;
+    }
+  if (pushed == false && m_config_values[index][j + 1] == '\0')
+    {
+      first_value = static_cast<uint8_t> (m_config_values[index][j]);
+      values.push_back (first_value);
+    }
 }
 
 ConfReader::~ConfReader ()

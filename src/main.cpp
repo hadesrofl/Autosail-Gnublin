@@ -1,5 +1,6 @@
 #include "../gnublin_wo_smtp.h"
 #include "devices/device_manager.h"
+#include "bridge/loader.h"
 
 #ifdef _TEST
 #define TEENSY_I2C_ 0x55
@@ -131,6 +132,7 @@ main (void)
    }*/
 #endif
 #ifndef _TEST
+  Loader* loader = new Loader();
   //DeviceManager dmanager;
   //Device* device_a = dmanager.get_sensor (Descriptor::GYROSCOPE);
   //Device* device_b = dmanager.get_sensor (Descriptor::ACCELEROMETER);
