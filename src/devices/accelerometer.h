@@ -51,7 +51,7 @@ private:
   /**
    * Range of g for measurement
    */
-  Device_Config m_range;
+  DeviceConfig m_range;
   /**
    * Scale Factor to multiply with LSB to get G value
    */
@@ -64,10 +64,10 @@ public:
    * Constructor
    * @param interface_parameter are the parameters for the interface
    * @param range is the range for measurement of the accelerometer
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  Accelerometer (I2CParameter *interface_parameter, Device_Config range,
-		 ComponentDescriptor descriptor);
+  Accelerometer (I2CParameter *interface_parameter, DeviceConfig range,
+		 ComponentDescriptor* descriptor);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory. The raw values will be transformed to mg where index

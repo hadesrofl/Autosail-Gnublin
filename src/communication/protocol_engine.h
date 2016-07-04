@@ -51,7 +51,7 @@ protected:
   /**
    * Array where each index is a communication number mapping to a Device pointer
    */
-  Device* m_communication_table_backward[MAX_COMMUNICATION_NUMBER];
+  std::shared_ptr<Device> m_communication_table_backward[MAX_COMMUNICATION_NUMBER];
   /**
    * Interpreter for the Frames
    */
@@ -100,21 +100,28 @@ public:
   virtual Frame*
   create_frame () = 0;
   /**
+   * Creates a ComponentDescriptor and returns it. After creation it will be stored
+   * in the private vector list of this class.
+   * @param component_class is the class of the component
+   * @param component_attribute is the attribute of the component
+   * @param component_number is the number of the component
+   * @return a a pointer to a ComponentDescriptor
+   */
+  inline ComponentDescriptor*
+  create_descriptor (uint8_t component_class, uint8_t component_attribute,
+		     uint8_t component_number)
+  {
+    return m_descriptor_builder->create_descriptor (component_class,
+						    component_attribute,
+						    component_number);;
+  }
+  /**
    * Calls the FrameInterpreter and interprets the frame. The FrameInterpreter
    * calls the function described by the command in the Frame.
    * @param frame is a pointer to the frame which shall be interpreted
    */
   virtual void
   interpret_frame (Frame* frame) = 0;
-  /**
-   * Gets the ComponentDescriptorBuilder of the ProtocolEngine
-   * @return the ComponentDescriptorBuilder
-   */
-  inline ComponentDescriptorBuilder*
-  get_descriptor_builder () const
-  {
-    return &(*m_descriptor_builder);
-  }
   /**
    * Gets the forward communication table
    * @return the communication table mapping ComponentDescriptor to communication number
@@ -151,7 +158,8 @@ public:
   {
     if (communication_number <= MAX_COMMUNICATION_NUMBER)
       {
-	m_communication_table_backward[communication_number] = device;
+	m_communication_table_backward[communication_number] = std::shared_ptr<
+	    Device> (device);
       }
   }
   /**

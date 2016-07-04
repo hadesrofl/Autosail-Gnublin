@@ -19,24 +19,24 @@ Accelerometer::init ()
   uint8_t register_value;
   switch (m_range)
     {
-    case Device_Config::ACC_RANGE_2G:
-      register_value = 0x00;
+    case DeviceConfig::ACC_RANGE_2G:
+      register_value = static_cast<uint8_t> (DeviceConfig::ACC_RANGE_2G);
       m_scale_factor = 3.9;
       break;
-    case Device_Config::ACC_RANGE_4G:
-      register_value = 0x01;
+    case DeviceConfig::ACC_RANGE_4G:
+      register_value = static_cast<uint8_t> (DeviceConfig::ACC_RANGE_4G);
       m_scale_factor = 7.8;
       break;
-    case Device_Config::ACC_RANGE_8G:
-      register_value = 0x02;
+    case DeviceConfig::ACC_RANGE_8G:
+      register_value = static_cast<uint8_t> (DeviceConfig::ACC_RANGE_8G);
       m_scale_factor = 15.6;
       break;
-    case Device_Config::ACC_RANGE_16G:
-      register_value = 0x03;
+    case DeviceConfig::ACC_RANGE_16G:
+      register_value = static_cast<uint8_t> (DeviceConfig::ACC_RANGE_16G);
       m_scale_factor = 31.2;
       break;
     default:
-      register_value = 0x00;
+      register_value = static_cast<uint8_t> (DeviceConfig::ACC_RANGE_2G);
       m_scale_factor = 3.9;
     }
   data[0] = ACC_DATA_FORMAT_REGISTER_ADDR;
@@ -50,11 +50,13 @@ Accelerometer::init ()
 }
 // Public Functions
 Accelerometer::Accelerometer (I2CParameter *interface_parameter,
-			      Device_Config range, ComponentDescriptor descriptor)
+			      DeviceConfig range,
+			      ComponentDescriptor* descriptor)
 {
 
   m_interface_port = std::unique_ptr<I2C> (
-      new I2C (interface_parameter->get_device_file(), interface_parameter->get_address()));
+      new I2C (interface_parameter->get_device_file (),
+	       interface_parameter->get_address ()));
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   set_component_descriptor (descriptor);
   m_range = range;
@@ -67,8 +69,8 @@ Accelerometer::read_data ()
   //Set Register Pointer to first Data Register
   uint8_t register_address = ACC_X_LSB_REGISTER_ADDR;
   Device::write (&register_address, 1);
-  uint8_t* data = new uint8_t[Device_Config::ACC_DATA_LENGTH];
-  Device::read (data, static_cast<int16_t> (Device_Config::ACC_DATA_LENGTH));
+  uint8_t* data = new uint8_t[DeviceConfig::ACC_DATA_LENGTH];
+  Device::read (data, static_cast<int16_t> (DeviceConfig::ACC_DATA_LENGTH));
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (data[1] << 8) | data[0];
   int16_t raw_y = (data[3] << 8) | data[2];
@@ -114,8 +116,10 @@ Accelerometer::read_data ()
   std::cout << "X-Axis m/s^2: " << accel_meter_x << std::endl;
   std::cout << "Y-Axis m/s^2: " << accel_meter_y << std::endl;
   std::cout << "Z-Axis m/s^2: " << accel_meter_z << std::endl;
-  std::cout << "Z-Axis in G (MSB): " << static_cast<int32_t> (msb_z) << std::endl;
-  std::cout << "Z-Axis in G (LSB): " << static_cast<int32_t> (lsb_z) << std::endl;
+  std::cout << "Z-Axis in G (MSB): " << static_cast<int32_t> (msb_z)
+      << std::endl;
+  std::cout << "Z-Axis in G (LSB): " << static_cast<int32_t> (lsb_z)
+      << std::endl;
   std::cout << "X-Axis together as int16: " << static_cast<int16_t> (tsb_x)
       << std::endl;
   std::cout << "Y-Axis together as int16: " << static_cast<int16_t> (tsb_y)

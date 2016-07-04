@@ -132,26 +132,37 @@ main (void)
    }*/
 #endif
 #ifndef _TEST
-  Loader* loader = new Loader();
-  //DeviceManager dmanager;
-  //Device* device_a = dmanager.get_sensor (Descriptor::GYROSCOPE);
-  //Device* device_b = dmanager.get_sensor (Descriptor::ACCELEROMETER);
-  //Device* device_c = dmanager.get_sensor (Descriptor::COMPASS);
-  //uint8_t *acc_data, *gyro_data, *compass_data;
-  //while (counter != 1)
-  //{
-  //gyro_data = device_a->read_data ();
-  //device_a->read_data ();
-  //sleep (1);
-  //acc_data = device_b->read_data ();
-  //device_b->read_data ();
-  //sleep (1);
-  //compass_data = device_c->read_data();
-  //device_c->read_data ();
+  Loader* loader = new Loader ();
+  std::cout << "Loader OK!" << std::endl;
+  DeviceManager* dmanager = loader->get_device_manager ();
+  std::cout << "Device Manager ok!" << std::endl;
+  Device* device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
+  Device* device_b = dmanager->get_device (ComponentDescriptorEnum::ACCELEROMETER);
+  Device* device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
+  uint8_t *acc_data, *gyro_data, *compass_data;
+  while (true)
+    {
+//      if (device_a != NULL)
+//	{
+//	  gyro_data = device_a->read_data ();
+//	  device_a->read_data ();
+//	  sleep (1);
+//	}
+//      if (device_b != NULL)
+//	{
+//	  acc_data = device_b->read_data ();
+//	  device_b->read_data ();
+//	  sleep (1);
+//	}
+      if (device_c != NULL)
+	{
+	  compass_data = device_c->read_data ();
+	  device_c->read_data ();
+	  sleep (1);
+	}
+      //std::cout << "Cycle done" << std::endl;
 
-  //std::cout << "Cycle done" << std::endl;
-  //sleep (1);
-  //}
+    }
 #endif
   return 0;
 }

@@ -31,9 +31,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter is the parameter of the I2C Interface
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  Anemometer (I2CParameter *interface_parameter, ComponentDescriptor descriptor);
+  Anemometer (I2CParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
    * TODO: Comment with anemometer specific register
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a

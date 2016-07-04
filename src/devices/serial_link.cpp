@@ -7,7 +7,7 @@ SerialLink::init ()
   return -1;
 }
 // Public Functions
-SerialLink::SerialLink (SPIParameter *interface_parameter, ComponentDescriptor descriptor)
+SerialLink::SerialLink (SPIParameter *interface_parameter, ComponentDescriptor* descriptor)
 {
   m_interface_port = std::unique_ptr<SPIMasterSelect> (
       new SPIMasterSelect (interface_parameter->get_device_file (),

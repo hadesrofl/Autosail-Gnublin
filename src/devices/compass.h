@@ -18,10 +18,6 @@
  */
 #define COMPASS_CONFIG_B_REGISTER_ADDR 0x01
 /**
- * Set Configuration Register B (Gain = 2, Range: +- 1.3 Ga (Scale Factor: 0.92))
- */
-#define COMPASS_CONFIG_B_REGISTER_VALUE 0x40
-/**
  * Address of the Mode Register
  */
 #define COMPASS_MODE_REGISTER_ADDR 0x02
@@ -33,10 +29,6 @@
  * Address for the first Data Register
  */
 #define COMPASS_X_MSB_REGISTER_ADDR 0x03
-/**
- * Scaling Factor to calculate LSB to mg
- */
-#define COMPASS_SCALING_FACTOR 0.92
 
 /**
  * @file
@@ -58,6 +50,14 @@ private:
   int8_t
   init ();
   /**
+   * Gain value for measurement
+   */
+  DeviceConfig m_gain;
+  /**
+   * Scaling Factor to calculate LSB to mg
+   */
+  float m_scale_factor;
+  /**
    * @public
    */
 public:
@@ -65,12 +65,11 @@ public:
    * Constructor
    * @param interface_parameter is the parameter of the I2C Interface
    * @param gain is the range of the measurements
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  Compass (I2CParameter *interface_parameter, Device_Config gain, ComponentDescriptor descriptor);
+  Compass (I2CParameter *interface_parameter, DeviceConfig gain, ComponentDescriptor* descriptor);
   /**
-   * TODO: Comment with compass specific register
-   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
+   * Reads the Data X, Y and Z Register of the Compass and returns them as a
    * pointer with allocated memory.
    */
   uint8_t*

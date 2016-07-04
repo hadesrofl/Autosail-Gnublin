@@ -31,9 +31,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the SPI Interface
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  ServoMotor (SPIParameter *interface_parameter, ComponentDescriptor descriptor);
+  ServoMotor (SPIParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
    * TODO: Comment with SerialLink specific register
    * Reads the Data X, Y and Z Register of the SerialLink and returns them as a

@@ -46,9 +46,32 @@ public:
    * Constructor
    */
   Loader ();
-
-  inline ProtocolEngine* get_protocol_engine() const {
+  /**
+   * Gets the ProtocolEngine
+   * @return a pointer to the ProtocolEngine
+   */
+  inline ProtocolEngine*
+  get_protocol_engine () const
+  {
     return &(*m_protocol_engine);
+  }
+  /**
+   * Gets the StreamGenerator
+   * @return a pointer to the StreamGenerator
+   */
+  inline StreamGenerator*
+  get_stream_generator () const
+  {
+    return &(*m_stream_generator);
+  }
+  /**
+   * Gets the DeviceManager
+   * @return a pointer to the DeviceManager
+   */
+  inline DeviceManager*
+  get_device_manager () const
+  {
+    return &(*m_device_manager);
   }
   /**
    * Destructor

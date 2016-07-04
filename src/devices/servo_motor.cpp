@@ -7,7 +7,7 @@ ServoMotor::init ()
   return -1;
 }
 // Public Functions
-ServoMotor::ServoMotor (SPIParameter *interface_parameter, ComponentDescriptor descriptor)
+ServoMotor::ServoMotor (SPIParameter *interface_parameter, ComponentDescriptor* descriptor)
 {
   m_interface_port = std::unique_ptr<SPIMasterSelect> (
       new SPIMasterSelect (interface_parameter->get_device_file(), interface_parameter->get_speed(), false));

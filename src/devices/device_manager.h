@@ -32,9 +32,9 @@ class DeviceManager
    */
 private:
   /**
-   * Map of Sensors
+   * Vector of Devices
    */
-  std::map<ComponentDescriptor*, std::shared_ptr<Device>> m_devices;
+  std::vector<std::shared_ptr<Device>> m_devices;
   /**
    * Inits the Sensors
    * @param protocol_engine is the ProtocolEngine for the communication
@@ -53,14 +53,15 @@ public:
    * @param descriptor_bytes is a vector of multiple 3 byte uint8_t values
    * These 3 values together are one ComponentDescriptor in it's raw form
    */
-  DeviceManager (ProtocolEngine* protocol_engine, std::vector<uint8_t> descriptor_bytes);
+  DeviceManager (ProtocolEngine* protocol_engine,
+		 std::vector<uint8_t> descriptor_bytes);
   /**
    * Gets a single device
-   * @param descriptor is a pointer to the ComponentDescriptor of the device to get
+   * @param descriptor is a enum of a ComponentDescriptor to get the right device.
    * @return a pointer to the device
    */
   Device*
-  get_device (ComponentDescriptor* descriptor);
+  get_device (ComponentDescriptorEnum descriptor);
   /**
    * Destructor
    */

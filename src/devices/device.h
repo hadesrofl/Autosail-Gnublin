@@ -35,21 +35,21 @@ protected:
    */
   std::unique_ptr<Interface> m_interface_port;
   /**
-   * ComponentDescriptor of the device
+   * Pointer to the ComponentDescriptor of the device
    */
-  ComponentDescriptor m_descriptor;
+  std::shared_ptr<ComponentDescriptor> m_descriptor;
   /**
    * Parameter of the Devices Interface
    */
   std::unique_ptr<InterfaceParameter> m_device_parameter;
   /**
    * Sets the ComponentDescriptor of this Device
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
   inline void
-  set_component_descriptor (ComponentDescriptor descriptor)
+  set_component_descriptor (ComponentDescriptor* descriptor)
   {
-    m_descriptor = descriptor;
+    m_descriptor = std::shared_ptr<ComponentDescriptor> (descriptor);
   }
   /**
    * @public
@@ -122,7 +122,7 @@ public:
    * Gets the ComponentDescriptor of this specific Device
    * @return the descriptor of this specific device
    */
-  inline ComponentDescriptor
+  inline std::shared_ptr<ComponentDescriptor>
   get_component_descriptor () const
   {
     return m_descriptor;

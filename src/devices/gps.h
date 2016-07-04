@@ -30,9 +30,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the interface
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  GPS (SerialParameter *interface_parameter, ComponentDescriptor descriptor);
+  GPS (SerialParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
    * Reads data from the gps for a given length
    * @param buf is the buffer to save the data into

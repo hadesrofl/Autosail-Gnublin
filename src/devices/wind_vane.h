@@ -31,9 +31,9 @@ public:
   /**
    * Constructor
    * @param interface_parameter are the parameters for the I2C Interface
-   * @param descriptor is the ComponentDescriptor of this device
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  WindVane (I2CParameter *interface_parameter, ComponentDescriptor descriptor);
+  WindVane (I2CParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
    * TODO: Comment with WindVane specific register
    * Reads the Data X, Y and Z Register of the WindVane and returns them as a

@@ -45,7 +45,7 @@
  * <br/>
  * Communication Number = 0x[First Number][Second Number]
  * <br/>
- * Config = [Number specified in Device]
+ * Config = [Number specified in Device_Config]
  * <br/>
  * [new line (needed!)]
  * <br/>
@@ -103,11 +103,11 @@ private:
   /**
    * Reads a line of the raw config values called m_config_values and adds them to
    * the vector called values
-   * @param values is a vector containing the parsed values
+   * @param values is a pointer of a vector containing the parsed values
    * @param index is the current index of m_config_values
    */
   void
-  read_line (std::vector<uint8_t> values, uint32_t index);
+  read_line (std::vector<uint8_t> *values, uint32_t index);
   /**
    * Reads a given config file. The Id of a Device has to be the same number as given in Sensor_Params.h
    * With the following Syntax:
@@ -151,7 +151,10 @@ public:
   /**
    * Gets a vector with all descriptors listed in the config file
    * @return a vector with all descriptors of the config file in
-   * 3 byte representation (class, attribute, number)
+   * 5 byte representation (component class, component attribute, component number,
+   * communication number, config of device)
+   * Communication Number and Config are 0 if these are not needed
+   * (like for non communicating components or devices without configuration)
    */
   std::vector<uint8_t>
   get_descriptors ();

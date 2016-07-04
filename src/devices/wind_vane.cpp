@@ -7,7 +7,7 @@ WindVane::init ()
   return -1;
 }
 // Public Functions
-WindVane::WindVane (I2CParameter *interface_parameter, ComponentDescriptor descriptor)
+WindVane::WindVane (I2CParameter *interface_parameter, ComponentDescriptor* descriptor)
 {
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   m_interface_port = std::unique_ptr<I2C> (

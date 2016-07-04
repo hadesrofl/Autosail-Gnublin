@@ -12,7 +12,6 @@
  * @brief Class for a Builder that creates Component Descriptors for the boat.
  * These Descriptors are needed for the initial communication via the TLVE4 Protocol.
  * @author Rene Kremer
- * TODO: Delete because DeviceManager creates ComponentDescriptors out of config file?
  * @version 0.2
  */
 class ComponentDescriptorBuilder
@@ -40,9 +39,9 @@ public:
    * @param component_class is the class of the component
    * @param component_attribute is the attribute of the component
    * @param component_number is the number of the component
-   * @return a ComponentDescriptor
+   * @return a a pointer to a ComponentDescriptor
    */
-  ComponentDescriptor
+  ComponentDescriptor*
   create_descriptor (uint8_t component_class, uint8_t component_attribute,
 		     uint8_t component_number);
   /**

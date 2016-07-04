@@ -8,10 +8,11 @@ Frame*
 TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 {
   uint8_t data_structure_id = frame->get_attribute () >> 5;
-  ComponentDescriptor descriptor = device->get_component_descriptor ();
+  std::shared_ptr<ComponentDescriptor> descriptor =
+      device->get_component_descriptor ();
   ComponentDescriptorEnum descriptor_enum =
-      static_cast<ComponentDescriptorEnum> (descriptor.get_component_class ()
-	  + descriptor.get_component_attribute ());
+      static_cast<ComponentDescriptorEnum> (descriptor->get_component_class ()
+	  + descriptor->get_component_attribute ());
 
   switch (frame->get_tag ())
     {
@@ -20,7 +21,7 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
       switch (descriptor_enum)
 	{
 	case ComponentDescriptorEnum::ACCELEROMETER:
-	 dynamic_cast<Accelerometer*> (device);
+	  dynamic_cast<Accelerometer*> (device);
 	  //TODO: BlackMagic Commands
 	  break;
 	case ComponentDescriptorEnum::ANEMOMETER:
@@ -29,6 +30,10 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 	  break;
 	case ComponentDescriptorEnum::COMPASS:
 	  dynamic_cast<Compass*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::GYROSCOPE:
+	  dynamic_cast<Gyroscope*> (device);
 	  //TODO: BlackMagic Commands
 	  break;
 	case ComponentDescriptorEnum::GPS:

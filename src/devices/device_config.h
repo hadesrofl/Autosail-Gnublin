@@ -19,7 +19,7 @@
  * @author Rene Kremer
  * @version 0.3
  */
-enum class Device_Config
+enum class DeviceConfig
 {
 #ifdef _TEST
   TEENSY_ADDR = 0x55, 		// Teensy Slave Address for I2C
@@ -32,10 +32,22 @@ enum class Device_Config
    * Length of byte to read to get sensor data of the accelerometer
    */
   ACC_DATA_LENGTH = 6,
-  ACC_RANGE_2G = 2,
-  ACC_RANGE_4G = 4,
-  ACC_RANGE_8G = 8,
-  ACC_RANGE_16G = 16,
+  /**
+   * Measurement Range for +- 2G
+   */
+  ACC_RANGE_2G = 0x00,
+  /**
+   * Measurement Range for +- 4G
+   */
+  ACC_RANGE_4G = 0x01,
+  /**
+   * Measurement Range for +- 8G
+   */
+  ACC_RANGE_8G = 0x02,
+  /**
+   * Measurement Range for +- 16G
+   */
+  ACC_RANGE_16G = 0x03,
   /**
    * Address of Digital Compass HMC5883L
    */
@@ -45,9 +57,37 @@ enum class Device_Config
    */
   COMPASS_DATA_LENGTH = 6,
   /**
-   * Defaul Value for Gain of Compass
+   * Gain of Compass (+- 0.88 Ga)
    */
-  COMPASS_GAIN_DEFAULT = 0x40,
+  COMPASS_GAIN_0_8_8_GA = 0x00,
+  /**
+   * Default Value for Gain of Compass (+- 1.3 Ga)
+   */
+  COMPASS_GAIN_1_3_GA = 0x20,
+  /**
+   * Gain of Compass (+- 1.9 Ga)
+   */
+  COMPASS_GAIN_1_9_GA = 0x40,
+  /**
+   * Gain of Compass (+- 2.5 Ga)
+   */
+  COMPASS_GAIN_2_5_GA = 0x60,
+  /**
+   * Gain of Compass (+- 4.0 Ga)
+   */
+  COMPASS_GAIN_4_GA = 0x80,
+  /**
+   * Gain of Compass (+- 4.7 Ga)
+   */
+  COMPASS_GAIN_4_7_GA = 0xA0,
+  /**
+   * Gain of Compass (+- 5.6 Ga)
+   */
+  COMPASS_GAIN_5_6_GA = 0xC0,
+  /**
+   * Gain of Compass (+- 8.1 Ga)
+   */
+  COMPASS_GAIN_8_1_GA = 0xE0,
   /**
    * Address of Gyroscope ITG-3200
    */

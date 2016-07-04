@@ -7,7 +7,7 @@ WestonAnemometer::init ()
   return -1;
 }
 // Public Functions
-WestonAnemometer::WestonAnemometer (I2CParameter *interface_parameter, ComponentDescriptor descriptor)
+WestonAnemometer::WestonAnemometer (I2CParameter *interface_parameter, ComponentDescriptor* descriptor)
 {
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   m_interface_port = std::unique_ptr<I2C> (

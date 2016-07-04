@@ -35,7 +35,9 @@ ConfReader::read_config ()
 	    {
 	      if (array_is_empty (value, value_length) == false)
 		{
+#ifdef _DEBUG
 		  std::cout << "Value: " << value << std::endl;
+#endif
 		  store_line (value, value_length);
 		  clear_array (value, length);
 		  value_length = 0;
@@ -63,7 +65,9 @@ ConfReader::read_config ()
     }
   else
     {
+#ifdef _DEBUG
       std::cout << "Error while opening file!" << std::endl;
+#endif
       delete[] value;
       return -1;
     }
@@ -99,9 +103,6 @@ ConfReader::ConfReader (const char* file)
 {
   m_file = file;
 }
-/*TODO: Return Value integer values for class, attribute and number of descriptors
- First Value class, second attribute, third number
- */
 std::vector<uint8_t>
 ConfReader::get_descriptors ()
 {
@@ -112,12 +113,14 @@ ConfReader::get_descriptors ()
       for (uint32_t i = 0;
 	  i < m_config_values.size () / DATA_ENTRIES_PER_COMPONENT; i++)
 	{
+#ifdef _DEBUG
 	  std::cout << "Integer I: " << i << std::endl;
+#endif
 	  if (i == 0)
 	    {
 	      for (uint32_t j = 1; j < DATA_ENTRIES_PER_COMPONENT; j++)
 		{
-		  read_line (descriptors, j);
+		  read_line (&descriptors, j);
 		}
 	    }
 	  else
@@ -127,20 +130,21 @@ ConfReader::get_descriptors ()
 		      < i * DATA_ENTRIES_PER_COMPONENT
 			  + DATA_ENTRIES_PER_COMPONENT; j++)
 		{
+#ifdef _DEBUG
 		  std::cout << "Integer J: " << j << std::endl;
 		  std::cout << "Max J : "
 		      << (i * DATA_ENTRIES_PER_COMPONENT
 			  + DATA_ENTRIES_PER_COMPONENT) << std::endl;
-		  read_line (descriptors, j);
+#endif
+		  read_line (&descriptors, j);
 		}
 	    }
 	}
-      std::cout << "Done" << std::endl;
     }
   return descriptors;
 }
 void
-ConfReader::read_line (std::vector<uint8_t> values, uint32_t index)
+ConfReader::read_line (std::vector<uint8_t> *values, uint32_t index)
 {
   uint16_t j = 0;
   uint8_t first_value = 0;
@@ -154,14 +158,14 @@ ConfReader::read_line (std::vector<uint8_t> values, uint32_t index)
 	}
       first_value = m_config_values[index][j] * 16
 	  + m_config_values[index][j + 1] - ASCII_SHIFT;
-      values.push_back (first_value);
+      values->push_back (first_value);
       pushed = true;
       j++;
     }
   if (pushed == false && m_config_values[index][j + 1] == '\0')
     {
       first_value = static_cast<uint8_t> (m_config_values[index][j]);
-      values.push_back (first_value);
+      values->push_back (first_value);
     }
 }
 
