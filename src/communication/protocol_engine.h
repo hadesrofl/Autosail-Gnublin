@@ -147,6 +147,23 @@ public:
 
   }
   /**
+   * Returns the communication number matching to a ComponentDescriptor
+   * @param descriptor is a pointer to the ComponentDescriptor
+   * @return the communication number matched to this ComponentDescriptor.
+   * Returns 0 if the ComponentDescriptor is not found in the communication table
+   */
+  inline uint8_t
+  get_communication_number (ComponentDescriptor* descriptor)
+  {
+    std::shared_ptr<ComponentDescriptor> key = std::shared_ptr<
+	ComponentDescriptor> (descriptor);
+    if (m_communication_table_forward.count (key) > 0)
+      {
+	return m_communication_table_forward.at (key);
+      }
+    return 0;
+  }
+  /**
    * Inserts a communication number with a pointer to a Device into the backward
    * communication table (array where the index is the communication number)
    * @param communication_number is the index of the array
@@ -161,6 +178,23 @@ public:
 	m_communication_table_backward[communication_number] = std::shared_ptr<
 	    Device> (device);
       }
+  }
+  /**
+   * Returns a device mapped to a specific communication number.
+   * Does not work with Devices which have a communication number of 0.
+   * @param communication_number is the communication number of the Device
+   * @return a pointer to the device or NULL if
+   * communication number is > MAX_COMMUNICATION_NUMBER or the
+   * communication number is not set to a device
+   */
+  inline Device*
+  get_device (uint8_t communication_number)
+  {
+    if (communication_number <= MAX_COMMUNICATION_NUMBER)
+      {
+	return &(*m_communication_table_backward[communication_number]);
+      }
+    return NULL;
   }
   /**
    * Destructor

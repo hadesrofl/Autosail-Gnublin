@@ -3,6 +3,9 @@
 #define TEST_ASSERTER_H_
 
 #include <vector>
+#include <stdint.h>
+#include "../communication/component_descriptor.h"
+#include "../devices/device.h"
 /**
  * @file
  * @class Asserter
@@ -25,6 +28,22 @@ public:
    */
   bool
   assert (unsigned char* send_data, unsigned char* received_data, int length);
+  /**
+   * Checks if two unsigned integer values are equivalent.
+   * @param result is the resulted unsigned integer
+   * @param expected is value that was expected
+   * @return true if the value is equivalent, otherwise false
+   */
+  bool
+  assert (uint8_t result, uint8_t expected);
+  /**
+   * Checks if two Devices are equivalent.
+   * @param result is the resulted Device
+   * @param expected is Device that is expected
+   * @return true if the Devices are equivalent, otherwise false
+   */
+  bool
+  assert (Device* result, Device* expected);
   /**
    * Checks if all asserts passed and write to the standard output a message
    * which assert failed or if all passed.
