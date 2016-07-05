@@ -20,12 +20,87 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
     case 0x11:
       switch (descriptor_enum)
 	{
-	case ComponentDescriptorEnum::ACCELEROMETER:
-	  dynamic_cast<Accelerometer*> (device);
+	/*------------------------------------------
+	 Actor
+	 ------------------------------------------*/
+	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
+	  dynamic_cast<ServoMotor*> (device);
 	  //TODO: BlackMagic Commands
 	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	  /*------------------------------------------
+	   On-Board Software
+	   ------------------------------------------*/
+	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
+	  //TODO: Get some other fancy idea for getting Stream Generator
+	  //maybe add StreamGenerator to Interpreter? & BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::AUTOPILOT:
+	  break;
+	  /*------------------------------------------
+	   System Info
+	   ------------------------------------------*/
+	case ComponentDescriptorEnum::POWER_SUPPLY_SENSING:
+	  break;
+	case ComponentDescriptorEnum::POSITION_RUDDER:
+	  break;
+	case ComponentDescriptorEnum::POSITION_MAIN_SAIL:
+	  break;
+	case ComponentDescriptorEnum::POSITION_FORE_SAIL:
+	  break;
+	case ComponentDescriptorEnum::GPS_VALIDITY_LEA_6H:
+	  break;
+	case ComponentDescriptorEnum::AUTOPILOT_SYSTEM_INFO:
+	  break;
+	case ComponentDescriptorEnum::BILGE_WATER_DETECTION:
+	  dynamic_cast<Hygrometer*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::STREAMING_SYSTEM_INFO:
+	  break;
+	case ComponentDescriptorEnum::GPS_SYSTEM_INFO:
+	  break;
+	  /*------------------------------------------
+	   Wind
+	   ------------------------------------------*/
 	case ComponentDescriptorEnum::ANEMOMETER:
 	  dynamic_cast<Anemometer*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
+	  dynamic_cast<WestonAnemometer*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::WIND_VANE:
+	  dynamic_cast<WindVane*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	  /*------------------------------------------
+	   Speed
+	   ------------------------------------------*/
+	case ComponentDescriptorEnum::GPS_VELOCITY:
+	  dynamic_cast<GPS*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	  /*------------------------------------------
+	   Positioning
+	   ------------------------------------------*/
+	case ComponentDescriptorEnum::GPS_POSITION:
+	  dynamic_cast<GPS*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	  /*------------------------------------------
+	   Orientation
+	   ------------------------------------------*/
+	case ComponentDescriptorEnum::ACCELEROMETER:
+	  dynamic_cast<Accelerometer*> (device);
 	  //TODO: BlackMagic Commands
 	  break;
 	case ComponentDescriptorEnum::COMPASS:
@@ -36,33 +111,11 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 	  dynamic_cast<Gyroscope*> (device);
 	  //TODO: BlackMagic Commands
 	  break;
-	case ComponentDescriptorEnum::GPS:
-	  dynamic_cast<GPS*> (device);
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_9DOF:
 	  break;
-	case ComponentDescriptorEnum::HYGROMETER:
-	  dynamic_cast<Hygrometer*> (device);
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_BOAT:
 	  break;
-	case ComponentDescriptorEnum::SERIAL_LINK:
-	  dynamic_cast<SerialLink*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::STREAM_GENERATOR:
-	  //TODO: Get some other fancy idea for getting Stream Generator
-	  //maybe add StreamGenerator to Interpreter? & BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
-	  dynamic_cast<WestonAnemometer*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::WIND_VANE:
-	  dynamic_cast<WindVane*> (device);
-	  //TODO: BlackMagic Commands
+	default:
 	  break;
 	}
       break;

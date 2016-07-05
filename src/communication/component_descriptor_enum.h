@@ -22,19 +22,56 @@
  */
 enum class ComponentDescriptorEnum
 {
-  ACCELEROMETER = 0x550701,
-  ANEMOMETER = 0x020201,
-  COMPASS = 0x550601,
-  GPS = 0x040401,
-  GYROSCOPE = 0x550501,
-  HYGROMETER = 0x050501,
+  /*------------------------------------------
+   Actor
+   ------------------------------------------*/
+  SERVO_MOTOR_RUDDER = 0x070701,
+  SERVO_MOTOR_MAIN_SAIL = 0x070701,
+  SERVO_MOTOR_FORE_SAIL = 0x070701,
   SERIAL_LINK = 0x060601,
-  SERVO_MOTOR = 0x070701,
-  STREAM_GENERATOR = 0x080801,
-  WESTON_ANEMOMETER = 0x090901,
-  WIND_VANE = 0x0A0A01
+  /*------------------------------------------
+   Mechanical
+   ------------------------------------------*/
+  HULL_TYPE = 0x010102,
+  /*------------------------------------------
+   On-Board Software
+   ------------------------------------------*/
+  STREAM_CONTROL_UNIT = 0x0D0101,
+  AUTOPILOT = 0x0D0201,
+  /*------------------------------------------
+   System Info
+   ------------------------------------------*/
+  POWER_SUPPLY_SENSING = 0x510301,
+  POSITION_RUDDER = 0x510401,
+  POSITION_MAIN_SAIL = 0x510501,
+  POSITION_FORE_SAIL = 0x510601,
+  GPS_VALIDITY_LEA_6H = 0x510901,
+  AUTOPILOT_SYSTEM_INFO = 0x510D01,
+  BILGE_WATER_DETECTION = 0x510F01,
+  STREAMING_SYSTEM_INFO = 0x511001,
+  GPS_SYSTEM_INFO = 0x511101,
+  /*------------------------------------------
+   Wind
+   ------------------------------------------*/
+  ANEMOMETER = 0x520301,
+  WESTON_ANEMOMETER = 0x520501,
+  WIND_VANE = 0x520401,
+  /*------------------------------------------
+   Speed
+   ------------------------------------------*/
+  GPS_VELOCITY = 0x530901,
+  /*------------------------------------------
+   Positioning
+   ------------------------------------------*/
+  GPS_POSITION = 0x540901,
+  /*------------------------------------------
+   Orientation
+   ------------------------------------------*/
+  ORIENTATION_COMPUTED_BOAT = 0x550101,
+  GYROSCOPE = 0x550501,
+  COMPASS = 0x550601,
+  ACCELEROMETER = 0x550701,
+  ORIENTATION_COMPUTED_9DOF = 0x550801
 };
-
-
 
 #endif /* COMMUNICATION_COMPONENT_DESCRIPTOR_ENUM_H_ */
