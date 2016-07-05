@@ -25,10 +25,10 @@ enum class ComponentDescriptorEnum
   /*------------------------------------------
    Actor
    ------------------------------------------*/
-  SERVO_MOTOR_RUDDER = 0x070701,
-  SERVO_MOTOR_MAIN_SAIL = 0x070701,
-  SERVO_MOTOR_FORE_SAIL = 0x070701,
-  SERIAL_LINK = 0x060601,
+  SERVO_MOTOR_RUDDER = 0x040004,
+  SERVO_MOTOR_MAIN_SAIL = 0x050005,
+  SERVO_MOTOR_FORE_SAIL = 0x060006,
+  SERIAL_LINK = 0x080008,
   /*------------------------------------------
    Mechanical
    ------------------------------------------*/

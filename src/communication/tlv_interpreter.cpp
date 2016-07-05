@@ -21,23 +21,8 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
       switch (descriptor_enum)
 	{
 	/*------------------------------------------
-	 Actor
+	 On-Board Software
 	 ------------------------------------------*/
-	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	  /*------------------------------------------
-	   On-Board Software
-	   ------------------------------------------*/
 	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
 	  //TODO: Get some other fancy idea for getting Stream Generator
 	  //maybe add StreamGenerator to Interpreter? & BlackMagic Commands
@@ -114,6 +99,28 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_9DOF:
 	  break;
 	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_BOAT:
+	  break;
+	default:
+	  break;
+	}
+      break;
+    case 0x04:
+      switch (descriptor_enum)
+	{
+	/*------------------------------------------
+	 Actor
+	 ------------------------------------------*/
+	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
 	  break;
 	default:
 	  break;

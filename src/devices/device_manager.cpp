@@ -109,13 +109,13 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	  break;
 	case ComponentDescriptorEnum::GPS_VELOCITY:
 	  break;
-	case ComponentDescriptorEnum::HYGROMETER:
+	case ComponentDescriptorEnum::BILGE_WATER_DETECTION:
 	  break;
 	case ComponentDescriptorEnum::SERIAL_LINK:
 	  break;
 	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
 	  break;
-	case ComponentDescriptorEnum::STREAM_GENERATOR:
+	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
 	  break;
 	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
 	  break;
