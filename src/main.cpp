@@ -7,44 +7,55 @@
 #include "test/communication_table_test.h"
 #include "test/echo_test.h"
 #include "test/spi_interrupt_test.h"
-  void tests()
-    {
-      GCDTest gcd_test;
-      CommunicationTableTest comm_table_test;
-      bool passed = gcd_test.test_cases();
-      if(passed == true)
-	{
-	  std::cout << "GCD passed!" << std::endl;
-	}
-      else
-	{
-	  std::cout << "Test failed. GCD did not pass!" << std::endl;
-	}
-      passed = comm_table_test.test_cases();
-      if(passed == true)
-	{
-	  std::cout << "Test passed. Communication Table passed!" << std::endl;
-	}
-      else
-	{
-	  std::cout << "Test failed. Communication Table did not pass!" << std::endl;
-	}
-      /*int8_t ret = spi_interrupt_test();
-       if(ret == 1)
-       {
-       std::cout << "Test passed. SPI Interrupt works fine!" << std::endl;
-       }
-       */
-      /*if (i2c_teensy_test () == 1)
-       {
-       std::cout << "Test passed. I2C works fine!" << std::endl;
-       }
-       else
-       {
-       std::cout << "Test failed. I2C has errors while sending/receiving!"
-       << std::endl;
-       }*/
-    }
+#include "test/timer_test.h"
+void tests()
+  {
+    GCDTest gcd_test;
+    CommunicationTableTest comm_table_test;
+    TimerTest timer_test;
+    bool passed = gcd_test.test_cases();
+    if(passed == true)
+      {
+	std::cout << "GCD passed!" << std::endl;
+      }
+    else
+      {
+	std::cout << "Test failed. GCD did not pass!" << std::endl;
+      }
+    passed = comm_table_test.test_cases();
+    if(passed == true)
+      {
+	std::cout << "Test passed. Communication Table passed!" << std::endl;
+      }
+    else
+      {
+	std::cout << "Test failed. Communication Table did not pass!" << std::endl;
+      }
+    passed = timer_test.test_cases();
+    if(passed == true)
+      {
+	std::cout << "Test passed. Timer passed!" << std::endl;
+      }
+    else
+      {
+	std::cout << "Test failed. Timer did not pass!" << std::endl;
+      }
+    /*int8_t ret = spi_interrupt_test();
+     if(ret == 1)
+     {
+     std::cout << "Test passed. SPI Interrupt works fine!" << std::endl;
+     }
+     */
+    /*if (i2c_teensy_test () == 1)
+     {
+     std::cout << "Test passed. I2C works fine!" << std::endl;
+     }
+     else
+     {
+     std::cout << "Test failed. I2C has errors while sending/receiving!"
+     << std::endl;
+     }*/
+  }
 #endif
 int
 main (void)

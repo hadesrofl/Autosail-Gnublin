@@ -41,7 +41,7 @@ Timer::install_sighandler (int32_t signo, void
 }
 //public functions
 
-Timer::Timer (uint32_t seconds, uint32_t milliseconds, void
+Timer::Timer (uint32_t milliseconds, void
 (*handler) (int32_t))
 {
   m_last_signal_id++;
@@ -49,24 +49,26 @@ Timer::Timer (uint32_t seconds, uint32_t milliseconds, void
   m_timer_id = m_last_timer_id;
   m_signal_id = m_last_signal_id;
   m_timer = create_timer (m_signal_id);
-  if (set_timer (seconds, milliseconds) > 0)
+  if (set_timer (milliseconds) > 0)
     {
       install_sighandler (m_signal_id, handler);
     }
   else
     {
       // disarm timer
-      set_timer (0, 0);
+      set_timer (0);
     }
 }
 uint32_t
-Timer::set_timer (uint32_t seconds, uint32_t milliseconds)
+Timer::set_timer (uint32_t milliseconds)
 {
-
+  uint32_t seconds = 0;
   if (milliseconds > 1000)
     {
       uint16_t divider = milliseconds / 1000;
+#ifdef _DEBUG
       std::cout << "Divider: " << divider << std::endl;
+#endif
       for(int16_t i = 0; i < divider;i++){
 	  seconds++;
 	  milliseconds -= 1000;

@@ -65,20 +65,20 @@ private:
 public:
   /**
    * Constructor
-   * @param seconds are the seconds for the time interval. If this time expires an interrupt (signal) will be fired
    * @param milliseconds are the milliseconds for the time interval
    * @param handler is the function to be called if an interrupt is fired
    */
-  Timer (uint32_t seconds, uint32_t milliseconds, void
+  Timer (uint32_t milliseconds, void
   (*handler) (int32_t));
   /**
-   * Sets the timer to seconds and milliseconds. Initially called in constructor, but can be used to change the intervals on runtime
-   * @param seconds for the seconds of the time interval
+   * Sets the timer to seconds and milliseconds. Initially called in constructor,
+   * but can be used to change the intervals on runtime
    * @param milliseconds for the milliseconds of the time interval
-   * @return on success the sum of seconds and milliseconds in milliseconds of the time interval, otherwise on failure -1
+   * @return on success the sum of seconds and milliseconds in milliseconds of
+   * the time interval, otherwise on failure -1
    */
   uint32_t
-  set_timer (uint32_t seconds, uint32_t milliseconds);
+  set_timer (uint32_t milliseconds);
   /**
    * Gets the signal id of this timer
    * @return signal_id

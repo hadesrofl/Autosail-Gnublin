@@ -14,7 +14,7 @@ StreamGenerator::StreamGenerator ()
   m_interrupt_counter = 0;
   m_period = 0;
 
-  m_timer = std::unique_ptr<Timer> (new Timer (0, 0, timer_handler));
+  m_timer = std::unique_ptr<Timer> (new Timer (0, timer_handler));
 }
 StreamGenerator::~StreamGenerator ()
 {
