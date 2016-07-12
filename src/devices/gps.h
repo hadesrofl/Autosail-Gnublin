@@ -4,6 +4,17 @@
 #include "../interfaces/serial.h"
 #include "device.h"
 #include "serial_parameter.h"
+#include <stdlib.h>
+#include <sstream>
+#include <string>
+#include <fstream>
+#include <unistd.h>
+#include "gps_data.h"
+
+#define COMMAND_SIZE 50
+#define SUB_PROGRAM "/home/apps/gpsd_client"
+#define TMP_DATA_FILE "/home/apps/gps_data.txt"
+
 /**
  * @file
  * @class GPS
@@ -48,6 +59,13 @@ public:
    */
   uint8_t*
   read_data ();
+  /**
+   * TODO: Comment with gps specific register
+   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
+   * pointer with allocated memory.
+   */
+  int8_t
+  read_data (gps_data_t *data);
   /**
    * Writes data from the gps for a given length
    * @param buf is the buffer with the data to write

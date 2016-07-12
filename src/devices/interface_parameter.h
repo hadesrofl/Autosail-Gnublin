@@ -31,6 +31,7 @@ public:
   {
     return m_device_file;
   }
+  virtual ~InterfaceParameter(){}
 };
 
 #endif /* DEVICES_INTERFACE_PARAMETER_H_ */

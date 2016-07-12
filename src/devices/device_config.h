@@ -97,9 +97,29 @@ enum class DeviceConfig
    */
   GYROSCOPE_DATA_LENGTH = 6,
   /**
-   * Baudrate of GPS
+   * Serial Baudrate of 4800
    */
-  GPS_BAUD = 38400,
+  SERIAL_B4800 = 0x01,
+  /**
+   * Serial Baudrate of 9600
+   */
+  SERIAL_B9600 = 0x02,
+  /**
+   * Serial Baudrate of 19200
+   */
+  SERIAL_B19200 = 0x03,
+  /**
+   * Serial Baudrate of 38400
+   */
+  SERIAL_B57600 = 0x04,
+  /**
+   * Serial Baudrate of 38400
+   */
+  SERIAL_B115200 = 0x05,
+  /**
+   * Serial Baudrate of 38400
+   */
+  SERIAL_B38400 = 38400,
   /**
    * FILLER VALUE Address of Hygrometer
    */

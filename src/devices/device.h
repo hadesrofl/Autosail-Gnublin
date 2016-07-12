@@ -131,10 +131,10 @@ public:
    * Gets the Parameter of the Device
    * @return the Device Parameter
    */
-  inline InterfaceParameter
+  inline InterfaceParameter*
   get_device_parameter () const
   {
-    return *m_device_parameter;
+    return &(*m_device_parameter);
   }
   /**
    * Default Destructor

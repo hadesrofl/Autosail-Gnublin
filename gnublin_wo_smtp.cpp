@@ -1672,6 +1672,48 @@ int gnublin_serial::send(unsigned char *TxBuf, int length){
 	return 1;
 }
 
+//----------------------------------send----------------------------------
+/** @~english
+* @brief send bytes to the serial Interface
+*
+* This function sends "length" number of bytes from the "TxBuf" to the serial interface. At success the function returns 1, on failure -1.<br>
+* e.g.<br>
+* send 2 bytes from buf to the serial interface<br>
+* send (buf, 2);
+* @param TxBuf Transmit buffer. The bytes you want to send are stored in it.
+* @param length Amount of bytes that will be send.
+* @return success: 1, failure: -1
+*
+* @~german
+* @brief sendet Bytes an den serielle Schnittstelle.
+*
+* Diese Funktion sendet "length" Anzahl an Bytes aus dem "TxBuf" an die serielle Schnittstelle. Bei Erfolg wird 1 zurück gegeben, bei Misserfolg -1.<br>
+* Beispiele:<br>
+* Sende 2 Bytes von "buf" an den i2c Bus:
+* send(buf, 2);
+* @param RxBuf Sende Puffer. Die zu sendenden Bytes sind hier gespeichert.
+* @param length Anzahl der zu sendenden Bytes.
+* @return Erfolg: 1, Misserfolg: -1
+*/
+int gnublin_serial::receive(unsigned char *RxBuf, int length){
+
+	if (RxBuf == 0)
+		return errorMsg("Send method received a null TxBuf pointer.\n");
+	if (length < 1)
+		return errorMsg("Send method received an invalid buffer length.\n");
+
+	if (!fd)
+		if (open_fd() == -1)
+			  return -1;
+
+	error_flag=false;
+
+	if (read(fd, RxBuf, length) != length)
+		return errorMsg("serial write error!\n");
+
+	return 1;
+}
+
 
 //***************************************************************************
 // Class for creating pwm signals

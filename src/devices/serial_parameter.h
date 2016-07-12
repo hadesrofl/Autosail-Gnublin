@@ -1,6 +1,7 @@
 #ifndef DEVICES_SERIAL_PARAMETER_H_
 #define DEVICES_SERIAL_PARAMETER_H_
 
+#include "device_config.h"
 #define GNUBLIN_DEFAULT_SERIAL "/dev/ttyUSB0"
 
 /**
@@ -30,21 +31,56 @@ public:
   /**
    * Constructor for a Serial Parameter
    * @param device_file is the name of the device in linux.
-   * @param baudrate is the address of the device.
+   * @param baudrate is the config of the device
    */
-  SerialParameter (char* device_file, uint32_t baudrate)
+  SerialParameter (char* device_file, DeviceConfig baudrate)
   {
     m_device_file = device_file;
-    m_baudrate = baudrate;
+    m_baudrate = distinguish_baudrate (baudrate);
   }
   /**
    * Constructor for a Serial Parameter (called with default device file of gnublin)
-   * @param baudrate is the address of the device.
+   * @param baudrate is the config of the device
    */
-  SerialParameter (uint32_t baudrate)
+  SerialParameter (DeviceConfig baudrate)
   {
     m_device_file = (char*) GNUBLIN_DEFAULT_SERIAL;
-    m_baudrate = baudrate;
+    m_baudrate = distinguish_baudrate (baudrate);
+  }
+  /**
+   * Check the DeviceConfig for the correct Baudrate
+   * @param baudrate is the given DeviceConfig
+   * @return the baudrate as uint32_t
+   */
+  uint32_t
+  distinguish_baudrate (DeviceConfig baudrate)
+  {
+    uint32_t ret;
+    switch (baudrate)
+      {
+      case DeviceConfig::SERIAL_B4800:
+	ret = 4800;
+	break;
+      case DeviceConfig::SERIAL_B9600:
+	ret = 9600;
+	break;
+      case DeviceConfig::SERIAL_B19200:
+	ret = 19200;
+	break;
+      case DeviceConfig::SERIAL_B38400:
+	ret = 38400;
+	break;
+      case DeviceConfig::SERIAL_B57600:
+	ret = 57600;
+	break;
+      case DeviceConfig::SERIAL_B115200:
+	ret = 115200;
+	break;
+      default:
+	ret = 9600;
+	break;
+      }
+    return ret;
   }
   /**
    * Getter for the baudraute of the serial interface

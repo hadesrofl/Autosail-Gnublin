@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          Load SPI Dev
+# Required-Start:    
+# Required-Stop:    
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Init Service to load the SPI Dev
+# Description:       Init Service to load the SPI Dev
+### END INIT INFO
+
+#Init Priority
+# Start:			 20
+# Stop:				 30
+
+#Variables
+NAME=SPI-Dev
+DAEMON=SPI-Dev
+DAEMON_PATH=/home/apps
+DESC="Init Service to load the SPI Driver"
+SCRIPTNAME=/etc/init.d/$NAME
+ 
+# Actions
+case "$1" in
+    start)
+        #printf "%-50s" "Starting $NAME..."
+        #cd $DAEMON_PATH
+        #printf "%s\n" "Ok"
+        #./$NAME >> Hello.txt & 
+        printf "%s\n" "Loading SPI Driver"
+        modprobe spidev &
+		printf "%s\n" "Ok"
+        ;;
+   stop)
+       	#printf "%-50s\n" "Stopping $NAME"
+       	#cd $DAEMON_PATH
+        #killall $NAME & 
+        printf "%-50s" "Unload SPI Driver"
+        modprobe -r spidev &  
+        printf "%s\n" "Ok"
+        ;;
+   *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+   

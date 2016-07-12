@@ -247,6 +247,7 @@ public:
 	gnublin_serial(std::string Devicefile, int rate);
 	bool fail();
 	int send(unsigned char *TxBuf, int length);
+	int receive(unsigned char *RxBuf, int length);
 	int setDevicefile(std::string filename);
 	int setBaudrate(int rate);
 
