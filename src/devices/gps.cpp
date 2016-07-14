@@ -14,7 +14,6 @@ GPS::init ()
       // Set Baudrate of UART
       system (command);
       // Start GPSd
-      // TODO: Test without starting GPSd in App but in shell for timing purposes
       snprintf (command,
       COMMAND_SIZE,
 		"gpsd -n %s", parameter->get_device_file ());
@@ -48,8 +47,11 @@ int8_t
 GPS::read_data (gps_data_t *data)
 {
   char command[COMMAND_SIZE];
-  snprintf (command, COMMAND_SIZE, "./%s >> %s", SUB_PROGRAM, TMP_DATA_FILE);
+  snprintf (command, COMMAND_SIZE, "%s > %s", SUB_PROGRAM, TMP_DATA_FILE);
   std::ifstream source;
+#ifdef _DEBUG
+  std::cout << "GPS Read Begin" << std::endl;
+#endif
   system (command);
   source.open (TMP_DATA_FILE, std::ios_base::in);
   if (!source)
@@ -57,42 +59,49 @@ GPS::read_data (gps_data_t *data)
 #ifdef _DEBUG
       std::cerr << "Can't open file!" << std::endl;
 #endif
-      data->latitude = 0;
-      data->longitude = 0;
-      data->timestamp.tv_sec = 0;
-      data->speed = 0;
+      data->latitude = 0.0;
+      data->longitude = 0.0;
+      data->timestamp = 0;
+      data->speed = 0.0;
+#ifdef _DEBUG
+      std::cout << "GPS Read End" << std::endl;
+#endif
       return -1;
     }
   else
     {
       for (std::string line; std::getline (source, line);)
 	{
+	  float tmp;
 	  std::istringstream in (line);
 	  std::string type;
 	  in >> type;
-
 	  if (type == "Latitude:")
 	    {
-	      in >> data->latitude;
+	      in >> tmp;
+	      data->latitude = tmp * DECIMAL_SHIFT_POSITION;
 	    }
 	  else if (type == "Longitude:")
 	    {
-	      in >> data->longitude;
+	      in >> tmp;
+	      data->longitude = tmp * DECIMAL_SHIFT_POSITION;
 	    }
 	  else if (type == "Speed:")
 	    {
-	      in >> data->speed;
+	      in >> tmp;
+	      data->speed = tmp * DECIMAL_SHIFT_SPEED;
 	    }
 	  else if (type == "Timestamp:")
 	    {
-	      in >> data->timestamp.tv_sec;
+	      in >> data->timestamp;
 	    }
 	}
 #ifdef _DEBUG
       std::cout << "Latitude: " << data->latitude << std::endl;
       std::cout << "Longitude: " << data->longitude << std::endl;
       std::cout << "Speed: " << data->speed << std::endl;
-      std::cout << "Timestamp: " << data->timestamp.tv_sec << std::endl;
+      std::cout << "Timestamp: " << data->timestamp << std::endl;
+      std::cout << "GPS Read End" << std::endl;
 #endif
       return 1;
     }

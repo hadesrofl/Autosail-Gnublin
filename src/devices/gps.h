@@ -11,9 +11,26 @@
 #include <unistd.h>
 #include "gps_data.h"
 
+/**
+ * Size of a command to set via system command
+ */
 #define COMMAND_SIZE 50
-#define SUB_PROGRAM "/home/apps/gpsd_client"
-#define TMP_DATA_FILE "/home/apps/gps_data.txt"
+/**
+ * Shift value for latitude and longitude to get decimal value out of float
+ */
+#define DECIMAL_SHIFT_POSITION 100000
+/**
+ * Shift value for speed to get decimal value out of float
+ */
+#define DECIMAL_SHIFT_SPEED 1000
+/**
+ * Program to get data from gps via gpsd
+ */
+#define SUB_PROGRAM "./gpsd-client"
+/**
+ * Temporary file to save data from SUB_PROGRAM and read from
+ */
+#define TMP_DATA_FILE "tmp/gps-data.txt"
 
 /**
  * @file
@@ -53,16 +70,15 @@ public:
   int8_t
   read (uint8_t* buf, int16_t length);
   /**
-   * TODO: Comment with gps specific register
-   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
-   * pointer with allocated memory.
+   * XXX UNUSED
    */
   uint8_t*
   read_data ();
   /**
-   * TODO: Comment with gps specific register
-   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
-   * pointer with allocated memory.
+   * TODO: Check if own thread is a faster solution to calling this function
+   * Reads data via the SUB_PROGRAM and the TMP_DATA_FILE into a gps_data_t pointer
+   * @param data is a pointer of gps_data_t
+   * @return positive integer on success, otherwise a negative integer
    */
   int8_t
   read_data (gps_data_t *data);
