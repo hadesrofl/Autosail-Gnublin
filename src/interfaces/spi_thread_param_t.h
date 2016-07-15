@@ -5,13 +5,13 @@
 
 /**
  * @file
- * @class SPIThreadParam
+ * @class spi_thread_param_t
  * @brief Class for a simple struct used in PThreads
  * for the SPIMasterSelect Interface.
  * @author Rene Kremer
  * @version 0.2
  */
-struct SPIThreadParam
+struct spi_thread_param_t
 {
   SPIMasterSelect* spi_ptr;
 };

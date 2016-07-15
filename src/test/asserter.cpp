@@ -29,6 +29,19 @@ Asserter::assert (uint8_t result, uint8_t expected)
 }
 
 bool
+Asserter::assert (uint16_t result, uint16_t expected)
+{
+	if(result == expected)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool
 Asserter::assert (uint32_t result, uint32_t expected)
 {
 	if(result == expected)
@@ -42,7 +55,7 @@ Asserter::assert (uint32_t result, uint32_t expected)
 }
 
 bool
-Asserter::assert (Device* result, Device* expected)
+Asserter::assert (std::shared_ptr<Device> result, std::shared_ptr<Device> expected)
 {
 	if(result->get_component_descriptor()->get_component_class() == expected->get_component_descriptor()->get_component_class() &&
 			result->get_component_descriptor()->get_component_attribute() == expected->get_component_descriptor()->get_component_attribute() &&

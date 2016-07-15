@@ -12,10 +12,9 @@ DeviceManager::DeviceManager (ProtocolEngine* protocol_engine,
   descriptor_bytes.clear ();
 }
 
-Device*
+std::shared_ptr<Device>
 DeviceManager::get_device (ComponentDescriptorEnum descriptor_enum)
 {
-  Device* dptr = NULL;
   uint8_t cclass, cattribute, cnumber;
   // Build Descriptor
   cclass = static_cast<uint32_t> (descriptor_enum) >> 16;
@@ -29,10 +28,10 @@ DeviceManager::get_device (ComponentDescriptorEnum descriptor_enum)
 	  && descriptor->get_component_attribute () == cattribute
 	  && descriptor->get_component_number () == cnumber)
 	{
-	  dptr = &(*m_devices[i]);
+	  return m_devices[i];
 	}
     }
-  return dptr;
+  return NULL;
 }
 
 DeviceManager::~DeviceManager ()
@@ -109,16 +108,16 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	  break;
 	case ComponentDescriptorEnum::GPS_POSITION:
 	  {
-	  std::shared_ptr<GPS> device = std::shared_ptr<GPS> (
-	      new GPS (
-		  new SerialParameter (GNUBLIN_DEFAULT_SERIAL,
-				       static_cast<DeviceConfig> (config)),
-		  descriptor));
-	  m_devices.push_back (device);
-	  protocol_engine->insert_communication_table_backward (
-	      communication_number, &(*device));
-	  protocol_engine->insert_communication_table_forward (
-	      descriptor, communication_number);
+	    std::shared_ptr<GPS> device = std::shared_ptr<GPS> (
+		new GPS (
+		    new SerialParameter (GNUBLIN_DEFAULT_SERIAL,
+					 static_cast<DeviceConfig> (config)),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
 	  }
 	  break;
 	case ComponentDescriptorEnum::GPS_VELOCITY:

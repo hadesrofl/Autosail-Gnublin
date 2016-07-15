@@ -1,6 +1,7 @@
 #include "../gnublin_wo_smtp.h"
 #include "devices/device_manager.h"
 #include "bridge/loader.h"
+#include "devices/stream_generator_thread_params.h"
 
 #ifdef _TEST
 #include "test/gcd_test.h"
@@ -66,8 +67,8 @@ gps_csv ()
   Loader* loader = new Loader ();
   DeviceManager* dmanager = loader->get_device_manager ();
   timeval begin, end;
-  GPS* gps = dynamic_cast<GPS*> (dmanager->get_device (
-      ComponentDescriptorEnum::GPS_POSITION));
+  GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
+      ComponentDescriptorEnum::GPS_POSITION))));
   gps_data_t* gps_data = new gps_data_t;
   std::cout << "Latitude;Longitude;Speed;Timestamp;Needed Time;" << std::endl;
   for (int32_t i = 0; i < 1000; i++)
@@ -95,7 +96,47 @@ main (void)
 {
 #ifdef _TEST
   //tests ();
-  gps_csv ();
+  //gps_csv ();
+  Loader* loader = new Loader ();
+  DeviceManager* dmanager = loader->get_device_manager ();
+  std::shared_ptr<Device> device_a = dmanager->get_device (
+      ComponentDescriptorEnum::GYROSCOPE);
+  std::shared_ptr<Device> device_b = dmanager->get_device (
+      ComponentDescriptorEnum::ACCELEROMETER);
+  std::shared_ptr<Device> device_c = dmanager->get_device (
+      ComponentDescriptorEnum::COMPASS);
+  std::shared_ptr<Device> device_d = dmanager->get_device (
+      ComponentDescriptorEnum::GPS_POSITION);
+  StreamGenerator* generator = loader->get_stream_generator ();
+
+  stream_generator_thread_param_t* generator_params =
+      new stream_generator_thread_param_t;
+
+  generator_params->generator_ptr = generator;
+
+  pthread_t generator_thread;
+  //std::cout << "Before Threads" << std::endl;
+  //std::cout << "Adding Gyroscope" << std::endl;
+  generator->add_stream (device_a, 2000);
+
+  pthread_create (&generator_thread, NULL, generator->run_generator,
+		  generator_params);
+  generator->add_stream (device_b, 6000);
+  generator->add_stream (device_c, 4000);
+  generator->add_stream (device_d, 10000);
+
+  std::vector<uint16_t> values;
+  values.push_back (16);
+  values.push_back (30);
+  values.push_back (66);
+  values.push_back (100);
+  GCD gcd;
+  std::cout << "Periode Main: " << gcd.gcd_vector (values, 0, values.size ())
+      << std::endl;
+  //sleep(30);
+
+  pthread_join (generator_thread, NULL);
+
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

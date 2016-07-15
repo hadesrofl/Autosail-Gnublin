@@ -42,6 +42,13 @@ public:
 	 * @param expected is value that was expected
 	 * @return true if the value is equivalent, otherwise false
 	 */
+	bool assert(uint16_t result, uint16_t expected);
+	/**
+	 * Checks if two unsigned integer values are equivalent.
+	 * @param result is the resulted unsigned integer
+	 * @param expected is value that was expected
+	 * @return true if the value is equivalent, otherwise false
+	 */
 	bool assert(uint32_t result, uint32_t expected);
 	/**
 	 * Checks if two Devices are equivalent.
@@ -50,7 +57,7 @@ public:
 	 * @return true if the Devices are equivalent, otherwise false
 	 */
 	bool
-	assert (Device* result, Device* expected);
+	assert (std::shared_ptr<Device> result, std::shared_ptr<Device> expected);
 	/**
 	 * Checks if all asserts passed and write to the standard output a message
 	 * which assert failed or if all passed.

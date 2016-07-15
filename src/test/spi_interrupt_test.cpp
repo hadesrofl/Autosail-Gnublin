@@ -29,7 +29,7 @@ SPIInterruptTest::master_select_test ()
   SPIMasterSelect* spi_b = new SPIMasterSelect ((char*) "/dev/spidev0.0", 16000,
 						0);
   pthread_t interrupt_thread_a;
-  struct SPIThreadParam params_a;
+  struct spi_thread_param_t params_a;
   params_a.spi_ptr = spi_a;
   uint8_t i = 0;
   while (i < 5)

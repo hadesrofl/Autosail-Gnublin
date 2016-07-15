@@ -28,7 +28,7 @@ public:
 	 * @param b is the second value
 	 * @return the gcd of the first and second value
 	 */
-	uint32_t gcd(uint32_t a, uint32_t b);
+	uint16_t gcd(uint16_t a, uint16_t b);
 	/**
 	 * Returns the gcd of the values of the vector
 	 *
@@ -37,8 +37,8 @@ public:
 	 * @param end is the max value of the list (size - 1)
 	 * @return the gcd of the values of the vector
 	 */
-	uint32_t gcd_vector(std::vector<uint32_t> vector, uint32_t start,
-			uint32_t end);
+	uint16_t gcd_vector(std::vector<uint16_t> vector, uint16_t start,
+			uint16_t end);
 	/**
 	 * Destructor
 	 */

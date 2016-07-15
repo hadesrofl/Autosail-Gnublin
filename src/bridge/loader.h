@@ -60,7 +60,7 @@ public:
    * @return a pointer to the StreamGenerator
    */
   inline StreamGenerator*
-  get_stream_generator () const
+  get_stream_generator ()
   {
     return &(*m_stream_generator);
   }

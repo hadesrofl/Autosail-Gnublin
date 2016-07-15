@@ -187,12 +187,12 @@ public:
    * communication number is > MAX_COMMUNICATION_NUMBER or the
    * communication number is not set to a device
    */
-  inline Device*
+  inline std::shared_ptr<Device>
   get_device (uint8_t communication_number)
   {
     if (communication_number <= MAX_COMMUNICATION_NUMBER)
       {
-	return &(*m_communication_table_backward[communication_number]);
+	return m_communication_table_backward[communication_number];
       }
     return NULL;
   }

@@ -1,7 +1,7 @@
 #include "spi_master_select.h"
 #include <stdio.h>
 
-#include "spi_thread_param.h"
+#include "spi_thread_param_t.h"
 
 pthread_mutex_t SPIMasterSelect::m_region_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -75,7 +75,7 @@ SPIMasterSelect::send (uint8_t* buf, int16_t length)
 void *
 SPIMasterSelect::pin_change_interrupt (void* params)
 {
-  struct SPIThreadParam* spi = (struct SPIThreadParam*) params;
+  struct spi_thread_param_t* spi = (struct spi_thread_param_t*) params;
   spi->spi_ptr->m_interrupted = false;
   struct pollfd *poll_fd;
   char buf[2];

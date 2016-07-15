@@ -32,10 +32,10 @@ CommunicationTableTest::communication_table_standard_test()
     std::vector<bool> asserts;
     Asserter asserter;
     bool passed;
-    Device* device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
-    Device* device_b = dmanager->get_device (
+    std::shared_ptr<Device> device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
+    std::shared_ptr<Device> device_b = dmanager->get_device (
 	ComponentDescriptorEnum::ACCELEROMETER);
-    Device* device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
+    std::shared_ptr<Device> device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
     asserts.push_back(asserter.assert(engine->get_communication_number(&(*device_a->get_component_descriptor())), 0x03));
     asserts.push_back(asserter.assert(engine->get_communication_number(&(*device_b->get_component_descriptor())), 0x01));
     asserts.push_back(asserter.assert(engine->get_communication_number(&(*device_c->get_component_descriptor())), 0x02));
@@ -51,9 +51,9 @@ CommunicationTableTest::communication_table_standard_test()
       }
     passed = false;
     asserts.clear();
-    Device* dev_a = engine->get_device(engine->get_communication_number(&(*device_a->get_component_descriptor())));
-    Device* dev_b = engine->get_device(engine->get_communication_number(&(*device_b->get_component_descriptor())));
-    Device* dev_c = engine->get_device(engine->get_communication_number(&(*device_c->get_component_descriptor())));
+    std::shared_ptr<Device> dev_a = engine->get_device(engine->get_communication_number(&(*device_a->get_component_descriptor())));
+    std::shared_ptr<Device> dev_b = engine->get_device(engine->get_communication_number(&(*device_b->get_component_descriptor())));
+    std::shared_ptr<Device> dev_c = engine->get_device(engine->get_communication_number(&(*device_c->get_component_descriptor())));
     asserts.push_back(asserter.assert(device_a, dev_a));
     asserts.push_back(asserter.assert(device_b, dev_b));
     asserts.push_back(asserter.assert(device_c, dev_c));

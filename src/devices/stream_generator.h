@@ -2,9 +2,10 @@
 #define DEVICES_STREAM_GENERATOR_H_
 
 #include "../utils/timer.h"
-#include <stdint.h>
 #include <memory>
 #include "../communication/protocol_engine.h"
+#include "../utils/gcd.h"
+#include "stream.h"
 
 /*
  * Forward Declaration because of recursive include of header files
@@ -13,8 +14,11 @@ class ProtocolEngine;
 /**
  * @file
  * @class StreamGenerator
- * @brief Class for a StreamGenerator.
- * A StreamGenerator creates data streams using a Timer
+ * @brief Class for a StreamGenerator. A StreamGenerator creates data
+ * streams using a Timer that interrupts at a specific period.
+ * After that interrupt an integer will increase.
+ *
+ * @detail A StreamGenerator creates data streams using a Timer
  * that interrupts at a specific period. After that interrupt an
  * integer will increase.
  *
@@ -37,25 +41,73 @@ class StreamGenerator
    * @private
    */
 private:
+  /**
+   * GCD to determine the period
+   */
+  GCD m_gcd;
+  /**
+   * Pointer to the ProtocolEngine for sending frames of data
+   */
   std::shared_ptr<ProtocolEngine> m_protocol_engine;
+  /**
+   * List of Streams that will be checked for data
+   */
+  std::vector<Stream*> m_streams;
+  /**
+   * List of Periods to determine gcd and max value from
+   */
+  std::vector<uint16_t> m_periods;
   /**
    * Counts how many interrupts happened
    */
-  static uint32_t m_interrupt_counter;
+  static uint16_t m_interrupt_counter;
   /**
    * Timer that causes the software interrupt in Linux
    */
   std::unique_ptr<Timer> m_timer;
   /**
-   * Shortest period for a stream to be generated
+   * Shortest period in ms for a stream to be generated
    */
-  uint16_t m_period;
+  uint16_t m_min_period;
+  /**
+   * Max value for the counter (longest period) to check if one cycle through all
+   * streams is finished or there are some streams left to handle
+   */
+  uint16_t m_max_period;
+  /**
+   * Region Mutex for accessing resources
+   */
+  static pthread_mutex_t m_region_mutex;
   /**
    * Handler for the Timer Interrupt. Will be called if the Timer interrupts
    * @param signo is the signal number for a software interrupt in Linux
    */
   static void
   timer_handler (int signo);
+  /**
+   * Sets the shortest period for the timer but only if the new period is
+   * shorter than the previous one.
+   * @param period is the time for the timer to be called
+   */
+  inline void
+  set_min_period (uint16_t period)
+  {
+    std::cout << "Period to set: " << period << std::endl;
+	m_min_period = period;
+	//m_timer->set_timer (m_min_period);
+  }
+  /**
+   * Sets the longest period
+   * @param period is the new longest period
+   */
+  inline void
+  set_max_period (uint16_t period)
+  {
+    if (m_max_period <= period)
+      {
+	m_max_period = period;
+      }
+  }
   /**
    * @public
    */
@@ -65,17 +117,52 @@ public:
    */
   StreamGenerator ();
   /**
-   * Sets a new period for the timer but only if the new period is
-   * shorter than the previous one.
-   * @param period is the time for the timer to be called
+   * Adds a device with a period to the stream generator
+   * @param device is a pointer to the Device to watch over
+   * @param period is the time interval to send data of the device
    */
-  inline void
-  set_period (uint16_t period)
+  void
+  add_stream (std::shared_ptr<Device> device, uint16_t period);
+  /**
+   *
+   */
+  static void *
+  run_generator (void* params);
+  /**
+   * Gets the list of streams
+   * @return the list of streams of this StreamGenerator
+   */
+  std::vector<Stream*>
+  get_streams ()
   {
-    if (m_period == 0 || m_period > period)
-      {
-	m_period = period;
-      }
+    return m_streams;
+  }
+  /**
+   * Gets the shortest period of streams
+   * @return the shortest period in the list of streams
+   */
+  uint16_t
+  get_min_period () const
+  {
+    return m_min_period;
+  }
+  /**
+   * Gets the longest period of streams
+   * @return the longest period in the list of streams
+   */
+  uint16_t
+  get_max_period () const
+  {
+    return m_max_period;
+  }
+  /**
+   * Gets the longest period of streams
+   * @return the longest period in the list of streams
+   */
+  uint16_t
+  get_interrupt_counter () const
+  {
+    return m_interrupt_counter;
   }
   /**
    * Destructor

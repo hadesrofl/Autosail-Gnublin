@@ -60,7 +60,7 @@ public:
    * @param descriptor is a enum of a ComponentDescriptor to get the right device.
    * @return a pointer to the device
    */
-  Device*
+  std::shared_ptr<Device>
   get_device (ComponentDescriptorEnum descriptor);
   /**
    * Destructor

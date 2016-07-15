@@ -31,11 +31,11 @@ class GCDTest
     /**
      * result value of gcd
      */
-    uint32_t m_result;
+    uint16_t m_result;
     /**
      * expected value for gcd
      */
-    uint32_t m_expected;
+    uint16_t m_expected;
     /**
      * Test for the gcd of two values
      * @return true if the test passed, otherwise false

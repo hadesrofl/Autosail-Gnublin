@@ -1,9 +1,10 @@
+
 #ifdef _TEST
 #ifndef TEST_SPI_INTERRUPT_TEST_H_
 #define TEST_SPI_INTERRUPT_TEST_H_
 
 #include <iostream>
-#include "../interfaces/spi_thread_param.h"
+#include "../interfaces/spi_thread_param_t.h"
 #include <stdint.h>
 #include "asserter.h"
 #include <vector>
