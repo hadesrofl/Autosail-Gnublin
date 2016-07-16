@@ -16,10 +16,10 @@ Anemometer::Anemometer (I2CParameter *interface_parameter, ComponentDescriptor* 
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   init ();
 }
-uint8_t*
+int8_t*
 Anemometer::read_data ()
 {
-  uint8_t* data_ptr = NULL;
+  int8_t* data_ptr = NULL;
   return data_ptr;
 }
 Anemometer::~Anemometer ()

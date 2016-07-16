@@ -2,7 +2,7 @@
 #ifndef TEST_GCD_TEST_H_
 #define TEST_GCD_TEST_H_
 
-#include "../utils/gcd.h"
+#include "../utils/calculation.h"
 #include <memory>
 #include "asserter.h"
 #include <iostream>
@@ -20,10 +20,6 @@ class GCDTest
      * @private
      */
   private:
-    /**
-     * Greatest Common Divisor Class to calculate the gcd
-     */
-    GCD m_gcd;
     /**
      * Asserter to assert the values
      */

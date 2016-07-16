@@ -36,7 +36,7 @@
  * @brief Class for a Compass Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
- * @version 0.3
+ * @version 0.35
  */
 class Compass : virtual public Device
 {
@@ -72,7 +72,7 @@ public:
    * Reads the Data X, Y and Z Register of the Compass and returns them as a
    * pointer with allocated memory.
    */
-  uint8_t*
+  int8_t*
   read_data ();
   /**
    * Destructor

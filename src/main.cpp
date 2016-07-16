@@ -69,18 +69,46 @@ gps_csv ()
   timeval begin, end;
   GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
       ComponentDescriptorEnum::GPS_POSITION))));
-  gps_data_t* gps_data = new gps_data_t;
+  int8_t* data = new int8_t[16];
   std::cout << "Latitude;Longitude;Speed;Timestamp;Needed Time;" << std::endl;
   for (int32_t i = 0; i < 1000; i++)
     {
       if (gps != NULL)
 	{
 	  gettimeofday (&begin, NULL);
-	  if (gps->read_data (gps_data) > 0)
+	  data = gps->read_data ();
+	  if (data != NULL)
 	    {
-	      std::cout << gps_data->latitude << ";" << gps_data->longitude
-		  << ";" << gps_data->speed << ";" << gps_data->timestamp
-		  << ";";
+	      int8_t* test_latitude = new int8_t[4];
+	      test_latitude[0] = data[0];
+	      test_latitude[1] = data[1];
+	      test_latitude[2] = data[2];
+	      test_latitude[3] = data[3];
+	      int8_t* test_longitude = new int8_t[4];
+	      test_longitude[0] = data[4];
+	      test_longitude[1] = data[5];
+	      test_longitude[2] = data[6];
+	      test_longitude[3] = data[7];
+	      int8_t* test_speed = new int8_t[4];
+	      test_speed[0] = data[8];
+	      test_speed[1] = data[9];
+	      test_speed[2] = data[10];
+	      test_speed[3] = data[11];
+	      int8_t* test_timestamp = new int8_t[4];
+	      test_timestamp[0] = data[12];
+	      test_timestamp[1] = data[13];
+	      test_timestamp[2] = data[14];
+	      test_timestamp[3] = data[15];
+	      int32_t latitude = IntConverter::int8_to_int32 (test_latitude);
+	      int32_t longitude = IntConverter::int8_to_int32 (test_longitude);
+	      int32_t speed = IntConverter::int8_to_int32 (test_speed);
+	      int32_t timestamp = IntConverter::int8_to_int32 (test_timestamp);
+	      delete[] test_latitude;
+	      delete[] test_longitude;
+	      delete[] test_speed;
+	      delete[] test_timestamp;
+	      std::cout << latitude << ";" << longitude << ";" << speed << ";"
+		  << timestamp << ";";
 	    }
 
 	  gettimeofday (&end, NULL);
@@ -124,82 +152,59 @@ main (void)
   generator->add_stream (device_b, 6000);
   generator->add_stream (device_c, 4000);
   generator->add_stream (device_d, 10000);
-
-  std::vector<uint16_t> values;
-  values.push_back (16);
-  values.push_back (30);
-  values.push_back (66);
-  values.push_back (100);
-  GCD gcd;
-  std::cout << "Periode Main: " << gcd.gcd_vector (values, 0, values.size ())
-      << std::endl;
-  //sleep(30);
-
   pthread_join (generator_thread, NULL);
-
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();
   DeviceManager* dmanager = loader->get_device_manager ();
-  /*Device* device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
-   Device* device_b = dmanager->get_device (
-   ComponentDescriptorEnum::ACCELEROMETER);
-   Device* device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
-   uint8_t *acc_data, *gyro_data, *compass_data;
-   */
+  std::shared_ptr<Device> device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
+  std::shared_ptr<Device> device_b = dmanager->get_device (
+      ComponentDescriptorEnum::ACCELEROMETER);
+  std::shared_ptr<Device> device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
+  int8_t *acc_data, *gyro_data, *compass_data, *gps_data;
   timeval begin, end;
-  GPS* gps = dynamic_cast<GPS*> (dmanager->get_device (
-	  ComponentDescriptorEnum::GPS_POSITION));
-  gps_data_t* gps_data = new gps_data_t;
+  GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
+		  ComponentDescriptorEnum::GPS_POSITION))));
   bool active = true;
   while (active)
     {
-      /* if (device_a != NULL)
-       {
-       gyro_data = device_a->read_data ();
-       sleep (1);
-       }
-       else
-       {
-       active = false;
-       }
-       if (device_b != NULL)
-       {
-       acc_data = device_b->read_data ();
-       sleep (1);
-       }
-       else
-       {
-       active = false;
-       }
+//      if (device_a != NULL)
+//	{
+//	  gyro_data = device_a->read_data ();
+//	  sleep (1);
+//	}
+//      else
+//	{
+//	  active = false;
+//	}
+//      if (device_b != NULL)
+//	{
+//	  acc_data = device_b->read_data ();
+//	  sleep (1);
+//	}
+//      else
+//	{
+//	  active = false;
+//	}
+//      if (device_c != NULL)
+//	{
+//	  compass_data = device_c->read_data ();
+//	  sleep (1);
+//	}
+//      else
+//	{
+//	  active = false;
+//	}
 
-       if (device_c != NULL)
-       {
-       compass_data = device_c->read_data ();
-       sleep (1);
-       }
-       else
-       {
-       active = false;
-       }
-       */
       if(gps != NULL)
 	{
 	  gettimeofday(&begin, NULL);
-	  if(gps->read_data (gps_data) > 0)
-	    {
-	      std::cout << "Latitude: " << gps_data->latitude << std::endl;
-	      std::cout << "Longitude: " << gps_data->longitude << std::endl;
-	      std::cout << "Speed: " << gps_data->speed << std::endl;
-	      std::cout << "Timestamp: " << gps_data->timestamp.tv_sec << std::endl;
-	    }
-
+	  gps_data = gps->read_data ();
 	  gettimeofday(&end, NULL);
 	  std::cout << "Needed Time to get Data in ms " <<
 	  (end.tv_sec - begin.tv_sec)*1000 + (end.tv_usec - begin.tv_usec)/1000 <<
 	  std::endl;
 	}
-      //sleep(6);
     }
 #endif
   return 0;

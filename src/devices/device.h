@@ -86,19 +86,19 @@ public:
    * @return on success returns a pointer with allocated memory leading to the data,
    * otherwise returns a null pointer.
    */
-  virtual uint8_t*
-  read_data ()
-  {
-    uint8_t* data_ptr = NULL;
-    return data_ptr;
-  }
+  virtual int8_t*
+  read_data () = 0;
+//  {
+//    uint8_t* data_ptr = NULL;
+//    return data_ptr;
+//  }
   /**
    * Writes data from a device for a given length
    * @param buf is the buffer with the data to write
    * @param length is the length of the written bytes
    * @return length on success, otherwise -1 on an Error
    */
-  int8_t
+  virtual int8_t
   write (unsigned char* buf, int16_t length)
   {
     if (buf == 0 || length < 1)

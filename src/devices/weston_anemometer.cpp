@@ -16,10 +16,10 @@ WestonAnemometer::WestonAnemometer (I2CParameter *interface_parameter, Component
   set_component_descriptor (descriptor);
   init ();
 }
-uint8_t*
+int8_t*
 WestonAnemometer::read_data ()
 {
-  uint8_t* data_ptr = NULL;
+  int8_t* data_ptr = NULL;
   return data_ptr;
 }
 WestonAnemometer::~WestonAnemometer ()

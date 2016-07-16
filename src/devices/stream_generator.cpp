@@ -41,7 +41,7 @@ StreamGenerator::add_stream (std::shared_ptr<Device> device, uint16_t period)
     }
   else
     {
-      set_min_period (m_gcd.gcd_vector (m_periods, 0, m_periods.size ()));
+      set_min_period (Calculation::gcd_vector (m_periods, 0, m_periods.size ()));
     }
   std::cout << "Min Period: " << get_min_period () << std::endl;
   set_max_period (stream->get_period ());

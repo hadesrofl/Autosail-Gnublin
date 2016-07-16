@@ -1,3 +1,4 @@
+
 #ifdef _TEST
 #include "gcd_test.h"
 
@@ -35,7 +36,7 @@ bool
 GCDTest::test_gcd ()
 {
   std::vector<uint16_t> values;
-  m_result = m_gcd.gcd (4, 8);
+  m_result = Calculation::gcd (4, 8);
   m_expected = 4;
   return asserter.assert (m_expected, m_result);
 }
@@ -45,7 +46,7 @@ GCDTest::test_length_1 ()
   std::vector<uint16_t> values;
   values.push_back (8);
   m_expected = 8;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 bool
@@ -55,7 +56,7 @@ GCDTest::test_length_2 ()
   values.push_back (8);
   values.push_back (6);
   m_expected = 2;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 bool
@@ -66,7 +67,7 @@ GCDTest::test_length_3 ()
   values.push_back (81);
   values.push_back (27);
   m_expected = 9;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 bool
@@ -78,7 +79,7 @@ GCDTest::test_length_4 ()
   values.push_back (66);
   values.push_back (100);
   m_expected = 1;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 bool
@@ -92,7 +93,7 @@ GCDTest::test_length_6 ()
   values.push_back (6);
   values.push_back (3);
   m_expected = 3;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 bool
@@ -108,7 +109,7 @@ GCDTest::test_length_8 ()
   values.push_back (81);
   values.push_back (243);
   m_expected = 1;
-  m_result = m_gcd.gcd_vector (values, 0, values.size ());
+  m_result = Calculation::gcd_vector (values, 0, values.size ());
   return asserter.assert (m_expected, m_result);
 }
 #endif

@@ -1,11 +1,7 @@
-#include "gcd.h"
+#include "calculation.h"
 
-GCD::GCD ()
-{
-
-}
 uint16_t
-GCD::gcd (uint16_t a, uint16_t b)
+Calculation::gcd (uint16_t a, uint16_t b)
 {
   while (b != 0)
     {
@@ -16,7 +12,7 @@ GCD::gcd (uint16_t a, uint16_t b)
   return a;
 }
 uint16_t
-GCD::gcd_vector (std::vector<uint16_t> vector, uint16_t start, uint16_t end)
+Calculation::gcd_vector (std::vector<uint16_t> vector, uint16_t start, uint16_t end)
 {
   if (start < end)
     {
@@ -37,7 +33,6 @@ GCD::gcd_vector (std::vector<uint16_t> vector, uint16_t start, uint16_t end)
       else if (end == 3)
 	{
 	  d1 = gcd (vector.at (0), vector.at (1));
-	  uint32_t tmp = vector.at (2);
 	  return gcd (d1, vector.at (2));
 	}
       // Everything else
@@ -62,9 +57,5 @@ GCD::gcd_vector (std::vector<uint16_t> vector, uint16_t start, uint16_t end)
     }
   // Case for length 1
   return 0 <= start && start < vector.size () ? vector.at (start) : 0;
-}
-GCD::~GCD ()
-{
-
 }
 

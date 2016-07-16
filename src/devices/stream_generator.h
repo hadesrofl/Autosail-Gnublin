@@ -4,7 +4,7 @@
 #include "../utils/timer.h"
 #include <memory>
 #include "../communication/protocol_engine.h"
-#include "../utils/gcd.h"
+#include "../utils/calculation.h"
 #include "stream.h"
 
 /*
@@ -41,10 +41,6 @@ class StreamGenerator
    * @private
    */
 private:
-  /**
-   * GCD to determine the period
-   */
-  GCD m_gcd;
   /**
    * Pointer to the ProtocolEngine for sending frames of data
    */

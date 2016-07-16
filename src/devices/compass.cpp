@@ -1,4 +1,7 @@
 #include "compass.h"
+#ifdef _DEBUG
+#include "../utils/int_converter.h"
+#endif
 
 // Private Functions
 int8_t
@@ -78,33 +81,34 @@ Compass::Compass (I2CParameter *interface_parameter, DeviceConfig gain,
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   init ();
 }
-uint8_t*
+int8_t*
 Compass::read_data ()
 {
   uint8_t register_data[2] =
     { 0 };
-  uint8_t* data = new unsigned char[6];
+  uint8_t* buf = new uint8_t[DeviceConfig::COMPASS_DATA_LENGTH];
+  int8_t* data = new int8_t[DeviceConfig::COMPASS_DATA_LENGTH];
   for (int16_t i = 0;
       i < static_cast<int16_t> (DeviceConfig::COMPASS_DATA_LENGTH); i++)
     {
-      data[i] = 0;
+      buf[i] = 0;
     }
   register_data[0] = COMPASS_X_MSB_REGISTER_ADDR;
   register_data[1] = static_cast<uint8_t> (DeviceConfig::COMPASS_DATA_LENGTH);
   Device::write (register_data, 2);
-  Device::read (data, 6);
-  int16_t x = (data[1] << 8) | data[0];
-  int16_t z = (data[3] << 8) | data[2];
-  int16_t y = (data[5] << 8) | data[4];
+  Device::read (buf, 6);
+  int16_t x = (buf[1] << 8) | buf[0];
+  int16_t z = (buf[3] << 8) | buf[2];
+  int16_t y = (buf[5] << 8) | buf[4];
   int16_t x_gauss = x * m_scale_factor;
   int16_t z_gauss = z * m_scale_factor;
   int16_t y_gauss = y * m_scale_factor;
-  uint8_t msb_x = x_gauss >> 8;
-  uint8_t lsb_x = x_gauss;
-  uint8_t msb_z = z_gauss >> 8;
-  uint8_t lsb_z = z_gauss;
-  uint8_t msb_y = y_gauss >> 8;
-  uint8_t lsb_y = y_gauss;
+  int8_t msb_x = (uint16_t) x_gauss >> 8;
+  int8_t lsb_x = x_gauss;
+  int8_t msb_z = (uint16_t) z_gauss >> 8;
+  int8_t lsb_z = z_gauss;
+  int8_t msb_y = (uint16_t) y_gauss >> 8;
+  int8_t lsb_y = y_gauss;
 #ifdef _DEBUG
   int16_t check_x = (msb_x << 8) | lsb_x;
   int16_t check_z = (msb_z << 8) | lsb_z;
@@ -112,12 +116,12 @@ Compass::read_data ()
   float x_tesla = x_gauss / 10;
   float z_tesla = z_gauss / 10;
   float y_tesla = y_gauss / 10;
-  std::cout << "X MSB: " << static_cast<int> (data[0]) << " " << std::endl;
-  std::cout << "X LSB: " << static_cast<int> (data[1]) << " " << std::endl;
-  std::cout << "Z MSB: " << static_cast<int> (data[2]) << " " << std::endl;
-  std::cout << "Z LSB: " << static_cast<int> (data[3]) << " " << std::endl;
-  std::cout << "Y MSB: " << static_cast<int> (data[4]) << " " << std::endl;
-  std::cout << "Y LSB: " << static_cast<int> (data[5]) << " " << std::endl;
+  std::cout << "X MSB: " << static_cast<int> (buf[0]) << " " << std::endl;
+  std::cout << "X LSB: " << static_cast<int> (buf[1]) << " " << std::endl;
+  std::cout << "Z MSB: " << static_cast<int> (buf[2]) << " " << std::endl;
+  std::cout << "Z LSB: " << static_cast<int> (buf[3]) << " " << std::endl;
+  std::cout << "Y MSB: " << static_cast<int> (buf[4]) << " " << std::endl;
+  std::cout << "Y LSB: " << static_cast<int> (buf[5]) << " " << std::endl;
   std::cout << "X 16 bit: " << x << std::endl;
   std::cout << "Z 16 bit: " << z << std::endl;
   std::cout << "Y 16 bit: " << y << std::endl;
@@ -137,6 +141,30 @@ Compass::read_data ()
   data[3] = lsb_z;
   data[4] = msb_y;
   data[5] = lsb_y;
+#ifdef _DEBUG
+  int8_t* tmp = new int8_t[2];
+  tmp[0] = msb_x;
+  tmp[1] = lsb_x;
+  int16_t test_x = IntConverter::int8_to_int16(tmp);
+  tmp[0] = msb_y;
+  tmp[1] = lsb_y;
+  int16_t test_y = IntConverter::int8_to_int16(tmp);
+  tmp[0] = msb_z;
+  tmp[1] = lsb_z;
+  int16_t test_z = IntConverter::int8_to_int16(tmp);
+  delete[] tmp;
+  std::cout << "Returned:" <<std::endl;
+  std::cout << "X-Axis LSB: " << static_cast<int32_t>(data[1]) << " " << std::endl;
+  std::cout << "X-Axis MSB: " << static_cast<int32_t>(data[0]) << " " << std::endl;
+  std::cout << "Y-Axis LSB: " << static_cast<int32_t>(data[3]) << " " << std::endl;
+  std::cout << "Y-Axis MSB: " << static_cast<int32_t>(data[2]) << " " << std::endl;
+  std::cout << "Z-Axis LSB: " << static_cast<int32_t>(data[5]) << " " << std::endl;
+  std::cout << "Z-Axis MSB: " << static_cast<int32_t>(data[4]) << " " << std::endl;
+  std::cout << "Test X: " << test_x << " " << std::endl;
+  std::cout << "Test Y: " << test_y << " " << std::endl;
+  std::cout << "Test Z: " << test_z << " " << std::endl;
+#endif
+  delete[] buf;
   return data;
 }
 Compass::~Compass ()

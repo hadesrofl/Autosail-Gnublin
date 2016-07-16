@@ -35,9 +35,9 @@
  * @brief Class for a Accelerometer Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
- * @version 0.3
+ * @version 0.35
  */
-class Accelerometer : virtual public Device
+class Accelerometer :  public Device
 {
   /**
    * @private
@@ -78,7 +78,7 @@ public:
    * Can be combined to a 2 byte value with: int16_t tsb_x = (data[0] << 8) | data[1];
    * @return pointer with axis values in mg as stated above.
    */
-  uint8_t*
+  int8_t*
   read_data ();
   /**
    * Destructor

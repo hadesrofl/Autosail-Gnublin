@@ -35,7 +35,7 @@ public:
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
    * pointer with allocated memory.
    */
-  uint8_t* read_data();
+  int8_t* read_data();
   /**
    * Destructor
    */

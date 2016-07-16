@@ -10,6 +10,7 @@
 #include <fstream>
 #include <unistd.h>
 #include "gps_data.h"
+#include "../utils/int_converter.h"
 
 /**
  * Size of a command to set via system command
@@ -38,7 +39,7 @@
  * @brief Class for a GPS Module. Uses a Serial Port for communication but has some
  * functions to handle and transform received data.
  * @author Rene Kremer
- * @version 0.3
+ * @version 0.35
  */
 class GPS : virtual public Device
 {
@@ -62,34 +63,13 @@ public:
    */
   GPS (SerialParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
-   * Reads data from the gps for a given length
-   * @param buf is the buffer to save the data into
-   * @param length is the length of byte to read
-   * @return length on success, otherwise -1 on an Error
+   * Reads data via the SUB_PROGRAM and the TMP_DATA_FILE into an int8_t pointer. Index
+   * 0 to 3 are int8_t of the int32_t value for latitude, 4 to 7 for longitude,
+   * 8 to 11 speed and 12 to 15 for timestamp.
+   * @return an 16 byte pointer of int8_t containing 4 int32_t byte splitted in int8_t
    */
-  int8_t
-  read (uint8_t* buf, int16_t length);
-  /**
-   * XXX UNUSED
-   */
-  uint8_t*
+  int8_t*
   read_data ();
-  /**
-   * TODO: Check if own thread is a faster solution to calling this function
-   * Reads data via the SUB_PROGRAM and the TMP_DATA_FILE into a gps_data_t pointer
-   * @param data is a pointer of gps_data_t
-   * @return positive integer on success, otherwise a negative integer
-   */
-  int8_t
-  read_data (gps_data_t *data);
-  /**
-   * Writes data from the gps for a given length
-   * @param buf is the buffer with the data to write
-   * @param length is the length of the written bytes
-   * @return length on success, otherwise -1 on an Error
-   */
-  int8_t
-  write (uint8_t* buf, int16_t length);
   /**
    * Destructor
    */
