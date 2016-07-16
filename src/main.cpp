@@ -123,7 +123,7 @@ int
 main (void)
 {
 #ifdef _TEST
-  //tests ();
+//  tests ();
   //gps_csv ();
   Loader* loader = new Loader ();
   DeviceManager* dmanager = loader->get_device_manager ();
@@ -133,8 +133,8 @@ main (void)
       ComponentDescriptorEnum::ACCELEROMETER);
   std::shared_ptr<Device> device_c = dmanager->get_device (
       ComponentDescriptorEnum::COMPASS);
-  std::shared_ptr<Device> device_d = dmanager->get_device (
-      ComponentDescriptorEnum::GPS_POSITION);
+//  std::shared_ptr<Device> device_d = dmanager->get_device (
+//      ComponentDescriptorEnum::GPS_POSITION);
   StreamGenerator* generator = loader->get_stream_generator ();
 
   stream_generator_thread_param_t* generator_params =
@@ -145,13 +145,13 @@ main (void)
   pthread_t generator_thread;
   //std::cout << "Before Threads" << std::endl;
   //std::cout << "Adding Gyroscope" << std::endl;
-  generator->add_stream (device_a, 2000);
+  generator->add_stream (device_a, 2500);
 
   pthread_create (&generator_thread, NULL, generator->run_generator,
 		  generator_params);
-  generator->add_stream (device_b, 6000);
-  generator->add_stream (device_c, 4000);
-  generator->add_stream (device_d, 10000);
+  generator->add_stream (device_b, 10000);
+  generator->add_stream (device_c, 5000);
+//  generator->add_stream (device_d, 10000);
   pthread_join (generator_thread, NULL);
 #endif
 #ifndef _TEST

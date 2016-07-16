@@ -56,7 +56,7 @@ private:
   /**
    * Counts how many interrupts happened
    */
-  static uint16_t m_interrupt_counter;
+  static uint32_t m_interrupt_counter;
   /**
    * Timer that causes the software interrupt in Linux
    */
@@ -64,12 +64,12 @@ private:
   /**
    * Shortest period in ms for a stream to be generated
    */
-  uint16_t m_min_period;
+  static uint32_t m_min_period;
   /**
    * Max value for the counter (longest period) to check if one cycle through all
    * streams is finished or there are some streams left to handle
    */
-  uint16_t m_max_period;
+  uint32_t m_max_period;
   /**
    * Region Mutex for accessing resources
    */
@@ -86,22 +86,29 @@ private:
    * @param period is the time for the timer to be called
    */
   inline void
-  set_min_period (uint16_t period)
+  set_min_period (uint32_t period)
   {
-    std::cout << "Period to set: " << period << std::endl;
+    if (period <= m_min_period || m_min_period == 0)
+      {
+	std::cout << "Period set to: " << period << std::endl;
 	m_min_period = period;
-	//m_timer->set_timer (m_min_period);
+	if (m_timer->set_timer (m_min_period) == m_min_period)
+	  {
+	    std::cout << "Set Timer!" << std::endl;
+	  }
+      }
   }
   /**
    * Sets the longest period
    * @param period is the new longest period
    */
   inline void
-  set_max_period (uint16_t period)
+  set_max_period (uint32_t period)
   {
-    if (m_max_period <= period)
+    if (m_max_period < period)
       {
 	m_max_period = period;
+	std::cout << "Set Max Period to: " << m_max_period << std::endl;
       }
   }
   /**
@@ -118,7 +125,7 @@ public:
    * @param period is the time interval to send data of the device
    */
   void
-  add_stream (std::shared_ptr<Device> device, uint16_t period);
+  add_stream (std::shared_ptr<Device> device, uint32_t period);
   /**
    *
    */
@@ -137,7 +144,7 @@ public:
    * Gets the shortest period of streams
    * @return the shortest period in the list of streams
    */
-  uint16_t
+  uint32_t
   get_min_period () const
   {
     return m_min_period;
@@ -146,7 +153,7 @@ public:
    * Gets the longest period of streams
    * @return the longest period in the list of streams
    */
-  uint16_t
+  uint32_t
   get_max_period () const
   {
     return m_max_period;
@@ -155,7 +162,7 @@ public:
    * Gets the longest period of streams
    * @return the longest period in the list of streams
    */
-  uint16_t
+  uint32_t
   get_interrupt_counter () const
   {
     return m_interrupt_counter;
