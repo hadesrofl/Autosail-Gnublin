@@ -55,6 +55,12 @@ public:
   TLVFrame*
   create_frame ();
   /**
+   * Sends a frame of a device and a list of data
+   * @param device is a pointer to the device where the data comes from
+   * @param data is a list of data from the Device
+   */
+  void send_frame(std::shared_ptr<Device> device, std::vector<int8_t> data);
+  /**
    * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
    * calls the function described by the command in the Frame.
    * @param frame is a pointer to the frame which shall be interpreted

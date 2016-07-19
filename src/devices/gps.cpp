@@ -36,13 +36,14 @@ GPS::GPS (SerialParameter *interface_parameter, ComponentDescriptor* descriptor)
 		  interface_parameter->get_baudrate ()));
   set_component_descriptor (descriptor);
   m_device_parameter = std::unique_ptr<SerialParameter> (interface_parameter);
+  m_datastructure_id = DataStructureIdentifier::INT32;
   init ();
 }
-int8_t*
+std::vector<int8_t>
 GPS::read_data ()
 {
   gps_data_t* raw_data = new gps_data_t;
-  int8_t* data = new int8_t[16];
+  std::vector<int8_t> data;
   char command[COMMAND_SIZE];
   snprintf (command, COMMAND_SIZE, "%s > %s", SUB_PROGRAM, TMP_DATA_FILE);
   std::ifstream source;
@@ -63,7 +64,7 @@ GPS::read_data ()
 #ifdef _DEBUG
       std::cout << "GPS Read End" << std::endl;
 #endif
-      return NULL;
+      return data;
     }
   else
     {
@@ -104,19 +105,19 @@ GPS::read_data ()
 
       for (int8_t i = 0; i < 4; i++)
 	{
-	  data[i] = tmp_latitude[i];
+	  data.push_back(tmp_latitude[i]);
 	}
-      for (int8_t i = 4; i < 8; i++)
+      for (int8_t i = 0; i < 4; i++)
 	{
-	  data[i] = tmp_longitude[i - 4];
+	  data.push_back(tmp_longitude[i]);
 	}
-      for (int8_t i = 8; i < 12; i++)
+      for (int8_t i = 0; i < 4; i++)
 	{
-	  data[i] = tmp_speed[i - 8];
+	  data.push_back(tmp_speed[i]);
 	}
-      for (int8_t i = 12; i < 16; i++)
+      for (int8_t i = 0; i < 4; i++)
 	{
-	  data[i] = tmp_timestamp[i - 12];
+	  data.push_back(tmp_timestamp[i]);
 	}
 #ifdef _DEBUG
       int8_t* test_latitude = new int8_t[4];

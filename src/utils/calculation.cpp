@@ -1,7 +1,7 @@
 #include "calculation.h"
 
-uint16_t
-Calculation::gcd (uint16_t a, uint16_t b)
+uint32_t
+Calculation::gcd (uint32_t a, uint32_t b)
 {
   while (b != 0)
     {
@@ -11,8 +11,8 @@ Calculation::gcd (uint16_t a, uint16_t b)
     }
   return a;
 }
-uint16_t
-Calculation::gcd_vector (std::vector<uint16_t> vector, uint16_t start, uint16_t end)
+uint32_t
+Calculation::gcd_vector (std::vector<uint32_t> vector, uint32_t start, uint32_t end)
 {
   if (start < end)
     {

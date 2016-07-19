@@ -15,11 +15,11 @@ Hygrometer::Hygrometer (I2CParameter *interface_parameter, ComponentDescriptor* 
   m_device_parameter = std::unique_ptr<I2CParameter>(interface_parameter);
   init();
 }
-int8_t*
+std::vector<int8_t>
 Hygrometer::read_data ()
 {
-  int8_t* data_ptr = NULL;
-  return data_ptr;
+  std::vector<int8_t> data;
+  return data;
 }
 Hygrometer::~Hygrometer ()
 {

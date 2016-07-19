@@ -2,6 +2,7 @@
 #define DEVICES_STREAM_GENERATOR_THREAD_PARAMS_H_
 
 #include "stream_generator.h"
+#include <memory>
 
 /**
  * @file
@@ -13,7 +14,10 @@
  */
 struct stream_generator_thread_param_t
 {
-  StreamGenerator* generator_ptr;
+  /**
+   * Pointer of the StreamGenerator
+   */
+  std::shared_ptr<StreamGenerator> generator_ptr;
 };
 
 

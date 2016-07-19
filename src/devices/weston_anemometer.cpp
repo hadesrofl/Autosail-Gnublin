@@ -14,13 +14,14 @@ WestonAnemometer::WestonAnemometer (I2CParameter *interface_parameter, Component
       new I2C (interface_parameter->get_device_file (),
 	       interface_parameter->get_address ()));
   set_component_descriptor (descriptor);
+  m_datastructure_id = DataStructureIdentifier::INT16;
   init ();
 }
-int8_t*
+std::vector<int8_t>
 WestonAnemometer::read_data ()
 {
-  int8_t* data_ptr = NULL;
-  return data_ptr;
+  std::vector<int8_t> data;
+  return data;
 }
 WestonAnemometer::~WestonAnemometer ()
 {

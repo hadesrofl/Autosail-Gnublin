@@ -70,15 +70,15 @@ public:
 		 ComponentDescriptor* descriptor);
   /**
    * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
-   * pointer with allocated memory. The raw values will be transformed to mg where index
+   * list with allocated memory. The raw values will be transformed to mg where index
    * 0 and 1 are for the x-axis, 2 and 3 for y-axis, 4 and 5 for z-axis.
    *
    * Equal index contains the msb, odd index lsb of the axis.
    *
    * Can be combined to a 2 byte value with: int16_t tsb_x = (data[0] << 8) | data[1];
-   * @return pointer with axis values in mg as stated above.
+   * @return list with axis values in mg as stated above.
    */
-  int8_t*
+  std::vector<int8_t>
   read_data ();
   /**
    * Destructor

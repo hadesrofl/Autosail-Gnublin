@@ -3,9 +3,11 @@
 
 #include "../interfaces/interface.h"
 #include <iostream>
+#include <vector>
 
 #include "device_config.h"
 #include "../communication/component_descriptor.h"
+#include "../communication/datastructure_identifier.h"
 #include "interface_parameter.h"
 
 /**
@@ -38,6 +40,10 @@ protected:
    * Pointer to the ComponentDescriptor of the device
    */
   std::shared_ptr<ComponentDescriptor> m_descriptor;
+  /**
+   * Identifier to determine how to interpret the data get by this Device
+   */
+  DataStructureIdentifier m_datastructure_id;
   /**
    * Parameter of the Devices Interface
    */
@@ -83,10 +89,10 @@ public:
   }
   /**
    * Virtual Function: Reads all data from the device
-   * @return on success returns a pointer with allocated memory leading to the data,
+   * @return on success returns a list with allocated memory leading to the data,
    * otherwise returns a null pointer.
    */
-  virtual int8_t*
+  virtual std::vector<int8_t>
   read_data () = 0;
 //  {
 //    uint8_t* data_ptr = NULL;
@@ -135,6 +141,41 @@ public:
   get_device_parameter () const
   {
     return &(*m_device_parameter);
+  }
+  /**
+   * Gets the DataStructureIdentifier to determine how to interpret the read data
+   * by this Device
+   * @return the DataStructureIdentifier
+   */
+  inline DataStructureIdentifier
+  get_datastructure_id () const
+  {
+    return m_datastructure_id;
+  }
+  /**
+   * Checks if this Device and a given Device are the same.
+   * Therefore compares the ComponentDescriptor of the Devices
+   * @param device is a pointer of a Device
+   * @return true if the given Device and this Device are the same, otherwise false
+   */
+  bool
+  equals (std::shared_ptr<Device> device)
+  {
+    std::shared_ptr<ComponentDescriptor> descriptor =
+	device->get_component_descriptor ();
+    if (m_descriptor->get_component_class ()
+	== descriptor->get_component_class ()
+	&& m_descriptor->get_component_attribute ()
+	    == descriptor->get_component_attribute ()
+	&& m_descriptor->get_component_number ()
+	&& descriptor->get_component_number ())
+      {
+	return true;
+      }
+    else
+      {
+	return false;
+      }
   }
   /**
    * Default Destructor

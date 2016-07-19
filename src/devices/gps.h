@@ -63,12 +63,12 @@ public:
    */
   GPS (SerialParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
-   * Reads data via the SUB_PROGRAM and the TMP_DATA_FILE into an int8_t pointer. Index
-   * 0 to 3 are int8_t of the int32_t value for latitude, 4 to 7 for longitude,
+   * Reads data via the SUB_PROGRAM and the TMP_DATA_FILE into an list of int8_t.
+   * Index 0 to 3 are int8_t of the int32_t value for latitude, 4 to 7 for longitude,
    * 8 to 11 speed and 12 to 15 for timestamp.
-   * @return an 16 byte pointer of int8_t containing 4 int32_t byte splitted in int8_t
+   * @return a list of int8_t containing 4 int32_t byte splitted in int8_t
    */
-  int8_t*
+  std::vector<int8_t>
   read_data ();
   /**
    * Destructor

@@ -52,7 +52,7 @@ private:
   /**
    * List of Periods to determine gcd and max value from
    */
-  std::vector<uint16_t> m_periods;
+  std::vector<uint32_t> m_periods;
   /**
    * Counts how many interrupts happened
    */
@@ -88,16 +88,56 @@ private:
   inline void
   set_min_period (uint32_t period)
   {
-    if (period <= m_min_period || m_min_period == 0)
+#ifdef _DEBUG
+    std::cout << "Period set to: " << period << std::endl;
+#endif
+    m_min_period = period;
+    m_timer->set_timer (m_min_period);
+#ifdef _DEBUG
+    std::cout << "Set Timer!" << std::endl;
+#endif
+  }
+  /**
+   * Checks the list of periods for the longest period and sets it as max period.
+   * Will be called if a period is removed as there needs to be a check
+   * if the max period is still the same.
+   * @param period is the removed period
+   * @return the max period, which was found, on success or 0 on a fail
+   */
+  inline uint32_t
+  check_max_period (uint32_t period)
+  {
+    uint32_t max = 0;
+    // nothing changes
+    if (m_max_period > period)
       {
-	std::cout << "Period set to: " << period << std::endl;
-	m_min_period = period;
-	if (m_timer->set_timer (m_min_period) == m_min_period)
+	max = m_max_period;
+      }
+    // something changes
+    else
+      {
+	for (uint8_t i = 0; i < m_periods.size (); i++)
 	  {
-	    std::cout << "Set Timer!" << std::endl;
+	    if (max < m_periods.at (i))
+	      {
+		max = m_periods.at (i);
+	      }
+	  }
+	if (max != 0)
+	  {
+	    m_max_period = max;
 	  }
       }
+    return max;
   }
+  /**
+   * Lookup a Device in the list of Streams and return its Stream
+   * @param device is a pointer to the Device which shall be found in the Streams
+   * @return a pointer to the Stream containing the device or NULL,
+   * if there is no such device in the Streams
+   */
+  Stream*
+  lookup_device (std::shared_ptr<Device> device);
   /**
    * Sets the longest period
    * @param period is the new longest period
@@ -108,7 +148,9 @@ private:
     if (m_max_period < period)
       {
 	m_max_period = period;
+#ifdef _DEBUG
 	std::cout << "Set Max Period to: " << m_max_period << std::endl;
+#endif
       }
   }
   /**
@@ -123,11 +165,20 @@ public:
    * Adds a device with a period to the stream generator
    * @param device is a pointer to the Device to watch over
    * @param period is the time interval to send data of the device
+   * @return 1 on success, otherwise -1
    */
-  void
+  int8_t
   add_stream (std::shared_ptr<Device> device, uint32_t period);
   /**
-   *
+   * Disables a Stream
+   * @param device is a pointer to the device of the Stream
+   * @return 1 on success, otherwise false
+   */
+  int8_t
+  disable_stream (std::shared_ptr<Device> device);
+  /**
+   * Function for a thread to run the generator and collect data from the streams
+   * @param params is the stream_generator_thread_param_t for this thread
    */
   static void *
   run_generator (void* params);

@@ -1,4 +1,3 @@
-
 #ifdef _TEST
 #include "gcd_test.h"
 
@@ -43,7 +42,7 @@ GCDTest::test_gcd ()
 bool
 GCDTest::test_length_1 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (8);
   m_expected = 8;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
@@ -52,7 +51,7 @@ GCDTest::test_length_1 ()
 bool
 GCDTest::test_length_2 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (8);
   values.push_back (6);
   m_expected = 2;
@@ -62,7 +61,7 @@ GCDTest::test_length_2 ()
 bool
 GCDTest::test_length_3 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (9);
   values.push_back (81);
   values.push_back (27);
@@ -73,7 +72,7 @@ GCDTest::test_length_3 ()
 bool
 GCDTest::test_length_4 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (15);
   values.push_back (30);
   values.push_back (66);
@@ -85,7 +84,7 @@ GCDTest::test_length_4 ()
 bool
 GCDTest::test_length_6 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (15);
   values.push_back (21);
   values.push_back (9);
@@ -99,7 +98,7 @@ GCDTest::test_length_6 ()
 bool
 GCDTest::test_length_8 ()
 {
-  std::vector<uint16_t> values;
+  std::vector<uint32_t> values;
   values.push_back (16);
   values.push_back (8);
   values.push_back (12);

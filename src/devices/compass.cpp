@@ -79,15 +79,16 @@ Compass::Compass (I2CParameter *interface_parameter, DeviceConfig gain,
   set_component_descriptor (descriptor);
   m_gain = gain;
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
+  m_datastructure_id = DataStructureIdentifier::INT16;
   init ();
 }
-int8_t*
+std::vector<int8_t>
 Compass::read_data ()
 {
   uint8_t register_data[2] =
     { 0 };
   uint8_t* buf = new uint8_t[DeviceConfig::COMPASS_DATA_LENGTH];
-  int8_t* data = new int8_t[DeviceConfig::COMPASS_DATA_LENGTH];
+  std::vector<int8_t> data;
   for (int16_t i = 0;
       i < static_cast<int16_t> (DeviceConfig::COMPASS_DATA_LENGTH); i++)
     {
@@ -135,12 +136,12 @@ Compass::read_data ()
   std::cout << "Z uTesla: " << z_tesla << std::endl;
   std::cout << "Y uTesla: " << y_tesla << std::endl;
 #endif
-  data[0] = msb_x;
-  data[1] = lsb_x;
-  data[2] = msb_z;
-  data[3] = lsb_z;
-  data[4] = msb_y;
-  data[5] = lsb_y;
+  data.push_back(msb_x);
+  data.push_back(lsb_x);
+  data.push_back(msb_z);
+  data.push_back(lsb_z);
+  data.push_back(msb_y);
+  data.push_back(lsb_y);
 #ifdef _DEBUG
   int8_t* tmp = new int8_t[2];
   tmp[0] = msb_x;

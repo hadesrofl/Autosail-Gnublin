@@ -63,17 +63,18 @@ Accelerometer::Accelerometer (I2CParameter *interface_parameter,
   m_device_parameter = std::unique_ptr<I2CParameter> (interface_parameter);
   set_component_descriptor (descriptor);
   m_range = range;
+  m_datastructure_id = DataStructureIdentifier::INT16;
   init ();
 }
 
-int8_t*
+std::vector<int8_t>
 Accelerometer::read_data ()
 {
   //Set Register Pointer to first Data Register
   uint8_t register_address = ACC_X_LSB_REGISTER_ADDR;
   Device::write (&register_address, 1);
   uint8_t* buf = new uint8_t[DeviceConfig::ACC_DATA_LENGTH];
-  int8_t* data = new int8_t[DeviceConfig::ACC_DATA_LENGTH];
+  std::vector<int8_t> data;
   Device::read (buf, static_cast<int16_t> (DeviceConfig::ACC_DATA_LENGTH));
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (buf[1] << 8) | buf[0];
@@ -131,12 +132,12 @@ Accelerometer::read_data ()
   std::cout << "Z-Axis together as int16: " << static_cast<int16_t> (tsb_z)
   << std::endl;
 #endif
-  data[0] = msb_x;
-  data[1] = lsb_x;
-  data[2] = msb_y;
-  data[3] = lsb_y;
-  data[4] = msb_z;
-  data[5] = lsb_z;
+  data.push_back(msb_x);
+  data.push_back(lsb_x);
+  data.push_back(msb_y);
+  data.push_back(lsb_y);
+  data.push_back(msb_z);
+  data.push_back(lsb_z);
 #ifdef _DEBUG
   int8_t* tmp = new int8_t[2];
   tmp[0] = msb_x;

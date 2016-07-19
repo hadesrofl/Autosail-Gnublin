@@ -29,6 +29,11 @@ TLVEEngine::create_frame ()
   return new TLVFrame ();
 }
 void
+TLVEEngine::send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data)
+{
+
+}
+void
 TLVEEngine::interpret_frame (Frame* frame)
 {
   uint8_t communication_number =

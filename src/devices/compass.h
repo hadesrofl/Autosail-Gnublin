@@ -70,9 +70,9 @@ public:
   Compass (I2CParameter *interface_parameter, DeviceConfig gain, ComponentDescriptor* descriptor);
   /**
    * Reads the Data X, Y and Z Register of the Compass and returns them as a
-   * pointer with allocated memory.
+   * list with allocated memory.
    */
-  int8_t*
+  std::vector<int8_t>
   read_data ();
   /**
    * Destructor

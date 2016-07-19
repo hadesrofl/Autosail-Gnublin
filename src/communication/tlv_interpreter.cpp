@@ -7,7 +7,8 @@ TLVInterpreter::TLVInterpreter ()
 Frame*
 TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 {
-  uint8_t data_structure_id = frame->get_attribute () >> 5;
+  DataStructureIdentifier data_structure_id =
+      static_cast<DataStructureIdentifier> (frame->get_attribute () >> 5);
   std::shared_ptr<ComponentDescriptor> descriptor =
       device->get_component_descriptor ();
   ComponentDescriptorEnum descriptor_enum =

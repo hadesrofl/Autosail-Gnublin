@@ -27,8 +27,8 @@ bool
 CommunicationTableTest::communication_table_standard_test()
   {
     Loader* loader = new Loader();
-    DeviceManager* dmanager = loader->get_device_manager();
-    ProtocolEngine* engine = loader->get_protocol_engine();
+    std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager();
+    std::shared_ptr<ProtocolEngine> engine = loader->get_protocol_engine();
     std::vector<bool> asserts;
     Asserter asserter;
     bool passed;

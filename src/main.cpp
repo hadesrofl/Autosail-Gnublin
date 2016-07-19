@@ -16,7 +16,8 @@ tests ()
   GCDTest gcd_test;
   CommunicationTableTest comm_table_test;
   TimerTest timer_test;
-  bool passed = gcd_test.test_cases ();
+  bool passed;
+  passed = gcd_test.test_cases ();
   if (passed == true)
     {
       std::cout << "GCD passed!" << std::endl;
@@ -65,11 +66,11 @@ void
 gps_csv ()
 {
   Loader* loader = new Loader ();
-  DeviceManager* dmanager = loader->get_device_manager ();
+  std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
   timeval begin, end;
   GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
       ComponentDescriptorEnum::GPS_POSITION))));
-  int8_t* data = new int8_t[16];
+  std::vector<int8_t> data;
   std::cout << "Latitude;Longitude;Speed;Timestamp;Needed Time;" << std::endl;
   for (int32_t i = 0; i < 1000; i++)
     {
@@ -77,7 +78,7 @@ gps_csv ()
 	{
 	  gettimeofday (&begin, NULL);
 	  data = gps->read_data ();
-	  if (data != NULL)
+	  if (data.size() == 0)
 	    {
 	      int8_t* test_latitude = new int8_t[4];
 	      test_latitude[0] = data[0];
@@ -123,49 +124,33 @@ int
 main (void)
 {
 #ifdef _TEST
-//  tests ();
+  tests ();
   //gps_csv ();
-  Loader* loader = new Loader ();
-  DeviceManager* dmanager = loader->get_device_manager ();
-  std::shared_ptr<Device> device_a = dmanager->get_device (
-      ComponentDescriptorEnum::GYROSCOPE);
-  std::shared_ptr<Device> device_b = dmanager->get_device (
-      ComponentDescriptorEnum::ACCELEROMETER);
-  std::shared_ptr<Device> device_c = dmanager->get_device (
-      ComponentDescriptorEnum::COMPASS);
-//  std::shared_ptr<Device> device_d = dmanager->get_device (
-//      ComponentDescriptorEnum::GPS_POSITION);
-  StreamGenerator* generator = loader->get_stream_generator ();
-
-  stream_generator_thread_param_t* generator_params =
-      new stream_generator_thread_param_t;
-
-  generator_params->generator_ptr = generator;
-
-  pthread_t generator_thread;
-  //std::cout << "Before Threads" << std::endl;
-  //std::cout << "Adding Gyroscope" << std::endl;
-  generator->add_stream (device_a, 2500);
-
-  pthread_create (&generator_thread, NULL, generator->run_generator,
-		  generator_params);
-  generator->add_stream (device_b, 10000);
-  generator->add_stream (device_c, 5000);
-//  generator->add_stream (device_d, 10000);
-  pthread_join (generator_thread, NULL);
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();
-  DeviceManager* dmanager = loader->get_device_manager ();
+  std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
   std::shared_ptr<Device> device_a = dmanager->get_device (ComponentDescriptorEnum::GYROSCOPE);
   std::shared_ptr<Device> device_b = dmanager->get_device (
       ComponentDescriptorEnum::ACCELEROMETER);
   std::shared_ptr<Device> device_c = dmanager->get_device (ComponentDescriptorEnum::COMPASS);
   int8_t *acc_data, *gyro_data, *compass_data, *gps_data;
   timeval begin, end;
-  GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
-		  ComponentDescriptorEnum::GPS_POSITION))));
+  std::shared_ptr<Device> device_d = dmanager->get_device (
+      ComponentDescriptorEnum::GPS_POSITION);
+  GPS* gps = reinterpret_cast<GPS*> (&(*(device_d)));
   bool active = true;
+  std::shared_ptr<StreamGenerator> generator = loader->get_stream_generator ();
+  stream_generator_thread_param_t* generator_params =
+  new stream_generator_thread_param_t;
+
+  generator_params->generator_ptr = generator;
+
+  pthread_t generator_thread = loader->start_generator ();
+  generator->add_stream (device_a, 2500);
+  generator->add_stream (device_b, 10000);
+  generator->add_stream (device_c, 5000);
+  generator->add_stream (device_d, 10000);
   while (active)
     {
 //      if (device_a != NULL)
@@ -196,16 +181,17 @@ main (void)
 //	  active = false;
 //	}
 
-      if(gps != NULL)
-	{
-	  gettimeofday(&begin, NULL);
-	  gps_data = gps->read_data ();
-	  gettimeofday(&end, NULL);
-	  std::cout << "Needed Time to get Data in ms " <<
-	  (end.tv_sec - begin.tv_sec)*1000 + (end.tv_usec - begin.tv_usec)/1000 <<
-	  std::endl;
-	}
+//      if(gps != NULL)
+//	{
+//	  gettimeofday(&begin, NULL);
+//	  gps_data = gps->read_data ();
+//	  gettimeofday(&end, NULL);
+//	  std::cout << "Needed Time to get Data in ms " <<
+//	  (end.tv_sec - begin.tv_sec)*1000 + (end.tv_usec - begin.tv_usec)/1000 <<
+//	  std::endl;
+//	}
     }
+  pthread_join (generator_thread, NULL);
 #endif
   return 0;
 }

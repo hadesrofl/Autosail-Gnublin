@@ -5,6 +5,7 @@
 #include "component_descriptor_builder.h"
 #include "frame_interpreter.h"
 #include <memory>
+#include "datastructure_identifier.h"
 
 /**
  * Max Communication Numbers to determine array length
@@ -99,6 +100,13 @@ public:
    */
   virtual Frame*
   create_frame () = 0;
+  /**
+   * Sends a frame of a device and a list of data
+   * @param device is a pointer to the device where the data comes from
+   * @param data is a list of data from the Device
+   */
+  virtual void
+  send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data) = 0;
   /**
    * Creates a ComponentDescriptor and returns it. After creation it will be stored
    * in the private vector list of this class.

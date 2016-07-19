@@ -2,12 +2,12 @@
 #define COMMUNICATION_FRAME_INTERPRETER_H_
 
 #include "frame.h"
-#include "data_structure_identifier.h"
 #include "../devices/device.h"
 #include "component_descriptor_enum.h"
 #include "../devices/stream_generator.h"
 #include <memory>
 #include <map>
+#include "datastructure_identifier.h"
 
 /*
  * Forward Declaration because of recursive include of header files

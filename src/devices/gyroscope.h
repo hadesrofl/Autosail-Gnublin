@@ -59,7 +59,7 @@ public:
    * Reads the Data X, Y and Z Register of the Gyroscope and returns them as a
    * pointer with allocated memory.
    */
-  int8_t*
+  std::vector<int8_t>
   read_data ();
   /**
    * Destructor
