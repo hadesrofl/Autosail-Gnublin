@@ -54,10 +54,6 @@ private:
    */
   static pthread_mutex_t m_region_mutex;
   /**
-   * Bool set to true after interrupt occured
-   */
-  bool m_interrupted;
-  /**
    * Number of the Master Select GPIO Pin
    */
   uint8_t m_pin_ms;
@@ -125,7 +121,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to get the current SPI mode
    * @return the current SPI mode
@@ -135,7 +131,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to set the LSB (least significant bit)
    * @param lsb is the least significant bit
@@ -146,7 +142,6 @@ public:
   {
     return 0;
   }
-  ;
 
   /**
    * Inline Function to get the current LSB (least significant bit)
@@ -157,7 +152,6 @@ public:
   {
     return 0;
   }
-  ;
 
   /**
    * Sets the length of bits per word
@@ -169,7 +163,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to get the length of bits per word
    * @return the amount of bits per word
@@ -179,7 +173,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to set the speed of the SPI
    * @param speed is the new speed of the SPI
@@ -190,7 +184,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to get the current speed of the SPI Interface
    * @return the current speed
@@ -200,7 +194,7 @@ public:
   {
     return 0;
   }
-  ;
+
   /**
    * Inline Function to set the chip select
    * @param cs is the new chip select
@@ -211,17 +205,7 @@ public:
   {
     return 0;
   }
-  ;
-  /**
-   * Inline Function to check if an interrupt occured
-   * @return the attribute stating if an interrupt occured or not. True if it did,
-   * otherwise false
-   */
-  inline bool
-  get_interrupt_state ()
-  {
-    return m_interrupted;
-  }
+
   /**
    * Gets the current trigger action
    * @return trigger action set to spi bus

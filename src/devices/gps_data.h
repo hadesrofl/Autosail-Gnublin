@@ -14,6 +14,11 @@
  */
 struct gps_data_t
 {
+  //TODO: Add Fix in GPS Subprogram
+  /**
+   * Mode of the fix (No Fix = 0x00, 2D = 0x01, 3D = 0x02)
+   */
+  int32_t fix_mode;
   /**
    * latitude of the position
    */

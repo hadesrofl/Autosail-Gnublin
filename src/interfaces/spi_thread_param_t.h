@@ -13,7 +13,14 @@
  */
 struct spi_thread_param_t
 {
+  /**
+   * Pointer to the spi device
+   */
   SPIMasterSelect* spi_ptr;
+  /**
+   * Bool to determine if an interrupt occured
+   */
+  bool interrupted;
 };
 
 #endif /* INTERFACES_SPI_THREAD_PARAMS_H_ */

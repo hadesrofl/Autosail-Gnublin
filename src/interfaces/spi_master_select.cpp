@@ -47,7 +47,6 @@ SPIMasterSelect::SPIMasterSelect (char* device_file, uint16_t spi_speed,
       m_pin_ms = 0;
       m_trigger_action = (char*) "";
     }
-  m_interrupted = false;
 }
 
 int16_t
@@ -76,7 +75,7 @@ void *
 SPIMasterSelect::pin_change_interrupt (void* params)
 {
   struct spi_thread_param_t* spi = (struct spi_thread_param_t*) params;
-  spi->spi_ptr->m_interrupted = false;
+  spi->interrupted = false;
   struct pollfd *poll_fd;
   char buf[2];
   char dir[28];
@@ -95,7 +94,7 @@ SPIMasterSelect::pin_change_interrupt (void* params)
       std::cout << "Pin Change Interrupt occured! " << std::endl;
       pthread_mutex_lock (&SPIMasterSelect::m_region_mutex);
       //SPIMasterSelect::m_interrupted = true;
-      spi->spi_ptr->m_interrupted = true;
+      spi->interrupted = true;
       interrupt_counter++;
       pthread_mutex_unlock (&SPIMasterSelect::m_region_mutex);
     }

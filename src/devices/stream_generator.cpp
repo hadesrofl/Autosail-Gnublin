@@ -127,7 +127,9 @@ StreamGenerator::run_generator (void* params)
   std::shared_ptr<StreamGenerator> generator = generator_param->generator_ptr;
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   struct timespec ts;
+#ifdef _DEBUG
   uint32_t last_interrupt = 0;
+#endif
   while (true)
     {
 #ifdef _DEBUG
@@ -180,12 +182,14 @@ StreamGenerator::run_generator (void* params)
 		}
 	    }
 	}
+#ifdef _DEBUG
       if (m_interrupt_counter != last_interrupt)
 	{
 	  last_interrupt = m_interrupt_counter;
 	  std::cout << "Interrupt Counter: " << m_interrupt_counter
 	      << std::endl;
 	}
+#endif
       if (m_interrupt_counter >= generator->get_max_period ())
 	{
 	  m_interrupt_counter = 0;
