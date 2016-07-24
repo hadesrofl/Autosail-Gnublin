@@ -3,6 +3,9 @@
 
 #include "frame.h"
 
+/**
+ * Sync Byte at the end of each frame
+ */
 #define SYNC_BYTE 0x01
 
 class TLVFrame : virtual public Frame
@@ -26,7 +29,7 @@ public:
    * @param length byte of the length of the payload
    * @param payload vector of bytes for the payload of the frame
    */
-  TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length,
+  TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length,
 	    std::vector<uint8_t> payload);
   /**
    * Constructor
@@ -34,7 +37,7 @@ public:
    * @param attribute byte of the attribute field
    * @param length byte of the length of the payload
    */
-  TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length);
+  TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length);
   /**
    * Constructor for an empty Frame
    */

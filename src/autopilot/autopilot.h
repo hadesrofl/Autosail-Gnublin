@@ -25,6 +25,10 @@ class AutoPilot
    */
 private:
   /**
+   * Is the autopilot on or off? Default is false on construction
+   */
+  bool m_on;
+  /**
    * SailRegulator of this AutoPilot
    */
   std::unique_ptr<SailRegulator> sail_regulator;
@@ -48,6 +52,20 @@ public:
    * Destructor
    */
   ~AutoPilot ();
+  /**
+   * Sets AutoPilot on or off
+   * @param on is a boolean defining if the AutoPilot is on or off
+   */
+  inline void autopilot_on(bool on){
+    m_on = on;
+  }
+  /**
+   * Checks if the AutoPilot is on or off
+   * @return true if the autopilot is on, otherwise false
+   */
+  inline bool is_autopilot_on() const{
+    return m_on;
+  }
 };
 
 #endif /* AUTOPILOT_AUTOPILOT_H_ */

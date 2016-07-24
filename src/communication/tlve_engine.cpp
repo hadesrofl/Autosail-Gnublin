@@ -1,8 +1,12 @@
 #include "tlve_engine.h"
 
-TLVEEngine::TLVEEngine ()
+TLVEEngine::TLVEEngine (std::shared_ptr<StreamGenerator> generator,
+			std::shared_ptr<AutoPilot> autopilot,
+			std::vector<uint8_t> protocol_version)
 {
-
+  m_interpreter = std::unique_ptr<TLVInterpreter> (
+      new TLVInterpreter (generator, autopilot, this));
+  m_protocol_version = protocol_version;
 }
 
 TLVFrame*
@@ -12,13 +16,13 @@ TLVEEngine::send_boat_description ()
 }
 
 TLVFrame*
-TLVEEngine::create_frame (uint8_t tag, uint8_t attribute, uint8_t length,
+TLVEEngine::create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 			  std::vector<uint8_t> payload)
 {
   return new TLVFrame (tag, attribute, length, payload);
 }
 TLVFrame*
-TLVEEngine::create_frame (uint8_t tag, uint8_t attribute, uint8_t length)
+TLVEEngine::create_frame (TagEnum tag, uint8_t attribute, uint8_t length)
 {
   return new TLVFrame (tag, attribute, length);
 }
@@ -29,7 +33,8 @@ TLVEEngine::create_frame ()
   return new TLVFrame ();
 }
 void
-TLVEEngine::send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data)
+TLVEEngine::send_frame (std::shared_ptr<Device> device,
+			std::vector<int8_t> data)
 {
 
 }

@@ -2,6 +2,7 @@
 #define COMMUNICATION_TLVE_ENGINE_H_
 
 #include "protocol_engine.h"
+#include "tlv_interpreter.h"
 #include "tlv_frame.h"
 
 class TLVEEngine : virtual public ProtocolEngine
@@ -21,7 +22,9 @@ public:
   /**
    * Constructor
    */
-  TLVEEngine ();
+  TLVEEngine (std::shared_ptr<StreamGenerator> generator,
+	      std::shared_ptr<AutoPilot> autopilot,
+	      std::vector<uint8_t> protocol_version);
   /**
    * Creates a Frame containing the boat description
    * @return the Frame holding the boat description data
@@ -37,7 +40,7 @@ public:
    * @return a TLVFrame packed with the data
    */
   TLVFrame*
-  create_frame (uint8_t tag, uint8_t attribute, uint8_t length,
+  create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 		std::vector<uint8_t> payload);
   /**
    * Creates a TLVFrame and returns a pointer to it
@@ -47,7 +50,7 @@ public:
    * @return a TLVFrame packed with the data
    */
   TLVFrame*
-  create_frame (uint8_t tag, uint8_t attribute, uint8_t length);
+  create_frame (TagEnum tag, uint8_t attribute, uint8_t length);
   /**
    * Creates an empty TLVFrame
    * @return an empty TLVFrame
@@ -59,7 +62,8 @@ public:
    * @param device is a pointer to the device where the data comes from
    * @param data is a list of data from the Device
    */
-  void send_frame(std::shared_ptr<Device> device, std::vector<int8_t> data);
+  void
+  send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data);
   /**
    * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
    * calls the function described by the command in the Frame.
@@ -67,6 +71,23 @@ public:
    */
   void
   interpret_frame (Frame* frame);
+  /**
+   * Sets a new control mode and checks if the mode is one of the three valid ones.
+   * Returns 1 on success, otherwise -1 (non valide mode)
+   * @param control_mode is the new control mode
+   * @return 1 on success, otherwise -1
+   */
+  inline int8_t
+  set_control_mode (uint8_t control_mode)
+  {
+    // 0x00 = Priority Mode, 0x01 = Normal Mode, 0x0F = Fail Safe
+    if (control_mode == 0x00 || control_mode == 0x01 || control_mode == 0x0F)
+      {
+	m_control_mode = control_mode;
+	return 1;
+      }
+    return -1;
+  }
   /**
    * Destructor
    */

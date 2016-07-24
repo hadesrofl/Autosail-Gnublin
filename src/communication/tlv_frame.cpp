@@ -2,11 +2,11 @@
 
 TLVFrame::TLVFrame ()
 {
-  m_tag = 0;
+  m_tag = TagEnum::NO_TAG_DEFINED;
   m_attribute = 0;
   m_length = 0;
 }
-TLVFrame::TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length,
+TLVFrame::TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length,
 		    std::vector<uint8_t> payload)
 {
 
@@ -18,7 +18,7 @@ TLVFrame::TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length,
       m_payload.push_back (payload.at (i));
     }
 }
-TLVFrame::TLVFrame (uint8_t tag, uint8_t attribute, uint8_t length)
+TLVFrame::TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length)
 {
   m_tag = tag;
   m_attribute = attribute;

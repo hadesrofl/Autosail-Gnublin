@@ -5,78 +5,90 @@
 #include <fstream>
 #include <iostream>
 #include <stdint.h>
-
-/**
- * Size of an entry of a component in the config file
- */
-#define DATA_ENTRIES_PER_COMPONENT 6
-
-/**
- * Shift for integer numbers ( 48 in ASCII = 0 )
- */
-#define ASCII_SHIFT 48
-/**
- * Shift for Decimal System Numbers to read one after another
- */
-#define DECIMAL_SHIFT 10
+#include <vector>
+#include <sstream>
+#include <string>
+#include "../communication/communication_protocols.h"
 
 /**
  * Name of default config file for devices
  */
-#define DEVICE_CONFIG "config/devices.conf"
-
+#define FW_CONFIG "config/devices.conf"
 /**
  * @file
  * @class ConfReader
  * @brief Class for a ConfReader. Reads the config file for the devices.
- * A Conf File starts in the first line and then has a name of a device followed
- * by 6 data lines. It ends with a new line. If some data is not specified it has to
- * be coded with '0x00'. Single Digits and Hex are allowed,
- * no double digits supported. Syntax examples:
+ * A conf file defines the protocol type and version given via:
+ *
  * <br/>
  * <br/>
- * Device = [Name]
+ * Protocol: 0x01
  * <br/>
- * Component Class = 0x[First Number][Second Number]
+ * Version: 4 1 5
  * <br/>
- * Component Attribute = 0x[First Number][Second Number]
+ *
+ * Where 0x01 is a protocol mentioned in Protocol. 4 1 5 is the splitted
+ * version number: Major Version 4, Minor Version 15
+ *
+ * Also the config file contains the devices of the boat and their configuration.
+ * The syntax for that is the following:
  * <br/>
- * Component Number = 0x[First Number][Second Number]
  * <br/>
- * Communication Number = 0x[First Number][Second Number]
+ * Device: [Name]
  * <br/>
- * Config = [Number specified in Device_Config]
+ * Component-Class: 0x[First Number][Second Number]
  * <br/>
- * [new line (needed!)]
+ * Component-Attribute: 0x[First Number][Second Number]
  * <br/>
+ * Component-Number: 0x[First Number][Second Number]
+ * <br/>
+ * Communication-Number: 0x[First Number][Second Number]
+ * <br/>
+ * Config: [Number specified in Device_Config]
+ * <br/>
+ * <br/>
+ * Component Class and Attribute is as specified in the protocol. Component
+ * Number is a number of choosing. Communication Number is a number between 1 and 30
+ * in Hex. The same number mustn't used on two devices!
+ * Config is a values as specified in Device_Config.
  *
  * Example Code:
  *  <pre>
  *   <code>
- * Device = Accelerometer
- * Component Class = 0x55
- * Component Attribute = 0x07
- * Component Number = 1
- * Communication Number = 1
- * Config = 2
+ *   Protocol: 0x01
+ *   Version: 4 1 5
  *
- * Device = Compass
- * Component Class = 0x55
- * Component Attribute = 0x06
- * Component Number = 1
- * Communication Number = 2
- * Config = 0
+ *   Device: Accelerometer
+ *   Component-Class: 0x55
+ *   Component-Attribute: 0x07
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x01
+ *   Config: 0x00
  *
- * Device = Gyroscope
- * Component Class = 0x55
- * Component Attribute = 0x05
- * Component Number = 1
- * Communication Number = 3
- * Config = 0
+ *   Device: Compass
+ *   Component-Class: 0x55
+ *   Component-Attribute: 0x06
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x02
+ *   Config: 0x20
+ *
+ *   Device: Gyroscope
+ *   Component-Class: 0x55
+ *   Component-Attribute: 0x05
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x03
+ *   Config: 0
+ *
+ *   Device: GPS
+ *   Component-Class: 0x54
+ *   Component-Attribute: 0x09
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x04
+ *   Config: 0x60
  *   </code>
  *  </pre>
  * @author Rene Kremer
- * @version 0.2
+ * @version 0.3
  */
 class ConfReader
 {
@@ -85,64 +97,32 @@ class ConfReader
    */
 private:
   /**
-   * Map to store the config values to a certain key
+   * List of Bytes for Devices. Will be used in DeviceManager
    */
-  std::vector<uint8_t*> m_config_values;
+  std::vector<uint8_t> m_configs;
+  /**
+   * List of Bytes for Protocol Type and Version Number
+   */
+  std::vector<uint8_t> m_protocol;
   /**
    * File to read
    */
   const char* m_file;
   /**
-   * Stores a line of the config file into the map of values
-   * @param key is the key of this key-value pair
-   * @param value is the value of this key-value pair
-   * @return 1 on success otherwise -1
-   */
-  int8_t
-  store_line (uint8_t* value, uint16_t value_length);
-  /**
-   * Reads a line of the raw config values called m_config_values and adds them to
-   * the vector called values
-   * @param values is a pointer of a vector containing the parsed values
-   * @param index is the current index of m_config_values
-   */
-  void
-  read_line (std::vector<uint8_t> *values, uint32_t index);
-  /**
-   * Reads a given config file. The Id of a Device has to be the same number as given in Sensor_Params.h
-   * With the following Syntax:
-   *
-   * Device = Accelerometer
-   * ID = 0
+   * Reads a given config file
    *
    * @return on success 1, otherwise -1
    */
   int8_t
   read_config ();
   /**
-   * Clears the content of an array for a given length. Writes 0 into the index of the given array
-   * @param array is the array to be cleared
-   * @param length is the length to clear
-   * @return the length of cleared byte
-   */
-  uint16_t
-  clear_array (uint8_t array[], uint16_t length);
-  /**
-   * Checks if an array is empty. An array is empty if there is no other character than 0 stored in every index.
-   * @param array is the array to check
-   * @param length is the length of the array
-   * @return true if it is empty, otherwise false
-   */
-  bool
-  array_is_empty (uint8_t array[], uint16_t length);
-  /**
-   * @protected
-   */
-protected:
-  /**
    * @public
    */
 public:
+  /**
+   * Constructor
+   */
+  ConfReader ();
   /**
    * Constructor
    * @param file is the file to read
@@ -156,12 +136,43 @@ public:
    * Communication Number and Config are 0 if these are not needed
    * (like for non communicating components or devices without configuration)
    */
-  std::vector<uint8_t>
-  get_descriptors ();
+  inline std::vector<uint8_t>
+  get_descriptors () const
+  {
+    return m_configs;
+  }
   /**
-   * Destructor
+   * Gets the protocol type e.g. 'TLVE4' as value of the Protocol Enum
+   * @return the Protocol Enum specified in the conf file. On error returns NULL
    */
-  ~ConfReader ();
-};
+  inline CommunicationProtocol
+  get_protocol () const
+  {
+    if (m_protocol.size () > 0)
+      {
+	return static_cast<CommunicationProtocol> (m_protocol.at (0));
+      }
+    return CommunicationProtocol::UNSUPPORTED_PROTOCOL;
+  }
+  /**
+   * Gets the bytes of the protocol version. The first byte is the major version
+   * number. The second byte the first decimal of the minor version number.
+   * The third byte the second decimal of the minor version number
+   * @return a vector containing the bytes of the protocol version.
+   * On error returns an empty vector
+   */
+  inline std::vector<uint8_t>
+  get_protocol_version () const
+  {
+    std::vector<uint8_t> protocol_version;
+    if (m_protocol.size () == 4)
+      {
+	protocol_version.push_back (m_protocol.at (1));
+	protocol_version.push_back (m_protocol.at (2));
+	protocol_version.push_back (m_protocol.at (3));
+      }
+    return protocol_version;
+  }
 
+};
 #endif /* UTILS_CONF_READER_H_ */

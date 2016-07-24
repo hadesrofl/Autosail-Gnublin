@@ -5,7 +5,8 @@
 #include "component_descriptor_builder.h"
 #include "frame_interpreter.h"
 #include <memory>
-#include "datastructure_identifier.h"
+#include <map>
+#include "communication_protocols.h"
 
 /**
  * Max Communication Numbers to determine array length
@@ -19,6 +20,14 @@
  * Forward Declaration because of recursive include of header files
  */
 class FrameInterpreter;
+/*
+ * Forward Declaration because of recursive include of header files
+ */
+class AutoPilot;
+/*
+ * Forward Declaration because of recursive include of header files
+ */
+class StreamGenerator;
 /**
  * @file
  * @class ProtocolEngine
@@ -42,6 +51,18 @@ private:
    */
 protected:
   /**
+   * Vector of the numbers of the protocol version.
+   * First byte of the vectory is the major version number. The
+   * second byte is the higher number of the minor version number.
+   * The third byte is the lower number of the minor version number.
+   * 0x04 0x01 0x05 = Version 4.15
+   */
+  std::vector<uint8_t> m_protocol_version;
+  /**
+   * Control Mode of the boat as described in the protocol.
+   */
+  uint8_t m_control_mode;
+  /**
    * Builder for the component descriptors
    */
   std::shared_ptr<ComponentDescriptorBuilder> m_descriptor_builder;
@@ -58,14 +79,24 @@ protected:
    */
   std::unique_ptr<FrameInterpreter> m_interpreter;
   /**
+   * Constructor needed for class hierarchy purposes. Shouldn't be called
+   */
+  ProtocolEngine ()
+  {
+    m_control_mode = 0x00;
+  }
+  /**
    * @public
    */
 public:
   /**
    * Constructor
    */
-  ProtocolEngine ()
+  ProtocolEngine (std::shared_ptr<StreamGenerator> generator,
+		  std::shared_ptr<AutoPilot> autopilot,
+		  std::vector<uint8_t> protocol_version)
   {
+    m_control_mode = 0x00;
   }
   /**
    * Gets the description of the boat as specified in the TLVE4-Protocol and sends
@@ -83,7 +114,7 @@ public:
    * @return a Frame packed with the data
    */
   virtual Frame*
-  create_frame (uint8_t tag, uint8_t attribute, uint8_t length,
+  create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 		std::vector<uint8_t> payload) = 0;
   /**
    * Creates a Frame and returns a pointer to it
@@ -93,7 +124,7 @@ public:
    * @return a Frame packed with the data
    */
   virtual Frame*
-  create_frame (uint8_t tag, uint8_t attribute, uint8_t length) = 0;
+  create_frame (TagEnum tag, uint8_t attribute, uint8_t length) = 0;
   /**
    * Creates an empty Frame and returns a pointer to it
    * @return an empty Frame
@@ -203,6 +234,34 @@ public:
 	return m_communication_table_backward[communication_number];
       }
     return NULL;
+  }
+  /**
+   * Returns the current control mode
+   * @return the control mode currently active
+   */
+  inline uint8_t
+  get_control_mode () const
+  {
+    return m_control_mode;
+  }
+  /**
+   * Sets a new control mode and checks if the mode is valid.
+   * Returns 1 on success, otherwise -1 (non valid mode)
+   * @param control_mode is the new control mode
+   * @return 1 on success, otherwise -1
+   */
+  virtual int8_t
+  set_control_mode (uint8_t control_mode) = 0;
+  /**
+   * Returns the 3 bytes list for the major and minor version number of the protocol.
+   * @return a 3 byte list where the first byte is the major version number, the second
+   * byte is the first decimal of the minor version number and the third byte is
+   * the second decimal of the minor version number
+   */
+  inline std::vector<uint8_t>
+  get_protocol_version () const
+  {
+    return m_protocol_version;
   }
   /**
    * Destructor

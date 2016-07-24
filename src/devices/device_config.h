@@ -6,15 +6,33 @@
  * @brief Enum for the params of the devices
  * @details
  * <ul>
- * <li> ACC_ADDR - Address of the Accelerometer ADXL345</li>
- * <li> ACC_DATA_LENGTH - Length of byte to read to get sensor data of the accelerometer</li>
- * <li> COMPASS_ADDR - Address of Digital Compass HMC5883L </li>
- * <li> COMPASS_DATA_LENGTH - Length of byte to read to get sensor data of the compass</li>
- * <li> COMPASS_GAIN_DEFAULT - Default Value of the Gain Range for the Compass </li>
- * <li> GYRO_ADDR - Address of Gyroscope ITG-3200 </li>
- * <li> GPS_BAUD - Baudrate of GPS </li>
- * <li> HYGRO_ADDR - FILLER VALUE Address of Hygrometer </li>
- * <li> WIND_SENSOR_ADDR - FILLER VALUE: Address of WindSensor </li>
+ * 	<li>#ACC_ADDR</li>
+ * 	<li>#ACC_DATA_LENGTH</li>
+ * 	<li>#ACC_RANGE_2G</li>
+ * 	<li>#ACC_RANGE_4G</li>
+ * 	<li>#ACC_RANGE_8G</li>
+ * 	<li>#ACC_RANGE_16G</li>
+ * 	<li>#COMPASS_ADDR</li>
+ * 	<li>#COMPASS_DATA_LENGTH</li>
+ * 	<li>#COMPASS_GAIN_0_8_8_GA</li>
+ * 	<li>#COMPASS_GAIN_1_3_GA</li>
+ * 	<li>#COMPASS_GAIN_1_9_GA</li>
+ * 	<li>#COMPASS_GAIN_2_5_GA</li>
+ * 	<li>#COMPASS_GAIN_4_GA</li>
+ * 	<li>#COMPASS_GAIN_4_7_GA</li>
+ * 	<li>#COMPASS_GAIN_5_6_GA</li>
+ * 	<li>#COMPASS_GAIN_8_1_GA</li>
+ * 	<li>#GYRO_ADDR</li>
+ * 	<li>#GYROSCOPE_DATA_LENGTH</li>
+ * 	<li>#SERIAL_B4800</li>
+ * 	<li>#SERIAL_B9600</li>
+ * 	<li>#SERIAL_B19200</li>
+ * 	<li>#SERIAL_B38400</li>
+ * 	<li>#SERIAL_B57600</li>
+ * 	<li>#SERIAL_B115200</li>
+ *	<li>#HYGRO_ADDR</li>
+ * 	<li>#WIND_SENSOR_ADDR</li>
+ * 	<li>#NUM_CONFIGS</li>
  * </ul>
  * @author Rene Kremer
  * @version 0.3
@@ -111,15 +129,16 @@ enum class DeviceConfig
   /**
    * Serial Baudrate of 38400
    */
-  SERIAL_B57600 = 0x04,
+  SERIAL_B38400 = 0x04,
   /**
    * Serial Baudrate of 38400
    */
-  SERIAL_B115200 = 0x05,
+  SERIAL_B57600 = 0x05,
   /**
    * Serial Baudrate of 38400
    */
-  SERIAL_B38400 = 38400,
+  SERIAL_B115200 = 0x06,
+
   /**
    * FILLER VALUE Address of Hygrometer
    */
@@ -127,7 +146,15 @@ enum class DeviceConfig
   /**
    * FILLER VALUE: Address of WindSensor
    */
-  WIND_SENSOR_ADDR = 0x00
+  WIND_SENSOR_ADDR = 0x00,
+
+  NUM_CONFIGS =
+#ifdef _TEST
+  27
+#endif
+#ifndef _TEST
+  26
+#endif
 };
 
 #endif /* DEVICES_DEVICE_CONFIG_H_ */

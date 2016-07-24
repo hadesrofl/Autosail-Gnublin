@@ -45,6 +45,7 @@ StreamGeneratorTest::stream_test ()
   sleep (6);
   generator->add_stream (device_a, 2500);
   pthread_join (generator_thread, NULL);
+  return true;
 }
 
 StreamGeneratorTest::~StreamGeneratorTest ()

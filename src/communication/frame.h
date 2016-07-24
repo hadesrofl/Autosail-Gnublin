@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stdint.h>
+#include "tag_enum.h"
 
 /**
  * @file
@@ -24,7 +25,7 @@ protected:
   /**
    * Byte containing the tag
    */
-  uint8_t m_tag;
+  TagEnum m_tag;
   /**
    * Byte containing the attribute
    */
@@ -47,7 +48,7 @@ public:
 
   Frame ()
   {
-    m_tag = 0;
+    m_tag = TagEnum::NO_TAG_DEFINED;
     m_attribute = 0;
     m_length = 0;
   }
@@ -55,7 +56,7 @@ public:
    * Gets the tag field
    * @return tag byte of the frame
    */
-  inline uint8_t
+  inline TagEnum
   get_tag () const
   {
     return m_tag;
@@ -65,7 +66,7 @@ public:
    * @param tag is the new tag of the Frame
    */
   inline void
-  set_tag (uint8_t tag)
+  set_tag (TagEnum tag)
   {
     m_tag = tag;
   }

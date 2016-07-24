@@ -4,12 +4,22 @@ Loader::Loader ()
 {
   m_stream_generator = std::shared_ptr<StreamGenerator> (
       new StreamGenerator ());
-  m_protocol_engine = std::shared_ptr<ProtocolEngine> (new TLVEEngine ());
-  //m_autopilot = std::unique_ptr<AutoPilot> (new AutoPilot());
-  ConfReader* reader = new ConfReader (DEVICE_CONFIG);
-  m_device_manager = std::shared_ptr<DeviceManager> (
-      new DeviceManager (&(*m_protocol_engine), reader->get_descriptors ()));
+  m_autopilot = std::shared_ptr<AutoPilot> (new AutoPilot ());
+  ConfReader* reader = new ConfReader (FW_CONFIG);
+  m_protocol_engine = distinguish_protocol (reader->get_protocol (),
+					    reader->get_protocol_version ());
+  if (m_protocol_engine != NULL)
+    {
+      m_device_manager = std::shared_ptr<DeviceManager> (
+	  new DeviceManager (&(*m_protocol_engine),
+			     reader->get_descriptors ()));
+    }
+  else
+    {
+      exit (EXIT_FAILURE);
+    }
   delete reader;
+
 }
 pthread_t
 Loader::start_generator ()
@@ -21,6 +31,31 @@ Loader::start_generator ()
   pthread_create (&generator_thread, NULL, m_stream_generator->run_generator,
 		  generator_params);
   return generator_thread;
+}
+
+std::shared_ptr<ProtocolEngine>
+Loader::distinguish_protocol (CommunicationProtocol protocol,
+			      std::vector<uint8_t> protocol_version)
+{
+  switch (protocol)
+    {
+    case CommunicationProtocol::TLVE4:
+      return std::shared_ptr<ProtocolEngine> (
+	  new TLVEEngine (m_stream_generator, m_autopilot, protocol_version));
+      break;
+    case CommunicationProtocol::TLVE5:
+      break;
+    case CommunicationProtocol::JSON4:
+      break;
+    case CommunicationProtocol::JSON5:
+      break;
+      // Default TLVE4
+    default:
+      return std::shared_ptr<ProtocolEngine> (
+	  new TLVEEngine (m_stream_generator, m_autopilot, protocol_version));
+      break;
+    }
+  return NULL;
 }
 Loader::~Loader ()
 {

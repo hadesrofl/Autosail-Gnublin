@@ -78,7 +78,7 @@ gps_csv ()
 	{
 	  gettimeofday (&begin, NULL);
 	  data = gps->read_data ();
-	  if (data.size() == 0)
+	  if (data.size () == 0)
 	    {
 	      int8_t* test_latitude = new int8_t[4];
 	      test_latitude[0] = data[0];
@@ -124,8 +124,9 @@ int
 main (void)
 {
 #ifdef _TEST
-  tests ();
+//  tests ();
   //gps_csv ();
+  Loader* loader = new Loader ();
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

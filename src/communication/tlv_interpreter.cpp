@@ -1,11 +1,15 @@
 #include "tlv_interpreter.h"
 
-TLVInterpreter::TLVInterpreter ()
+TLVInterpreter::TLVInterpreter (std::shared_ptr<StreamGenerator> generator,
+				std::shared_ptr<AutoPilot> autopilot,
+				ProtocolEngine* protocol_engine)
 {
-
+  m_stream_generator = generator;
+  m_autopilot = autopilot;
+  m_protocol_engine = std::shared_ptr<ProtocolEngine> (protocol_engine);
 }
 Frame*
-TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
+TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 {
   DataStructureIdentifier data_structure_id =
       static_cast<DataStructureIdentifier> (frame->get_attribute () >> 5);
@@ -17,8 +21,59 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 
   switch (frame->get_tag ())
     {
-    //TODO: Add other Commands
-    case 0x11:
+    // Priority Commands
+    case TagEnum::GET_PROTOCOL_VERSION:
+      //TODO: Do something!
+      break;
+    case TagEnum::GET_BOAT_ID:
+      //TODO: Do something!
+      break;
+    case TagEnum::SET_CONTROL_MODE:
+      {
+	m_protocol_engine->set_control_mode (frame->get_payload ().at (0));
+	/* In Priority Mode there is autopilot function,
+	 * which might interrupt priority commands
+	 */
+	if (m_protocol_engine->get_control_mode () == 0x00)
+	  {
+	    m_autopilot->autopilot_on (false);
+	  }
+      }
+      break;
+    case TagEnum::PM_SET:
+      switch (descriptor_enum)
+	{
+	/*------------------------------------------
+	 Actor
+	 ------------------------------------------*/
+	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	  dynamic_cast<ServoMotor*> (device);
+	  //TODO: BlackMagic Commands
+	  break;
+	default:
+	  break;
+	}
+      //TODO: Do something!
+      break;
+    case TagEnum::ERROR:
+      //TODO: Do something?
+      break;
+    case TagEnum::GET_BOAT_DESCRIPTION:
+      //TODO: Do something!
+      break;
+    case TagEnum::GET_CONTROL_MODE:
+      //TODO: Do something!
+      break;
+      //TODO: Add other Commands
+    case TagEnum::SET_VALUE:
       switch (descriptor_enum)
 	{
 	/*------------------------------------------
@@ -105,27 +160,14 @@ TLVInterpreter::interpret_frame (Device* device, TLVFrame* frame)
 	  break;
 	}
       break;
-    case 0x04:
-      switch (descriptor_enum)
-	{
-	/*------------------------------------------
-	 Actor
-	 ------------------------------------------*/
-	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
-	  dynamic_cast<ServoMotor*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	default:
-	  break;
-	}
+    case TagEnum::REQUEST_VALUE:
+      //TODO: Do something!
+      break;
+    case TagEnum::REQUEST_VALUE_W_TIMESTAMP:
+      //TODO: Do something!
+      break;
+    default:
+      //TODO: Ignore?
       break;
     }
   return NULL;

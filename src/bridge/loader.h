@@ -9,6 +9,10 @@
 #include "../utils/conf_reader.h"
 #include "../devices/device_manager.h"
 #include "../devices/stream_generator_thread_params.h"
+
+//class DeviceManager;
+class ProtocolEngine;
+//class StreamGenerator;
 /**
  * @file
  * @class Loader
@@ -34,11 +38,24 @@ private:
   /**
    * AutoPilot
    */
-  std::unique_ptr<AutoPilot> m_autopilot;
+  std::shared_ptr<AutoPilot> m_autopilot;
   /**
    * DeviceManager
    */
   std::shared_ptr<DeviceManager> m_device_manager;
+  /**
+   * In the config file is specified which protocol is used by the boat firmware.
+   * This function checks which kind of protocol is used and therefore which engine
+   * needs to be constructed.
+   *
+   * @param protocol is the CommunicationProtocol mentioned in the conf file
+   * @param protocol_version is a 3 byte list of the numbers for the major and minor
+   * version number
+   * @return a pointer to the engine of the given protocol
+   */
+  std::shared_ptr<ProtocolEngine>
+  distinguish_protocol (CommunicationProtocol protocol,
+			std::vector<uint8_t> protocol_version);
   /**
    * @public
    */
