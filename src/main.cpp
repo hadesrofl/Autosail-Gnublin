@@ -127,6 +127,28 @@ main (void)
 //  tests ();
   //gps_csv ();
   Loader* loader = new Loader ();
+  std::vector<uint8_t> payload;
+  Frame* frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_PROTOCOL_VERSION, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::GET_BOAT_ID, 0,
+							0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.push_back (0x00);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_CONTROL_MODE, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.push_back (0x01);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_CONTROL_MODE, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

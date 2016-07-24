@@ -11,7 +11,7 @@
 /**
  * Max Communication Numbers to determine array length
  */
-#define MAX_COMMUNICATION_NUMBER 30
+#define MAX_COMMUNICATION_NUMBER 31
 /**
  * Bitmask to extract the Communication Number out of the Attribute byte
  */
@@ -51,6 +51,10 @@ private:
    */
 protected:
   /**
+   * ID of the boat
+   */
+  uint8_t m_boat_id;
+  /**
    * Vector of the numbers of the protocol version.
    * First byte of the vectory is the major version number. The
    * second byte is the higher number of the minor version number.
@@ -84,6 +88,7 @@ protected:
   ProtocolEngine ()
   {
     m_control_mode = 0x00;
+    m_boat_id = 0;
   }
   /**
    * @public
@@ -91,12 +96,17 @@ protected:
 public:
   /**
    * Constructor
+   * @param generator is a pointer to the StreamGenerator
+   * @param autopilot is a pointer to the AutoPilot
+   * @param protocol_version is a list of bytes determining the protocol_version
+   * @param boat_id is the ID of this boat
    */
   ProtocolEngine (std::shared_ptr<StreamGenerator> generator,
 		  std::shared_ptr<AutoPilot> autopilot,
-		  std::vector<uint8_t> protocol_version)
+		  std::vector<int8_t> protocol_version, uint8_t boat_id)
   {
     m_control_mode = 0x00;
+    m_boat_id = boat_id;
   }
   /**
    * Gets the description of the boat as specified in the TLVE4-Protocol and sends
@@ -132,12 +142,18 @@ public:
   virtual Frame*
   create_frame () = 0;
   /**
-   * Sends a frame of a device and a list of data
+   * Sends a frame of a Stream
    * @param device is a pointer to the device where the data comes from
    * @param data is a list of data from the Device
    */
   virtual void
-  send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data) = 0;
+  send_stream (std::shared_ptr<Device> device, std::vector<int8_t> data) = 0;
+  /**
+   * Sends a frame to the receiver
+   * @param frame is a pointer to the Frame
+   */
+  virtual void
+  send_frame (Frame* frame) =0;
   /**
    * Creates a ComponentDescriptor and returns it. After creation it will be stored
    * in the private vector list of this class.
@@ -229,11 +245,15 @@ public:
   inline std::shared_ptr<Device>
   get_device (uint8_t communication_number)
   {
-    if (communication_number <= MAX_COMMUNICATION_NUMBER)
+    if (communication_number
+	== 0|| communication_number > MAX_COMMUNICATION_NUMBER)
+      {
+	return NULL;
+      }
+    else
       {
 	return m_communication_table_backward[communication_number];
       }
-    return NULL;
   }
   /**
    * Returns the current control mode
@@ -262,6 +282,29 @@ public:
   get_protocol_version () const
   {
     return m_protocol_version;
+  }
+  /**
+   * Gets the boat id
+   * @return the id of this boat
+   */
+  inline uint8_t
+  get_boat_id () const
+  {
+    return m_boat_id;
+  }
+  /**
+   * Fuses the DataStructureIdentifier with a communication number as mentioned in
+   * TLVE4.
+   * @param dsid is the DataStructureIdentifier
+   * @param comm_no is the communication number of the Device
+   * @return an uint8_t as the fused attribute
+   */
+  inline uint8_t
+  tlve4_attribute (DataStructureIdentifier dsid, uint8_t comm_no)
+  {
+    uint8_t fused_attribute = static_cast<uint8_t> (dsid) << 5
+	| (comm_no & 0x1F);
+    return fused_attribute;
   }
   /**
    * Destructor

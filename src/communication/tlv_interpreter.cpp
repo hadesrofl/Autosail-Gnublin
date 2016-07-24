@@ -13,20 +13,40 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 {
   DataStructureIdentifier data_structure_id =
       static_cast<DataStructureIdentifier> (frame->get_attribute () >> 5);
-  std::shared_ptr<ComponentDescriptor> descriptor =
-      device->get_component_descriptor ();
   ComponentDescriptorEnum descriptor_enum =
-      static_cast<ComponentDescriptorEnum> (descriptor->get_component_class ()
-	  + descriptor->get_component_attribute ());
+      static_cast<ComponentDescriptorEnum> (NULL);
+  if (device != NULL)
+    {
+      std::shared_ptr<ComponentDescriptor> descriptor =
+	  device->get_component_descriptor ();
+      descriptor_enum =
+	  static_cast<ComponentDescriptorEnum> (descriptor->get_component_class ()
+	      + descriptor->get_component_attribute ());
+    }
 
   switch (frame->get_tag ())
     {
-    // Priority Commands
+// Priority Commands
     case TagEnum::GET_PROTOCOL_VERSION:
-      //TODO: Do something!
+      {
+	std::vector<uint8_t> protocol_version =
+	    m_protocol_engine->get_protocol_version ();
+	uint8_t attribute = m_protocol_engine->tlve4_attribute (
+	    DataStructureIdentifier::INT8, 0x00);
+	Frame* frame = m_protocol_engine->create_frame (
+	    TagEnum::VALUE_PROTOCOL_VERSION, attribute, 4, protocol_version);
+	m_protocol_engine->send_frame (frame);
+      }
       break;
     case TagEnum::GET_BOAT_ID:
-      //TODO: Do something!
+      {
+	std::vector<uint8_t> payload;
+	payload.push_back (m_protocol_engine->get_boat_id ());
+	Frame* frame = m_protocol_engine->create_frame (TagEnum::VALUE_BOAT_ID,
+							0, 1, payload);
+	m_protocol_engine->send_frame (frame);
+	payload.clear ();
+      }
       break;
     case TagEnum::SET_CONTROL_MODE:
       {
@@ -70,7 +90,14 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
       //TODO: Do something!
       break;
     case TagEnum::GET_CONTROL_MODE:
-      //TODO: Do something!
+      {
+	std::vector<uint8_t> payload;
+	payload.push_back (m_protocol_engine->get_control_mode ());
+	Frame* frame = m_protocol_engine->create_frame (
+	    TagEnum::VALUE_CONTROL_MODE, 0, 1, payload);
+	m_protocol_engine->send_frame (frame);
+	payload.clear ();
+      }
       break;
       //TODO: Add other Commands
     case TagEnum::SET_VALUE:

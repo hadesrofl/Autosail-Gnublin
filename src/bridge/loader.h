@@ -51,11 +51,12 @@ private:
    * @param protocol is the CommunicationProtocol mentioned in the conf file
    * @param protocol_version is a 3 byte list of the numbers for the major and minor
    * version number
+   * @param boat_id is the ID of this boat
    * @return a pointer to the engine of the given protocol
    */
   std::shared_ptr<ProtocolEngine>
   distinguish_protocol (CommunicationProtocol protocol,
-			std::vector<uint8_t> protocol_version);
+			std::vector<uint8_t> protocol_version, uint8_t boat_id);
   /**
    * @public
    */

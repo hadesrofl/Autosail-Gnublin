@@ -21,10 +21,14 @@ protected:
 public:
   /**
    * Constructor
+   * @param generator is a pointer to the StreamGenerator
+   * @param autopilot is a pointer to the AutoPilot
+   * @param protocol_version is a list of bytes determining the protocol_version
+   * @param boat_id is the ID of this boat
    */
   TLVEEngine (std::shared_ptr<StreamGenerator> generator,
 	      std::shared_ptr<AutoPilot> autopilot,
-	      std::vector<uint8_t> protocol_version);
+	      std::vector<uint8_t> protocol_version, uint8_t boat_id);
   /**
    * Creates a Frame containing the boat description
    * @return the Frame holding the boat description data
@@ -32,9 +36,20 @@ public:
   TLVFrame*
   send_boat_description ();
   /**
+   * Private function for the abstract method declared in ProtocolEngine
    * Creates a TLVFrame and returns a pointer to it
    * @param tag is the value of the tag field
-   * @param attribute is the value of the attribute field
+   * @param attribute is the attribute of this frame
+   * @param length is the amount of bytes of the payload field
+   * @return a TLVFrame packed with the data
+   */
+  TLVFrame*
+  create_frame (TagEnum tag, uint8_t attribute, uint8_t length);
+  /**
+   * Private function for the abstract method declared in ProtocolEngine
+   * Creates a TLVFrame and returns a pointer to it
+   * @param tag is the value of the tag field
+   * @param attribute is the attribute of this frame
    * @param length is the amount of bytes of the payload field
    * @param payload is a Byte Vector containing the data of the payload
    * @return a TLVFrame packed with the data
@@ -43,27 +58,24 @@ public:
   create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 		std::vector<uint8_t> payload);
   /**
-   * Creates a TLVFrame and returns a pointer to it
-   * @param tag is the value of the tag field
-   * @param attribute is the value of the attribute field
-   * @param length is the amount of bytes of the payload field
-   * @return a TLVFrame packed with the data
-   */
-  TLVFrame*
-  create_frame (TagEnum tag, uint8_t attribute, uint8_t length);
-  /**
    * Creates an empty TLVFrame
    * @return an empty TLVFrame
    */
   TLVFrame*
   create_frame ();
   /**
-   * Sends a frame of a device and a list of data
+   * Sends a frame of a Stream
    * @param device is a pointer to the device where the data comes from
    * @param data is a list of data from the Device
    */
   void
-  send_frame (std::shared_ptr<Device> device, std::vector<int8_t> data);
+  send_stream (std::shared_ptr<Device> device, std::vector<int8_t> data);
+  /**
+   * Sends a frame to the receiver
+   * @param frame is the frame to send
+   */
+  void
+  send_frame (Frame* frame);
   /**
    * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
    * calls the function described by the command in the Frame.

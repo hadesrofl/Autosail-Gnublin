@@ -55,6 +55,7 @@
  * Example Code:
  *  <pre>
  *   <code>
+ *   Boat-ID: 0x01
  *   Protocol: 0x01
  *   Version: 4 1 5
  *
@@ -96,6 +97,10 @@ class ConfReader
    * @private
    */
 private:
+  /**
+   * ID of the boat
+   */
+  uint8_t m_boat_id;
   /**
    * List of Bytes for Devices. Will be used in DeviceManager
    */
@@ -172,6 +177,15 @@ public:
 	protocol_version.push_back (m_protocol.at (3));
       }
     return protocol_version;
+  }
+  /**
+   * Gets the boat id
+   * @return the id of this boat
+   */
+  inline uint8_t
+  get_boat_id () const
+  {
+    return m_boat_id;
   }
 
 };

@@ -176,7 +176,7 @@ StreamGenerator::run_generator (void* params)
 		    {
 		      std::cout << "Data: " << data[j] << std::endl;
 		    }
-		  generator->m_protocol_engine->send_frame (
+		  generator->m_protocol_engine->send_stream (
 		      streams.at (i)->get_device (), data);
 		  data.clear ();
 		}

@@ -25,7 +25,12 @@ ConfReader::read_config ()
 	  std::istringstream in (line);
 	  std::string type;
 	  in >> type;
-	  if (type == "Protocol:")
+	  if (type == "Boat-ID:")
+	    {
+	      in >> std::hex >> tmp;
+	      m_boat_id = tmp;
+	    }
+	  else if (type == "Protocol:")
 	    {
 	      in >> std::hex >> tmp;
 	      m_protocol.push_back (tmp);
