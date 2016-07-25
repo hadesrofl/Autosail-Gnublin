@@ -35,7 +35,7 @@
  * The syntax for that is the following:
  * <br/>
  * <br/>
- * Device: [Name]
+ * Component: [Name]
  * <br/>
  * Component-Class: 0x[First Number][Second Number]
  * <br/>
@@ -58,36 +58,86 @@
  *   <code>
  *   Boat-ID: 0x01
  *   Protocol: 0x01
- *   Version: 4 1 5
+ *   Version: 4 0 0
  *
- *   Device: Accelerometer
+ *   Component: Hull
+ *   Component-Class: 0x01
+ *   Component-Attribute: 0x01
+ *   Component-Number: 0x02
+ *   Communication-Number: 0x00
+ *   Config: 0x00
+ *
+ *   Component: Rudder
+ *   Component-Class: 0x0C
+ *   Component-Attribute: 0x44
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x01 //hardcoded in code for priority commands
+ *   Config: 0x01
+ *
+ *   Component: Main-Sail
+ *   Component-Class: 0x0C
+ *   Component-Attribute: 0x45
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x02 //hardcoded in code for priority commands
+ *   Config: 0x01
+ *
+ *   Component: Fore-Sail
+ *   Component-Class: 0x0C
+ *   Component-Attribute: 0x46
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x03 //hardcoded in code for priority commands
+ *   Config: 0x01
+ *
+ *   Component: Serial-Link
+ *   Component-Class: 0x0C
+ *   Component-Attribute: 0x48
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x04
+ *   Config: 0x01
+ *
+ *   Component: Accelerometer
  *   Component-Class: 0x55
  *   Component-Attribute: 0x07
  *   Component-Number: 0x01
- *   Communication-Number: 0x01
+ *   Communication-Number: 0x05
  *   Config: 0x00
  *
- *   Device: Compass
+ *   Component: Compass
  *   Component-Class: 0x55
  *   Component-Attribute: 0x06
  *   Component-Number: 0x01
- *   Communication-Number: 0x02
+ *   Communication-Number: 0x06
  *   Config: 0x20
  *
- *   Device: Gyroscope
+ *   Component: Gyroscope
  *   Component-Class: 0x55
  *   Component-Attribute: 0x05
  *   Component-Number: 0x01
- *   Communication-Number: 0x03
+ *   Communication-Number: 0x07
  *   Config: 0
  *
- *   Device: GPS
+ *   Component: GPS
  *   Component-Class: 0x54
  *   Component-Attribute: 0x09
  *   Component-Number: 0x01
- *   Communication-Number: 0x04
+ *   Communication-Number: 0x08
  *   Config: 0x60
- *   </code>
+ *
+ *   Component: Stream-Controlling-Unit
+ *   Component-Class: 0x0D
+ *   Component-Attribute: 0x01
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x09
+ *   Config: 0x00
+ *
+ *   Component: Autopilot
+ *   Component-Class: 0x0D
+ *   Component-Attribute: 0x02
+ *   Component-Number: 0x01
+ *   Communication-Number: 0x0A
+ *   Config: 0x00
+ *   </code
+ *   >
  *  </pre>
  * @author Rene Kremer
  * @version 0.3
@@ -105,11 +155,19 @@ private:
   /**
    * List of Bytes for Devices. Will be used in DeviceManager
    */
-  std::vector<uint8_t> m_configs;
+  std::vector<uint8_t> m_device_configs;
   /**
    * List of Bytes for Protocol Type and Version Number
    */
-  std::vector<uint8_t> m_protocol;
+  std::vector<uint8_t> m_protocol_config;
+  /**
+   * List of Bytes for the StreamGenerator
+   */
+  std::vector<uint8_t> m_stream_generator_config;
+  /**
+   * List of Bytes for the AutoPilot
+   */
+  std::vector<uint8_t> m_autopilot_config;
   /**
    * File to read
    */
@@ -135,17 +193,17 @@ public:
    */
   ConfReader (const char* file);
   /**
-   * Gets a vector with all descriptors listed in the config file
-   * @return a vector with all descriptors of the config file in
+   * Gets a vector with all device configs listed in the config file
+   * @return a vector with all device configs of the config file in
    * 5 byte representation (component class, component attribute, component number,
    * communication number, config of device)
    * Communication Number and Config are 0 if these are not needed
    * (like for non communicating components or devices without configuration)
    */
   inline std::vector<uint8_t>
-  get_descriptors () const
+  get_device_configs () const
   {
-    return m_configs;
+    return m_device_configs;
   }
   /**
    * Gets the protocol type e.g. 'TLVE4' as value of the mapper::CommunicationProtocol Enum
@@ -154,9 +212,9 @@ public:
   inline CommunicationProtocol
   get_protocol () const
   {
-    if (m_protocol.size () > 0)
+    if (m_protocol_config.size () > 0)
       {
-	return static_cast<CommunicationProtocol> (m_protocol.at (0));
+	return static_cast<CommunicationProtocol> (m_protocol_config.at (0));
       }
     return CommunicationProtocol::UNSUPPORTED_PROTOCOL;
   }
@@ -171,11 +229,11 @@ public:
   get_protocol_version () const
   {
     std::vector<uint8_t> protocol_version;
-    if (m_protocol.size () == 4)
+    if (m_protocol_config.size () == 4)
       {
-	protocol_version.push_back (m_protocol.at (1));
-	protocol_version.push_back (m_protocol.at (2));
-	protocol_version.push_back (m_protocol.at (3));
+	protocol_version.push_back (m_protocol_config.at (1));
+	protocol_version.push_back (m_protocol_config.at (2));
+	protocol_version.push_back (m_protocol_config.at (3));
       }
     return protocol_version;
   }
@@ -187,6 +245,24 @@ public:
   get_boat_id () const
   {
     return m_boat_id;
+  }
+  /**
+   * Gets a vector with the config bytes of the StreamGenerator
+   * @return vector containing the config bytes of the StreamGenerator
+   */
+  inline std::vector<uint8_t>
+  get_stream_generator_config () const
+  {
+    return m_stream_generator_config;
+  }
+  /**
+   * Gets a vector with the config bytes of the AutoPilot
+   * @return vector containing the config bytes of the AutoPilot
+   */
+  inline std::vector<uint8_t>
+  get_autopilot_config () const
+  {
+    return m_autopilot_config;
   }
 
 };

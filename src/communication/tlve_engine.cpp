@@ -1,15 +1,17 @@
 #include "tlve_engine.h"
 
-// private functions
-
 // public functions
 
-TLVEEngine::TLVEEngine (std::shared_ptr<StreamGenerator> generator,
-			std::shared_ptr<AutoPilot> autopilot,
-			std::vector<uint8_t> protocol_version, uint8_t boat_id)
+TLVEEngine::TLVEEngine (std::vector<uint8_t> protocol_version, uint8_t boat_id)
 {
   m_protocol_version = protocol_version;
   m_boat_id = boat_id;
+}
+
+void
+TLVEEngine::start_interpreter (std::shared_ptr<StreamGenerator> generator,
+			       std::shared_ptr<AutoPilot> autopilot)
+{
   m_interpreter = std::unique_ptr<TLVInterpreter> (
       new TLVInterpreter (generator, autopilot, this));
 }

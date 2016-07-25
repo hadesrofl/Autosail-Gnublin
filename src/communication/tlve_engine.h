@@ -4,6 +4,20 @@
 #include "protocol_engine.h"
 #include "tlv_interpreter.h"
 #include "tlv_frame.h"
+
+/**
+ * Priority Control Mode
+ */
+#define PRIORITY_MODE 0x00
+/**
+ * Normal Control Mode
+ */
+#define NORMAL_MODE 0x01
+/**
+ * Fail Safe Control Mode
+ */
+#define FAIL_SAFE_MODE 0x0F
+
 /**
  * @file
  * @class TLVEEngine
@@ -31,14 +45,19 @@ protected:
 public:
   /**
    * Constructor
-   * @param generator is a pointer to the StreamGenerator
-   * @param autopilot is a pointer to the AutoPilot
    * @param protocol_version is a list of bytes determining the protocol_version
    * @param boat_id is the ID of this boat
    */
-  TLVEEngine (std::shared_ptr<StreamGenerator> generator,
-	      std::shared_ptr<AutoPilot> autopilot,
-	      std::vector<uint8_t> protocol_version, uint8_t boat_id);
+  TLVEEngine (std::vector<uint8_t> protocol_version, uint8_t boat_id);
+
+  /**
+   * Starts and sets the interpreter to this engine
+   * @param generator is a pointer to the StreamGenerator
+   * @param autopilot is a pointer to the AutoPilot
+   */
+  void
+  start_interpreter (std::shared_ptr<StreamGenerator> generator,
+		     std::shared_ptr<AutoPilot> autopilot);
   /**
    * Creates a Frame containing the boat description
    * @return the Frame holding the boat description data

@@ -139,9 +139,37 @@ frame_test ()
 							3, payload);
   loader->get_protocol_engine ()->interpret_frame (frame);
   std::cout << "\n------------------------" << "\nGet Boat Description"
-       << "\n------------------------" << std::endl;
-  frame = loader->get_protocol_engine()->create_frame(TagEnum::GET_BOAT_DESCRIPTION, 0);
-  loader->get_protocol_engine()->interpret_frame(frame);
+      << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_BOAT_DESCRIPTION, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  std::cout << "\n------------------------" << "\nSet Autopilot to new Course"
+      << "\n------------------------" << std::endl;
+  uint8_t* buf = (uint8_t*) IntConverter::int16_to_int8 (0x0001);
+  payload.push_back (buf[0]);
+  payload.push_back (buf[1]);
+  buf = (uint8_t*) IntConverter::int16_to_int8 (0x0AFF);
+  payload.push_back (buf[0]);
+  payload.push_back (buf[1]);
+  delete[] buf;
+  uint8_t attribute = loader->get_protocol_engine ()->tlve4_attribute (
+      DataStructureIdentifier::INT16,
+      loader->get_autopilot ()->get_communication_number ());
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
+							attribute, 5, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  std::cout << "\n------------------------" << "\nDeactivate Autopilot"
+      << "\n------------------------" << std::endl;
+  buf = (uint8_t*) IntConverter::int16_to_int8 (0x0000);
+  payload.clear ();
+  payload.push_back (buf[0]);
+  payload.push_back (buf[1]);
+  buf = (uint8_t*) IntConverter::int16_to_int8 (0x0AFF);
+  payload.push_back (buf[0]);
+  payload.push_back (buf[1]);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
+							attribute, 5, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
 }
 void
 gps_csv ()
@@ -192,7 +220,6 @@ gps_csv ()
 	      std::cout << latitude << ";" << longitude << ";" << speed << ";"
 		  << timestamp << ";";
 	    }
-
 	  gettimeofday (&end, NULL);
 	  std::cout
 	      << (end.tv_sec - begin.tv_sec) * 1000
@@ -207,11 +234,8 @@ main (void)
 #ifdef _TEST
 //  tests ();
 //  gps_csv ();
-//  frame_test ();
+  frame_test ();
   Loader* loader = new Loader ();
-  std::vector<uint8_t> payload;
-  Frame* frame = loader->get_protocol_engine()->create_frame(TagEnum::GET_BOAT_DESCRIPTION, 0);
-  loader->get_protocol_engine()->interpret_frame(frame);
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

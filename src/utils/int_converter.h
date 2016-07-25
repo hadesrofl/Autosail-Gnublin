@@ -70,9 +70,9 @@ public:
     uint8_t* tmp = new uint8_t[2];
     int8_t* output = new int8_t[2];
     tmp[0] = input >> 8;
-    output[0] = tmp[2] <= 127 ? tmp[2] : tmp[2] - 256;
+    output[0] = tmp[0] <= 127 ? tmp[0] : tmp[0] - 256;
     tmp[1] = input & 0xFF;
-    output[1] = tmp[3] <= 127 ? tmp[3] : tmp[3] - 256;
+    output[1] = tmp[1] <= 127 ? tmp[1] : tmp[1] - 256;
     return output;
   }
   /**

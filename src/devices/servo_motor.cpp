@@ -26,6 +26,7 @@ ServoMotor::read_data ()
 void
 ServoMotor::set_angle (int16_t angle)
 {
+  //TODO: Send via SPI Port
   m_angle = angle;
   uint8_t* buf = IntConverter::uint16_to_uint8 (angle);
   int16_t fused = IntConverter::int8_to_int16 ((int8_t*) buf);

@@ -97,18 +97,22 @@ protected:
 public:
   /**
    * Constructor
-   * @param generator is a pointer to the StreamGenerator
-   * @param autopilot is a pointer to the AutoPilot
    * @param protocol_version is a list of bytes determining the protocol_version
    * @param boat_id is the ID of this boat
    */
-  ProtocolEngine (std::shared_ptr<StreamGenerator> generator,
-		  std::shared_ptr<AutoPilot> autopilot,
-		  std::vector<int8_t> protocol_version, uint8_t boat_id)
+  ProtocolEngine (std::vector<int8_t> protocol_version, uint8_t boat_id)
   {
     m_control_mode = 0x00;
     m_boat_id = boat_id;
   }
+  /**
+   * Starts and sets the interpreter to this engine
+   * @param generator is a pointer to the StreamGenerator
+   * @param autopilot is a pointer to the AutoPilot
+   */
+  virtual void
+  start_interpreter (std::shared_ptr<StreamGenerator> generator,
+		     std::shared_ptr<AutoPilot> autopilot) = 0;
   /**
    * Gets the description of the boat as specified in the TLVE4-Protocol and sends
    * the initial message and communication numbers

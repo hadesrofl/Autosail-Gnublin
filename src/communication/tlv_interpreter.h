@@ -4,6 +4,8 @@
 #include "frame_interpreter.h"
 #include "tlv_frame.h"
 #include "../devices/device_manager.h"
+#include "tlve_engine.h"
+
 /**
  * @file
  * @class TLVInterpreter
@@ -27,7 +29,8 @@ protected:
   /**
    * Constructor needed for hierarchy purposes. Shouldn't be called
    */
-  TLVInterpreter(){
+  TLVInterpreter ()
+  {
   }
   /**
    * public
@@ -39,7 +42,9 @@ public:
    * @param autopilot is a pointer to the AutoPilot
    * @param protocol_engine is a pointer to the ProtocolEngine
    */
-  TLVInterpreter (std::shared_ptr<StreamGenerator> generator, std::shared_ptr<AutoPilot> autopilot, ProtocolEngine* protocol_engine);
+  TLVInterpreter (std::shared_ptr<StreamGenerator> generator,
+		  std::shared_ptr<AutoPilot> autopilot,
+		  ProtocolEngine* protocol_engine);
   /**
    * Interprets a TLVFrame and calls a specific function as described by the command
    * of the Frame

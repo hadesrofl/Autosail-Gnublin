@@ -2,9 +2,6 @@
 
 Loader::Loader ()
 {
-  m_stream_generator = std::shared_ptr<StreamGenerator> (
-      new StreamGenerator ());
-  m_autopilot = std::shared_ptr<AutoPilot> (new AutoPilot ());
   ConfReader* reader = new ConfReader (FW_CONFIG);
   m_protocol_engine = distinguish_protocol (reader->get_protocol (),
 					    reader->get_protocol_version (),
@@ -13,14 +10,27 @@ Loader::Loader ()
     {
       m_device_manager = std::shared_ptr<DeviceManager> (
 	  new DeviceManager (&(*m_protocol_engine),
-			     reader->get_descriptors ()));
+			     reader->get_device_configs ()));
     }
   else
     {
       exit (EXIT_FAILURE);
     }
+  m_stream_generator = std::shared_ptr<StreamGenerator> (
+      new StreamGenerator (
+	  get_descriptor (reader->get_stream_generator_config ()),
+	  reader->get_stream_generator_config ().at (3)));
+  m_protocol_engine->insert_communication_table_forward (
+      &(*m_stream_generator->get_component_descriptor ()),
+      m_stream_generator->get_communication_number ());
+  m_autopilot = std::shared_ptr<AutoPilot> (
+      new AutoPilot (get_descriptor (reader->get_autopilot_config ()),
+		     reader->get_autopilot_config ().at (3)));
+  m_protocol_engine->start_interpreter (m_stream_generator, m_autopilot);
+  m_protocol_engine->insert_communication_table_forward (
+      &(*m_autopilot->get_component_descriptor ()),
+      m_autopilot->get_communication_number ());
   delete reader;
-
 }
 pthread_t
 Loader::start_generator ()
@@ -43,8 +53,7 @@ Loader::distinguish_protocol (CommunicationProtocol protocol,
     {
     case CommunicationProtocol::TLVE4:
       return std::shared_ptr<ProtocolEngine> (
-	  new TLVEEngine (m_stream_generator, m_autopilot, protocol_version,
-			  boat_id));
+	  new TLVEEngine (protocol_version, boat_id));
       break;
     case CommunicationProtocol::TLVE5:
       break;
@@ -55,11 +64,37 @@ Loader::distinguish_protocol (CommunicationProtocol protocol,
       // Default TLVE4
     default:
       return std::shared_ptr<ProtocolEngine> (
-	  new TLVEEngine (m_stream_generator, m_autopilot, protocol_version,
-			  boat_id));
+	  new TLVEEngine (protocol_version, boat_id));
       break;
     }
   return NULL;
+}
+std::shared_ptr<StreamGenerator>
+Loader::create_stream_generator (
+    std::shared_ptr<ComponentDescriptor> descriptor,
+    uint8_t communication_number)
+{
+  return std::shared_ptr<StreamGenerator> (
+      new StreamGenerator (descriptor, communication_number));
+}
+std::shared_ptr<AutoPilot>
+Loader::create_autopilot (std::shared_ptr<ComponentDescriptor> descriptor,
+			  uint8_t communication_number)
+{
+  return std::shared_ptr<AutoPilot> (
+      new AutoPilot (descriptor, communication_number));
+}
+std::shared_ptr<ComponentDescriptor>
+Loader::get_descriptor (std::vector<uint8_t> config)
+{
+  uint8_t component_class, component_attribute, component_number;
+  component_class = config.at (0);
+  component_attribute = config.at (1);
+  component_number = config.at (2);
+  return std::shared_ptr<ComponentDescriptor> (
+      m_protocol_engine->create_descriptor (component_class,
+					    component_attribute,
+					    component_number));;
 }
 Loader::~Loader ()
 {

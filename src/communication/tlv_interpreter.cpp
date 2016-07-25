@@ -13,27 +13,30 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 {
   DataStructureIdentifier data_structure_id =
       static_cast<DataStructureIdentifier> (frame->get_attribute () >> 5);
+  uint8_t communication_number = (frame->get_attribute () & 0x1F);
   ComponentDescriptorEnum descriptor_enum =
       static_cast<ComponentDescriptorEnum> (NULL);
+  std::shared_ptr<ComponentDescriptor> descriptor = NULL;
   if (device != NULL)
     {
-      std::shared_ptr<ComponentDescriptor> descriptor =
-	  device->get_component_descriptor ();
+      descriptor = device->get_component_descriptor ();
+    }
+  else if (m_autopilot->get_communication_number () == communication_number)
+    {
+      descriptor = m_autopilot->get_component_descriptor ();
+    }
+  else if (m_stream_generator->get_communication_number ()
+      == communication_number)
+    {
+      descriptor = m_stream_generator->get_component_descriptor ();
+    }
+  if (descriptor != NULL)
+    {
       descriptor_enum =
 	  static_cast<ComponentDescriptorEnum> (descriptor->get_component_class ()
 	      << 16 | descriptor->get_component_attribute () << 8
 	      | descriptor->get_component_number ());
-      std::cout << "Class: "
-	  << static_cast<int> (descriptor->get_component_class ())
-	  << "\tAttribute: "
-	  << static_cast<int> (descriptor->get_component_attribute ())
-	  << "\tNumber: "
-	  << static_cast<int> (descriptor->get_component_number ())
-	  << std::endl;
-//      std::cout << "Descriptor Enum: " << static_cast<int> (descriptor_enum)
-//	  << std::endl;
     }
-
   switch (frame->get_tag ())
     {
     /* Priority Commands */
@@ -64,9 +67,9 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	/* In Priority Mode there is autopilot function,
 	 * which might interrupt priority commands
 	 */
-	if (m_protocol_engine->get_control_mode () == 0x00)
+	if (m_protocol_engine->get_control_mode () == PRIORITY_MODE)
 	  {
-	    m_autopilot->autopilot_on (false);
+	    m_autopilot->set_active (false);
 	  }
       }
       break;
@@ -156,6 +159,81 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	  break;
 	case ComponentDescriptorEnum::AUTOPILOT:
 	  //TODO: Do something!
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t attribute;
+	    int8_t* buf = new int8_t[2];
+	    buf[0] = frame->get_payload ().at (0);
+	    buf[1] = frame->get_payload ().at (1);
+	    std::cout << "Command in uint8_t: " << static_cast<int> (buf[0])
+		<< " and " << static_cast<int> (buf[1]) << std::endl;
+	    int16_t command = IntConverter::int8_to_int16 (buf);
+	    std::cout << "Command: " << command << std::endl;
+	    buf[0] = frame->get_payload ().at (2);
+	    buf[1] = frame->get_payload ().at (3);
+	    int16_t direction = IntConverter::int8_to_int16 (buf);
+	    int8_t ret;
+	    delete[] buf;
+	    switch (command)
+	      {
+	      /* Deactivate autopilot */
+	      case COMMAND_AUTOPILOT_OFF:
+		std::cout << "Got it" << std::endl;
+		ret = m_autopilot->set_active (false);
+		break;
+		/* Set Course */
+	      case COMMAND_SET_COURSE:
+		std::cout << "Got it, Set Course! " << std::endl;
+		ret = m_autopilot->set_course (direction);
+		break;
+		/* Hold Course */
+	      case COMMAND_HOLD_COURSE:
+		ret = m_autopilot->hold_course ();
+		break;
+		/* Set and Hold Course */
+	      case COMMAND_SET_AND_HOLD:
+		ret = m_autopilot->set_course (direction);
+		if (ret == 1)
+		  {
+		    ret = m_autopilot->hold_course ();
+		  }
+		break;
+	      }
+	    if (ret == 1)
+	      {
+		attribute = m_protocol_engine->tlve4_attribute (
+		    DataStructureIdentifier::UINT8,
+		    m_autopilot->get_communication_number ());
+		uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+		payload.push_back (ts[0]);
+		payload.push_back (ts[1]);
+		payload.push_back (ts[2]);
+		payload.push_back (ts[3]);
+		delete[] ts;
+		int8_t* status = IntConverter::int16_to_int8 (
+		    m_autopilot->get_status ());
+		payload.push_back (status[0]);
+		payload.push_back (status[1]);
+		delete[] status;
+		if (m_autopilot->get_status () == STATUS_HOLD_COURSE)
+		  {
+		    int8_t* direction = IntConverter::int16_to_int8 (
+			m_autopilot->get_course ());
+		    payload.push_back (direction[0]);
+		    payload.push_back (direction[1]);
+		    delete[] direction;
+		  }
+		else
+		  {
+		    payload.push_back (PADDING_DIRECTION_1);
+		    payload.push_back (PADDING_DIRECTION_2);
+		  }
+		Frame* frame = m_protocol_engine->create_frame (
+		    TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		    payload.size () + 1, payload);
+		m_protocol_engine->send_frame (frame);
+	      }
+	  }
 	  break;
 	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
 	  {

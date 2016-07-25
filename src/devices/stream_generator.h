@@ -43,6 +43,14 @@ class StreamGenerator
    */
 private:
   /**
+   * Pointer to the ComponentDescriptor of this component
+   */
+  std::shared_ptr<ComponentDescriptor> m_descriptor;
+  /**
+   * Communication number of this component
+   */
+  uint8_t m_communication_number;
+  /**
    * Pointer to the ProtocolEngine for sending frames of data
    */
   std::shared_ptr<ProtocolEngine> m_protocol_engine;
@@ -160,8 +168,10 @@ private:
 public:
   /**
    * Constructor for the StreamGenerator
+   * @param descriptor is a pointer to the ComponentDescriptor of this component
+   * @param communication_number is the communication number as integer
    */
-  StreamGenerator ();
+  StreamGenerator (std::shared_ptr<ComponentDescriptor> descriptor, uint8_t communication_number);
   /**
    * Adds a device with a period to the stream generator
    * @param device is a pointer to the Device to watch over
@@ -218,6 +228,24 @@ public:
   get_interrupt_counter () const
   {
     return m_interrupt_counter;
+  }
+  /**
+   * Gets the ComponentDescriptor of this component
+   * @return the descriptor of this specific device
+   */
+  inline std::shared_ptr<ComponentDescriptor>
+  get_component_descriptor () const
+  {
+    return m_descriptor;
+  }
+  /**
+   * Returns the communication number of this device
+   * @return an integer with the communication number
+   */
+  inline uint8_t
+  get_communication_number () const
+  {
+    return m_communication_number;
   }
   /**
    * Destructor

@@ -28,9 +28,13 @@ StreamGenerator::lookup_device (std::shared_ptr<Device> device)
 }
 
 // Public functions
-StreamGenerator::StreamGenerator ()
+StreamGenerator::StreamGenerator (
+    std::shared_ptr<ComponentDescriptor> descriptor,
+    uint8_t communication_number)
 {
   m_max_period = 0;
+  m_descriptor = descriptor;
+  m_communication_number = communication_number;
   m_timer = std::unique_ptr<Timer> (new Timer (10000, timer_handler));
 }
 
@@ -187,7 +191,7 @@ StreamGenerator::run_generator (void* params)
 	{
 	  last_interrupt = m_interrupt_counter;
 	  std::cout << "Interrupt Counter: " << m_interrupt_counter
-	      << std::endl;
+	  << std::endl;
 	}
 #endif
       if (m_interrupt_counter >= generator->get_max_period ())

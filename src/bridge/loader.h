@@ -57,6 +57,14 @@ private:
   std::shared_ptr<ProtocolEngine>
   distinguish_protocol (CommunicationProtocol protocol,
 			std::vector<uint8_t> protocol_version, uint8_t boat_id);
+  std::shared_ptr<StreamGenerator>
+  create_stream_generator (std::shared_ptr<ComponentDescriptor> descriptor,
+			   uint8_t communication_number);
+  std::shared_ptr<AutoPilot>
+  create_autopilot (std::shared_ptr<ComponentDescriptor> descriptor,
+		    uint8_t communication_number);
+  std::shared_ptr<ComponentDescriptor>
+  get_descriptor (std::vector<uint8_t> config);
   /**
    * @public
    */
@@ -97,6 +105,15 @@ public:
   get_device_manager () const
   {
     return m_device_manager;
+  }
+  /**
+   * Gets the AutoPilot
+   * @return a pointer to the AutoPilot
+   */
+  inline std::shared_ptr<AutoPilot>
+  get_autopilot ()
+  {
+    return m_autopilot;
   }
   /**
    * Destructor
