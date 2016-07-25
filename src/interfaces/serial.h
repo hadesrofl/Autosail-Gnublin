@@ -7,6 +7,7 @@
 /**
  * @file
  * @class Serial
+ * @ingroup Interfaces
  * @brief Interface Class to set up a Serial Device and provide
  * a send and receive function
  * @author Rene Kremer

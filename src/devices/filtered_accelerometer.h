@@ -7,6 +7,7 @@
 /**
  * @file
  * @class FilteredAccelerometer
+ * @ingroup Devices
  * @brief Class for an Accelerometer which reads data but filters them before they
  * will be returned. Uses the data from a Device and filters it with some Filter.
  * @author Rene Kremer

@@ -8,6 +8,7 @@
 /**
  * @file
  * @class Frame
+ * @ingroup Communication
  * @brief Class for a abstract Frame send as packet via the specific ProtocolEngine
  * @author Rene Kremer
  * @version 0.2

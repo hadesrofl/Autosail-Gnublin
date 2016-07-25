@@ -8,6 +8,7 @@
 /**
  * @file
  * @class Timer
+ * @ingroup Utils
  * @brief Class for a Timer. A Timer uses the system clock of linux to arm a timer
  * and fire signals as software interrupts.
  *

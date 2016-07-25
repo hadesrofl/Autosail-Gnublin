@@ -1,22 +1,12 @@
-/*
- * component_descriptor_enum.h
- *
- *  Created on: Jun 16, 2016
- *      Author: Rene Kremer
- */
-
 #ifndef COMMUNICATION_COMPONENT_DESCRIPTOR_ENUM_H_
 #define COMMUNICATION_COMPONENT_DESCRIPTOR_ENUM_H_
 
 /**
  * @file
- * @class ComponentDescriptorEnum
+ * @enum mapper::ComponentDescriptorEnum
+ * @ingroup Enums
  * @brief Enums for the Devices of this system. Needed to distinguish Devices in
  * FrameInterpreter and for initialization in DeviceManager
- * @details
- * <ul>
- * <li> NUM_COMMUNICATION ( = 6) - Enum for the number of communication numbers to iterate over it in loops </li>
- * </ul>
  * @author Rene Kremer
  * @version 0.2
  */
@@ -25,10 +15,10 @@ enum class ComponentDescriptorEnum
   /*------------------------------------------
    Actor
    ------------------------------------------*/
-  SERVO_MOTOR_RUDDER = 0x040004,
-  SERVO_MOTOR_MAIN_SAIL = 0x050005,
-  SERVO_MOTOR_FORE_SAIL = 0x060006,
-  SERIAL_LINK = 0x080008,
+  SERVO_MOTOR_RUDDER = 0x0C4401,
+  SERVO_MOTOR_MAIN_SAIL = 0x0C4501,
+  SERVO_MOTOR_FORE_SAIL = 0x0C4601,
+  SERIAL_LINK = 0x0C4801,
   /*------------------------------------------
    Mechanical
    ------------------------------------------*/

@@ -7,6 +7,7 @@
 /**
  * @file
  * @class Interface
+ * @ingroup Interfaces
  * @brief Abstract Interface class which needs an implementation of the specific
  * receive, send and a destructor of a derived classes. Some Interfaces need some
  * more functionality or attributes but they all have a receive or send function

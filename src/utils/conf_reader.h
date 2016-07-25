@@ -17,6 +17,7 @@
 /**
  * @file
  * @class ConfReader
+ * @ingroup Utils
  * @brief Class for a ConfReader. Reads the config file for the devices.
  * A conf file defines the protocol type and version given via:
  *
@@ -147,7 +148,7 @@ public:
     return m_configs;
   }
   /**
-   * Gets the protocol type e.g. 'TLVE4' as value of the Protocol Enum
+   * Gets the protocol type e.g. 'TLVE4' as value of the mapper::CommunicationProtocol Enum
    * @return the Protocol Enum specified in the conf file. On error returns NULL
    */
   inline CommunicationProtocol

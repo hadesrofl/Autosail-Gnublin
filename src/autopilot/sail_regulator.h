@@ -3,6 +3,7 @@
 /**
  * @file
  * @class SailRegulator
+ * @ingroup Autopilot
  * @brief Class for the SailRegulator. Regulates the Sail for setting and holding
  * course commands. It is realized in an own thread, so that it is possible to correct
  * the sail without interruptions except for scheduling interruptions based on the OS.

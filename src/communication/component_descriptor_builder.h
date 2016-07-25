@@ -9,6 +9,7 @@
 /**
  * @file
  * @class ComponentDescriptorBuilder
+ * @ingroup Communication
  * @brief Class for a Builder that creates Component Descriptors for the boat.
  * These Descriptors are needed for the initial communication via the TLVE4 Protocol.
  * @author Rene Kremer

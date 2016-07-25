@@ -3,17 +3,9 @@
 
 /**
  * @file
- * @class DataStructureIdentifier
+ * @enum mapper::DataStructureIdentifier
+ * @ingroup Enums
  * @brief Enums for the DataStructureIdentifier described in TLVE4 Protocol
- * @details
- * <ul>
- * <li>#UINT8 ( = 0x0)</li>
- * <li>#INT8 ( = 0x1)</li>
- * <li>#INT16 ( = 0x2)</li>
- * <li>#INT32 ( = 0x3)</li>
- * <li>#STRING ( = 0x4)</li>
- * <li>#NUM_IDENTIFIERS ( = 5)</li>
- * </ul>
  * @author Rene Kremer
  * @version 0.2
  */

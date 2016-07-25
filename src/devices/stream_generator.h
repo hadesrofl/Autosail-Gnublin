@@ -14,6 +14,7 @@ class ProtocolEngine;
 /**
  * @file
  * @class StreamGenerator
+ * @ingroup Devices
  * @brief Class for a StreamGenerator. A StreamGenerator creates data
  * streams using a Timer that interrupts at a specific period.
  * After that interrupt an integer will increase.

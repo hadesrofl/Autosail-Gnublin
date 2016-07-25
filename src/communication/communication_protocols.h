@@ -3,20 +3,11 @@
 
 /**
  * @file
- * @class Protocol
+ * @enum mapper::CommunicationProtocol
+ * @ingroup Enums
  * @brief Enum class to switch at start of the firmware to the specified protocol
  * mentioned in the conf file
  *
- * @details Enum class to switch at start of the firmware to the specified protocol
- * mentioned in the conf file.
- *
- * <ul>
- * 	<li>#UNSUPPORTED_PROTOCOL</li>
- * 	<li>#TLVE4</li>
- * 	<li>#TLVE5</li>
- * 	<li>#JSON4</li>
- * 	<li>#JSON5</li>
- * </ul>
  * @author Rene Kremer
  * @version 0.2
  */

@@ -6,6 +6,7 @@
 /**
  * @file
  * @class spi_thread_param_t
+ * @ingroup Interfaces
  * @brief Class for a simple struct used in PThreads
  * for the SPIMasterSelect Interface.
  * @author Rene Kremer

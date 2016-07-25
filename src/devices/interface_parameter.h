@@ -4,6 +4,7 @@
 /**
  * @file
  * @class InterfaceParameter
+ * @ingroup Devices
  * @brief Class for Parameters of the Interfaces the Devices use. Parameters might be needed values for the used interfaces.
  * @author Rene Kremer
  * @version 0.3

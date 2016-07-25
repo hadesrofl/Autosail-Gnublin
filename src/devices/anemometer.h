@@ -8,6 +8,7 @@
 /**
  * @file
  * @class Anemometer
+ * @ingroup Devices
  * @brief Class for a Anemometer module. Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer

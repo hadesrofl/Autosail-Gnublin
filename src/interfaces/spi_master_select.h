@@ -34,6 +34,7 @@
 /**
  * @file
  * @class SPIMasterSelect
+ * @ingroup Interfaces
  * @brief Class for a SPI Interface. Implements the abstract Interface class and
  * adds some specific functions of a SPI Interface.
  * @author Rene Kremer

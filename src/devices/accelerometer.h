@@ -32,6 +32,7 @@
 /**
  * @file
  * @class Accelerometer
+ * @ingroup Devices
  * @brief Class for a Accelerometer Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer

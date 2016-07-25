@@ -21,6 +21,7 @@
 /**
  * @file
  * @class DeviceManager
+ * @ingroup Devices
  * @brief Class for the Device Manager. Administrates all devices and returns devices for special usage.
  * @author Rene Kremer
  * @version 0.3

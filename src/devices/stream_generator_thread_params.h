@@ -7,6 +7,7 @@
 /**
  * @file
  * @class stream_generator_thread_param_t
+ * @ingroup Devices
  * @brief Class for a simple struct used in PThreads
  * for the StreamGenerator.
  * @author Rene Kremer

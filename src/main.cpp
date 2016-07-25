@@ -63,6 +63,87 @@ tests ()
    }*/
 }
 void
+frame_test ()
+{
+  Loader* loader = new Loader ();
+  std::vector<uint8_t> payload;
+  std::cout << "\n------------------------" << "\nGet Protocol Version"
+      << "\n------------------------" << std::endl;
+  Frame* frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_PROTOCOL_VERSION, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  std::cout << "\n------------------------" << "\nGet Boat ID"
+      << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::GET_BOAT_ID, 0,
+							0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.push_back (0x00);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
+  std::cout << "\n------------------------" << "\nSet Control Mode"
+      << "\n------------------------" << std::endl;
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_CONTROL_MODE, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.push_back (0x01);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_CONTROL_MODE, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  frame = loader->get_protocol_engine ()->create_frame (
+      TagEnum::GET_CONTROL_MODE, 0, 0);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.push_back (0x0A);
+  payload.push_back (0xFF);
+  std::cout << "\n------------------------" << "\nRudder"
+      << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x44,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  payload.push_back (0xF5);
+  payload.push_back (0x01);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x44,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  payload.push_back (0x0A);
+  payload.push_back (0xFF);
+  std::cout << "\n------------------------" << "\nMain Sail"
+      << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x45,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  payload.push_back (0xF5);
+  payload.push_back (0x01);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x45,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  payload.push_back (0x0A);
+  payload.push_back (0xFF);
+  std::cout << "\n------------------------" << "\nFore Sail"
+      << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x46,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  payload.clear ();
+  payload.push_back (0xF5);
+  payload.push_back (0x01);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x46,
+							3, payload);
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  std::cout << "\n------------------------" << "\nGet Boat Description"
+       << "\n------------------------" << std::endl;
+  frame = loader->get_protocol_engine()->create_frame(TagEnum::GET_BOAT_DESCRIPTION, 0);
+  loader->get_protocol_engine()->interpret_frame(frame);
+}
+void
 gps_csv ()
 {
   Loader* loader = new Loader ();
@@ -125,30 +206,12 @@ main (void)
 {
 #ifdef _TEST
 //  tests ();
-  //gps_csv ();
+//  gps_csv ();
+//  frame_test ();
   Loader* loader = new Loader ();
   std::vector<uint8_t> payload;
-  Frame* frame = loader->get_protocol_engine ()->create_frame (
-      TagEnum::GET_PROTOCOL_VERSION, 0, 0);
-  loader->get_protocol_engine ()->interpret_frame (frame);
-  frame = loader->get_protocol_engine ()->create_frame (TagEnum::GET_BOAT_ID, 0,
-							0);
-  loader->get_protocol_engine ()->interpret_frame (frame);
-  payload.push_back (0x00);
-  frame = loader->get_protocol_engine ()->create_frame (
-      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
-  loader->get_protocol_engine ()->interpret_frame (frame);
-  payload.clear ();
-  frame = loader->get_protocol_engine ()->create_frame (
-      TagEnum::GET_CONTROL_MODE, 0, 0);
-  loader->get_protocol_engine ()->interpret_frame (frame);
-  payload.push_back (0x01);
-  frame = loader->get_protocol_engine ()->create_frame (
-      TagEnum::SET_CONTROL_MODE, 0, 1, payload);
-  loader->get_protocol_engine ()->interpret_frame (frame);
-  frame = loader->get_protocol_engine ()->create_frame (
-      TagEnum::GET_CONTROL_MODE, 0, 0);
-  loader->get_protocol_engine ()->interpret_frame (frame);
+  Frame* frame = loader->get_protocol_engine()->create_frame(TagEnum::GET_BOAT_DESCRIPTION, 0);
+  loader->get_protocol_engine()->interpret_frame(frame);
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

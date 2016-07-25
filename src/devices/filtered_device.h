@@ -8,6 +8,7 @@
 /**
  * @file
  * @class FilteredDevice
+ * @ingroup Devices
  * @brief Class for an abstract FilteredDevice . Uses the data from a Device and filters
  * it with some Filter.
  * @author Rene Kremer

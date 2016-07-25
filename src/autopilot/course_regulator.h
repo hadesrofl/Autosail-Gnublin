@@ -3,6 +3,7 @@
 /**
  * @file
  * @class CourseRegulator
+ * @ingroup Autopilot
  * @brief Class for the CourseRegulator. Regulates the Course for setting and holding
  * course commands. It is realized in an own thread, so that it is possible to correct
  * the rudder without interruptions except for scheduling interruptions based on the OS.

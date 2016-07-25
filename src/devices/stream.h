@@ -6,6 +6,7 @@
 /**
  * @file
  * @class Stream
+ * @ingroup Devices
  * @brief Class used in StreamGenerator. Contains a Device and the period to
  * generate new data
  * @author Rene Kremer

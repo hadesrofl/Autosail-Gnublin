@@ -7,6 +7,7 @@
 /**
  * @file
  * @class SerialParameter
+ * @ingroup Devices
  * @brief Class for Parameters of Serial Devices. Contains the baudrate of the Serial Interface.
  * @version 0.3
  */

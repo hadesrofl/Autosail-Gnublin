@@ -8,6 +8,7 @@
 /**
  * @file
  * @class I2C
+ * @ingroup Interfaces
  * @brief Class for the I2C Interface. Implements the abstract Interface class and
  * has some more I2C specific functions.
  * @author Rene Kremer

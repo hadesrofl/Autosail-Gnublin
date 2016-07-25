@@ -7,6 +7,7 @@
 /**
  * @file
  * @class TLVInterpreter
+ * @ingroup Communication
  * @brief Class for a TLV Interpreter. Interprets TLVFrames and calls
  * the specific function as described in the command of the frame.
  *
@@ -44,9 +45,8 @@ public:
    * of the Frame
    * @param device a pointer to the device mentioned in the frame
    * @param frame is a pointer to the TLVFrame holding the data and command
-   * @return a frame with data to send or NULL if no frame has to be sent
    */
-  Frame*
+  void
   interpret_frame (Device* device, Frame* frame);
   /**
    * Destructor

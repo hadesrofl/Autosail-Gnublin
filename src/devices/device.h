@@ -13,6 +13,7 @@
 /**
  * @file
  * @class Device
+ * @ingroup Devices
  * @brief Class for a Device. A device is some kind of sensor and uses some kind of interface.
  * @author Rene Kremer
  * @version 0.3

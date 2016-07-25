@@ -8,6 +8,7 @@
 /**
  * @file
  * @class Hygrometer
+ * @ingroup Devices
  * @brief Class for a Hygrometer module. Uses a I2C Port for communication purposes
  * and has some specific functions for handling and transforming data.
  * @author Rene Kremer

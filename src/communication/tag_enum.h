@@ -3,30 +3,9 @@
 
 /**
  * @file
- * @class TagEnum
+ * @enum mapper::TagEnum
+ * @ingroup Enums
  * @brief Enums for Tags described in TLVE4 Protocol
- * @details
- * <ul>
- * 	<li>#NO_TAG_DEFINED			( = 0x00)</li>
- * 	<li>#GET_PROTOCOL_VERSION 		( = 0x01)</li>
- * 	<li>#GET_BOAT_ID 			( = 0x02)</li>
- * 	<li>#SET_CONTROL_MODE			( = 0x03)</li>
- * 	<li>#PM_SET	 			( = 0x04)</li>
- * 	<li>#ERROR	 			( = 0x08)</li>
- * 	<li>#GET_BOAT_DESCRIPTION		( = 0x09)</li>
- * 	<li>#GET_CONTROL_MODE			( = 0x0A)</li>
- * 	<li>#SET_VALUE 				( = 0x11)</li>
- * 	<li>#REQUEST_VALUE 			( = 0x12)</li>
- * 	<li>#REQUEST_VALUE_W_TIMESTAMP		( = 0x13)</li>
- * 	<li>#VALUE_PROTOCOL_VERSION		( = 0x81)</li>
- * 	<li>#VALUE_BOAT_ID 			( = 0x82)</li>
- * 	<li>#VALUE_BOAT_DESCRIPTION		( = 0x89)</li>
- * 	<li>#VALUE_CONTROL_MODE			( = 0x8A)</li>
- * 	<li>#ACKNOWLEDGE_STREAM			( = 0x91)</li>
- * 	<li>#VALUE_RESPONSE 			( = 0x92)</li>
- * 	<li>#VALUE_RESPONSE_W_TIMESTAMP		( = 0x93)</li>
- * 	<li>#NUM_TAGS 				( = 18)</li>
- * </ul>
  * @author Rene Kremer
  * @version 0.2
  */

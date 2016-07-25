@@ -36,6 +36,7 @@
 /**
  * @file
  * @class GPS
+ * @ingroup Devices
  * @brief Class for a GPS Module. Uses a Serial Port for communication but has some
  * functions to handle and transform received data.
  * @author Rene Kremer

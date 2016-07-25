@@ -4,7 +4,17 @@
 #include "protocol_engine.h"
 #include "tlv_interpreter.h"
 #include "tlv_frame.h"
-
+/**
+ * @file
+ * @class TLVEEngine
+ * @ingroup Communication
+ * @brief Class for a TLVE4 Engine. Core of the TLVE4 implementation.
+ * Uses a TLVInterpreter to interpret TLVFrames and a ComponentDescriptorBuilder to
+ * construct descriptors for different devices.
+ *
+ * @author Rene Kremer
+ * @version 0.3
+ */
 class TLVEEngine : virtual public ProtocolEngine
 {
   /**
@@ -58,6 +68,14 @@ public:
   create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 		std::vector<uint8_t> payload);
   /**
+   * Creates a Frame and returns a pointer to it
+   * @param tag is the value of the tag field
+   * @param length is the amount of bytes of the payload field
+   * @return a Frame packed with the data
+   */
+  TLVFrame*
+  create_frame (TagEnum tag, uint8_t length);
+  /**
    * Creates an empty TLVFrame
    * @return an empty TLVFrame
    */
@@ -80,6 +98,27 @@ public:
    * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
    * calls the function described by the command in the Frame.
    * @param frame is a pointer to the frame which shall be interpreted
+   *
+   * XXX fixed Actors as specified in protocol, needs to be the same in conf file
+   * <pre>
+   * 	<code>
+   *       	switch (frame->get_attribute ())
+   *		{
+   *			// Rudder
+   *			case 0x44:
+   *		    		communication_number = 0x01;
+   *		    		break;
+   *		  	// Main Sail
+   *		  	case 0x45:
+   *		  		communication_number = 0x02;
+   *		  		break;
+   *		  	// Fore Sail
+   *		  	case 0x46:
+   *		  		communication_number = 0x03;
+   *		  		break;
+   *		 }
+   *	</code>
+   * </pre>
    */
   void
   interpret_frame (Frame* frame);

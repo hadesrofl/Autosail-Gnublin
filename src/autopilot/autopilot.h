@@ -8,6 +8,7 @@
 /**
  * @file
  * @class AutoPilot
+ * @ingroup Autopilot
  * @brief Class for the Autopilot. Shall be realized in an own thread. Furthermore
  * an AutoPilot contains a SailRegulator and CourseRegulator each realized in an own
  * thread to regulate Sail and Course autonomously for setting and holding a course.

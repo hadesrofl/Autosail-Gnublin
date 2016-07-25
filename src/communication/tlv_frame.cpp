@@ -24,6 +24,12 @@ TLVFrame::TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length)
   m_attribute = attribute;
   m_length = length;
 }
+TLVFrame::TLVFrame (TagEnum tag, uint8_t length)
+{
+  m_tag = tag;
+  m_attribute = 0;
+  m_length = length;
+}
 bool
 TLVFrame::validate_frame ()
 {

@@ -6,6 +6,7 @@
 /**
  * @file
  * @class gps_data_t
+ * @ingroup Devices
  * @brief Struct for a GPS data. Stores data from a gps update such as latitude, longitude,
  * speed and a timestamp. The timestamp is the systemtime of linux when the update
  * arrived.

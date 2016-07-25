@@ -6,6 +6,7 @@
 /**
  * @file
  * @class Calculation
+ * @ingroup Utils
  * @brief Class for Calculations.
  * Provides static functions to calculate e.g. the gcd (greatest common divisor)
  * @author Rene Kremer

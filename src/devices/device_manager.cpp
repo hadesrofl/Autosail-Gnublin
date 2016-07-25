@@ -124,9 +124,57 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	  break;
 	case ComponentDescriptorEnum::BILGE_WATER_DETECTION:
 	  break;
-	case ComponentDescriptorEnum::SERIAL_LINK:
-	  break;
 	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
+	  {
+	    std::shared_ptr<ServoMotor> device = std::shared_ptr<ServoMotor> (
+		new ServoMotor (
+		    new SPIParameter (0, DeviceConfig::SPI_SPEED_1MHZ, true),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	  {
+	    std::shared_ptr<ServoMotor> device = std::shared_ptr<ServoMotor> (
+		new ServoMotor (
+		    new SPIParameter (0, DeviceConfig::SPI_SPEED_1MHZ, true),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	  {
+	    std::shared_ptr<ServoMotor> device = std::shared_ptr<ServoMotor> (
+		new ServoMotor (
+		    new SPIParameter (0, DeviceConfig::SPI_SPEED_1MHZ, true),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
+	  break;
+	case ComponentDescriptorEnum::SERIAL_LINK:
+	  {
+	    std::shared_ptr<SerialLink> device = std::shared_ptr<SerialLink> (
+		new SerialLink (
+		    new SPIParameter (0, DeviceConfig::SPI_SPEED_1MHZ, true),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
 	  break;
 	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
 	  break;
@@ -135,7 +183,8 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	case ComponentDescriptorEnum::WIND_VANE:
 	  break;
 	default:
-	  // TODO: Something fancy
+	  // No communication Device
+	  protocol_engine->insert_communication_table_forward (descriptor, 0);
 	  break;
 	}
     }

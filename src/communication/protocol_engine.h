@@ -31,6 +31,7 @@ class StreamGenerator;
 /**
  * @file
  * @class ProtocolEngine
+ * @ingroup Communication
  * @brief Class for a virtual Protocol Engine. Contains the DescriptionBuilder to create
  * the payload for the BoatDescription and creates Frames for the Communication.
  *
@@ -135,6 +136,14 @@ public:
    */
   virtual Frame*
   create_frame (TagEnum tag, uint8_t attribute, uint8_t length) = 0;
+  /**
+   * Creates a Frame and returns a pointer to it
+   * @param tag is the value of the tag field
+   * @param length is the amount of bytes of the payload field
+   * @return a Frame packed with the data
+   */
+  virtual Frame*
+  create_frame (TagEnum tag, uint8_t length) =0;
   /**
    * Creates an empty Frame and returns a pointer to it
    * @return an empty Frame

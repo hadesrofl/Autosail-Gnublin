@@ -30,6 +30,11 @@ TLVEEngine::create_frame (TagEnum tag, uint8_t attribute, uint8_t length,
 {
   return new TLVFrame (tag, attribute, length, payload);
 }
+TLVFrame*
+TLVEEngine::create_frame (TagEnum tag, uint8_t length)
+{
+  return new TLVFrame (tag, length);
+}
 
 TLVFrame*
 TLVEEngine::create_frame ()
@@ -63,10 +68,36 @@ TLVEEngine::send_frame (Frame* frame)
 void
 TLVEEngine::interpret_frame (Frame* frame)
 {
-  uint8_t communication_number =
-      frame->get_attribute () & COMMUNICATION_NUMBER_BITMASK;
-  m_interpreter->interpret_frame (
-      &(*m_communication_table_backward[communication_number]), frame);
+  uint8_t communication_number;
+  Device* device = NULL;
+  if (frame->get_tag () != TagEnum::PM_SET)
+    {
+      communication_number =
+	  frame->get_attribute () & COMMUNICATION_NUMBER_BITMASK;
+    }
+  else
+    {
+      switch (frame->get_attribute ())
+	{
+	// Rudder
+	case 0x44:
+	  communication_number = 0x01;
+	  break;
+	  // Main Sail
+	case 0x45:
+	  communication_number = 0x02;
+	  break;
+	  // Fore Sail
+	case 0x46:
+	  communication_number = 0x03;
+	  break;
+	}
+    }
+  if (communication_number != 0)
+    {
+      device = &(*m_communication_table_backward[communication_number]);
+    }
+  m_interpreter->interpret_frame (device, frame);
 }
 
 TLVEEngine::~TLVEEngine ()

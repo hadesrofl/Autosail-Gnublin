@@ -1,4 +1,13 @@
 /**
+    @defgroup Enums Enumeration types
+    @defgroup Autopilot Autopilot classes
+    @defgroup Communication Communication classes
+    @defgroup Devices Device classes
+    @defgroup Interfaces Interface classes
+    @defgroup Utils Utilitiy classes
+*/
+
+/**
  * @mainpage Autosail API Embedded Linux
  *
  * <h3>Port of the firmware from a microprocessor to the gnublin platform for an autonomous sailboat</h3>

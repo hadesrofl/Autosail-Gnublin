@@ -29,6 +29,7 @@
 /**
  * @file
  * @class Gyroscope
+ * @ingroup Devices
  * @brief Class for a Gyroscope Module . Uses a I2C Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer

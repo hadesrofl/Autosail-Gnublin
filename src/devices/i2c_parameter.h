@@ -6,6 +6,7 @@
 /**
  * @file
  * @class I2CParameter
+ * @ingroup Devices
  * @brief Class for Parameters of I2C Devices. Contains a address of the slave address.
  * @version 0.3
  */

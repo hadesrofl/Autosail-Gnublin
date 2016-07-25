@@ -7,7 +7,15 @@
  * Sync Byte at the end of each frame
  */
 #define SYNC_BYTE 0x01
-
+/**
+ * @file
+ * @class TLVFrame
+ * @ingroup Communication
+ * @brief Class for a TLVE4 Frame. Represents the Data Structure of a TLVE4 Frame.
+ *
+ * @author Rene Kremer
+ * @version 0.2
+ */
 class TLVFrame : virtual public Frame
 {
   /**
@@ -38,6 +46,12 @@ public:
    * @param length byte of the length of the payload
    */
   TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length);
+  /**
+   * Constructor
+   * @param tag byte of the tag field
+   * @param length byte of the length of the payload
+   */
+  TLVFrame (TagEnum tag, uint8_t length);
   /**
    * Constructor for an empty Frame
    */

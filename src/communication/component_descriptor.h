@@ -6,6 +6,7 @@
 /**
  * @file
  * @class ComponentDescriptor
+ * @ingroup Communication
  * @brief Container Class for the Component Descriptor used for the initial
  * communication via TLVE4-Protocol.
  * @author Rene Kremer

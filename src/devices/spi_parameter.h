@@ -1,13 +1,19 @@
 #ifndef DEVICES_SPI_PARAMETER_H_
 #define DEVICES_SPI_PARAMETER_H_
 
+#include "device_config.h"
+
+/**
+ * Default SPI Device of the Gnublin
+ */
 #define GNUBLIN_DEFAULT_SPI "/dev/spidev0.0"
 
 /**
  * @file
  * @class SPIParameter
+ * @ingroup Devices
  * @brief Class for Parameters of SPI Devices. Contains the SPI Mode, Speed and LSB for the SPIMasterSelect Interface.
- * @version 0.3
+ * @version 0.35
  */
 class SPIParameter : virtual public InterfaceParameter
 {
@@ -20,13 +26,31 @@ private:
    */
   uint8_t m_mode;
   /**
-   * Speed of the serial interface
+   * Speed of the serial interface (in Hertz)
    */
-  uint16_t m_speed;
+  uint32_t m_speed;
   /**
    * Boolean to determine if the interface is set to LSB or MSB
    */
   bool m_lsb;
+  /**
+   * Distinguishes between different DeviceConfigs. Sets 1Mhz on default, if the
+   * config does not apply to one SPI_SPEED specified in DeviceConfig
+   * @param config is a DeviceConfig Enum.
+   * @return the speed for the spi
+   */
+  uint32_t
+  distinguish_speed (DeviceConfig config)
+  {
+    switch (config)
+      {
+      case DeviceConfig::SPI_SPEED_1MHZ:
+	return 1000 * 1000;
+	break;
+      default:
+	return 1000 * 1000;
+      }
+  }
   /**
    * @protected
    */
@@ -39,26 +63,27 @@ public:
    * Constructor for a SPI Parameter
    * @param device_file is the file of the device in linux
    * @param mode is the mode of the SPI Interface
-   * @param speed is the speed of the SPI Interface
+   * @param speed is the speed of the SPI Interface as DeviceConfig Enum
    * @param lsb to determine if the SPI Interface is set to LSB or MSB
    */
-  SPIParameter (char* device_file, uint8_t mode, uint16_t speed, bool lsb)
+  SPIParameter (char* device_file, uint8_t mode, DeviceConfig speed, bool lsb)
   {
     m_device_file = device_file;
     m_mode = mode;
-    m_speed = speed;
+    m_speed = distinguish_speed (speed);
     m_lsb = lsb;
   }
   /**
    * Constructor for a SPI Parameter (called with default device file of gnublin)
    * @param mode is the mode of the SPI Interface
-   * @param speed is the speed of the SPI Interface
+   * @param speed is the speed of the SPI Interface as DeviceConfig Enum
    * @param lsb to determine if the SPI Interface is set to LSB or MSB
    */
-  SPIParameter (uint8_t mode, uint16_t speed, bool lsb)
+  SPIParameter (uint8_t mode, DeviceConfig speed, bool lsb)
   {
+    m_device_file = (char*) GNUBLIN_DEFAULT_SPI;
     m_mode = mode;
-    m_speed = speed;
+    m_speed = distinguish_speed (speed);
     m_lsb = lsb;
   }
   /**

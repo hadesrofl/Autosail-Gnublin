@@ -24,6 +24,7 @@ class AutoPilot;
 /**
  * @file
  * @class FrameInterpreter
+ * @ingroup Communication
  * @brief Class for a virtual Frame Interpreter. Interprets Frames and calls
  * the specific function as described in the command of the frame.
  *
@@ -79,9 +80,8 @@ public:
    * Has to be implemented for a Frame Interpreter
    * @param device is a pointer to the device mentioned in the frame
    * @param frame is a pointer to the Frame to interprets
-   * @return a frame with data to send or NULL if no frame has to be sent
    */
-  virtual Frame*
+  virtual void
   interpret_frame (Device* device, Frame* frame) = 0;
   /**
    * Virtual Desctructor

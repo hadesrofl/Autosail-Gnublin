@@ -2,38 +2,9 @@
 #define DEVICES_DEVICE_CONFIG_H_
 /**
  * @file
- * @class DeviceConfig
+ * @enum mapper::DeviceConfig
+ * @ingroup Enums
  * @brief Enum for the params of the devices
- * @details
- * <ul>
- * 	<li>#ACC_ADDR</li>
- * 	<li>#ACC_DATA_LENGTH</li>
- * 	<li>#ACC_RANGE_2G</li>
- * 	<li>#ACC_RANGE_4G</li>
- * 	<li>#ACC_RANGE_8G</li>
- * 	<li>#ACC_RANGE_16G</li>
- * 	<li>#COMPASS_ADDR</li>
- * 	<li>#COMPASS_DATA_LENGTH</li>
- * 	<li>#COMPASS_GAIN_0_8_8_GA</li>
- * 	<li>#COMPASS_GAIN_1_3_GA</li>
- * 	<li>#COMPASS_GAIN_1_9_GA</li>
- * 	<li>#COMPASS_GAIN_2_5_GA</li>
- * 	<li>#COMPASS_GAIN_4_GA</li>
- * 	<li>#COMPASS_GAIN_4_7_GA</li>
- * 	<li>#COMPASS_GAIN_5_6_GA</li>
- * 	<li>#COMPASS_GAIN_8_1_GA</li>
- * 	<li>#GYRO_ADDR</li>
- * 	<li>#GYROSCOPE_DATA_LENGTH</li>
- * 	<li>#SERIAL_B4800</li>
- * 	<li>#SERIAL_B9600</li>
- * 	<li>#SERIAL_B19200</li>
- * 	<li>#SERIAL_B38400</li>
- * 	<li>#SERIAL_B57600</li>
- * 	<li>#SERIAL_B115200</li>
- *	<li>#HYGRO_ADDR</li>
- * 	<li>#WIND_SENSOR_ADDR</li>
- * 	<li>#NUM_CONFIGS</li>
- * </ul>
  * @author Rene Kremer
  * @version 0.3
  */
@@ -138,7 +109,10 @@ enum class DeviceConfig
    * Serial Baudrate of 38400
    */
   SERIAL_B115200 = 0x06,
-
+  /**
+   * Speed of SPI of 1Mhz
+   */
+  SPI_SPEED_1MHZ = 0x01,
   /**
    * FILLER VALUE Address of Hygrometer
    */
@@ -150,10 +124,10 @@ enum class DeviceConfig
 
   NUM_CONFIGS =
 #ifdef _TEST
-  27
+  28
 #endif
 #ifndef _TEST
-  26
+27
 #endif
 };
 

@@ -8,6 +8,7 @@
 /**
  * @file
  * @class SerialLink
+ * @ingroup Devices
  * @brief Class for a SerialLink module. Uses a SPIMasterSelect Interface for communication and
  * has some specific functions for handling and transforming data.
  * @author Rene Kremer
