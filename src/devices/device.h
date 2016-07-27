@@ -9,6 +9,7 @@
 #include "../communication/component_descriptor.h"
 #include "../communication/datastructure_identifier.h"
 #include "interface_parameter.h"
+#include "../utils/int_converter.h"
 
 /**
  * @file

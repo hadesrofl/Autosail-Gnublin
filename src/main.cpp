@@ -234,8 +234,26 @@ main (void)
 #ifdef _TEST
 //  tests ();
 //  gps_csv ();
-  frame_test ();
+//  frame_test ();
   Loader* loader = new Loader ();
+  std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
+  std::shared_ptr<Device> device_a = dmanager->get_device (
+      ComponentDescriptorEnum::WIND_VANE);
+  bool active = true;
+  std::vector<int8_t> vane_data;
+  while (active)
+    {
+      if (device_a != NULL)
+	{
+	  vane_data = device_a->read_data ();
+	  sleep (1);
+	}
+      else
+	{
+	  active = false;
+	}
+    }
+
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

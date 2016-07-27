@@ -77,6 +77,19 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	  }
 	  break;
 	case ComponentDescriptorEnum::ANEMOMETER:
+	  {
+	    std::shared_ptr<Anemometer> device =
+		std::shared_ptr<Anemometer> (
+		    new Anemometer (
+			new I2CParameter (
+			    static_cast<uint8_t> (DeviceConfig::ANEMOMETER_ADDRESS)),
+			descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
 	  break;
 	case ComponentDescriptorEnum::COMPASS:
 	  {
@@ -179,8 +192,33 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
 	  break;
 	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
+	  {
+	    std::shared_ptr<WestonAnemometer> device =
+		std::shared_ptr<WestonAnemometer> (
+		    new WestonAnemometer (
+			new I2CParameter (
+			    static_cast<uint8_t> (DeviceConfig::WESTON_ANEMOMETER_ADDRESS)),
+			descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
 	  break;
 	case ComponentDescriptorEnum::WIND_VANE:
+	  {
+	    std::shared_ptr<WindVane> device = std::shared_ptr<WindVane> (
+		new WindVane (
+		    new I2CParameter (
+			static_cast<uint8_t> (DeviceConfig::WIND_VANE_ADDRESS)),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+	  }
 	  break;
 	default:
 	  // No communication Device

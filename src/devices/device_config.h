@@ -118,16 +118,36 @@ enum class DeviceConfig
    */
   HYGRO_ADDR = 0x00,
   /**
-   * FILLER VALUE: Address of WindSensor
+   * Address of the WindVane
    */
-  WIND_SENSOR_ADDR = 0x00,
+  WIND_VANE_ADDRESS = 0x44,
+  /**
+   * Length of read data from WindVane
+   */
+  WIND_VANE_DATA_LENGTH = 0x02,
+  /**
+   * Address of the Anemometer
+   */
+  ANEMOMETER_ADDRESS = 0x45,
+  /**
+   * Length of read data from Anemometer
+   */
+  ANEMOMETER_DATA_LENGTH = 0x02,
+  /**
+   * FILLER VALUE Address of WestonAnemometer
+   */
+  WESTON_ANEMOMETER_ADDRESS = 0x00,
+  /**
+   * FILLER VALUE Data Length of WestonAnemometer
+   */
+  WESTON_ANEMOMETER_DATA_LENGTH = 0x00,
 
   NUM_CONFIGS =
 #ifdef _TEST
-  28
+  33
 #endif
 #ifndef _TEST
-27
+32
 #endif
 };
 

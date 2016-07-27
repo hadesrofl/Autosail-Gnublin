@@ -47,6 +47,7 @@ class Compass : virtual public Device
 private:
   /**
    * Inits the compass, setting the configuration for the device
+   * @return 1 on success, otherwise -1
    */
   int8_t
   init ();
