@@ -25,11 +25,15 @@ private:
   /**
    * Time interval to generate new data
    */
-  uint32_t m_period;
+  uint16_t m_period;
   /**
    * Is the Stream active or disabled?
    */
   bool m_active;
+  /**
+   * Communication Number of the Device
+   */
+  uint8_t m_communication_number;
   /**
    * @public
    */
@@ -37,12 +41,15 @@ public:
   /**
    * Constructor - Sets this Stream active for a given period and device
    * @param device is the pointer to the Device
+   * @param communication_number is the communication number of the device
    * @param period is the period triggering this Stream
    */
-  Stream (std::shared_ptr<Device> device, uint32_t period)
+  Stream (std::shared_ptr<Device> device, uint8_t communication_number,
+	  uint32_t period)
   {
     m_device = device;
     m_period = period;
+    m_communication_number = communication_number;
     m_active = true;
   }
   /**
@@ -50,6 +57,7 @@ public:
    * @return a pointer to the Device
    */
   std::shared_ptr<Device>
+  inline
   get_device () const
   {
     return m_device;
@@ -58,26 +66,38 @@ public:
    * Gets the period in ms triggering this Stream
    * @return period in ms to trigger the Stream
    */
-  uint32_t
+  uint16_t
+  inline
   get_period () const
   {
     return m_period;
   }
   /**
-   *Sets a new period to triggering this stream. Activates the Stream
-   *@param period is the new period
+   * Gets the communication number of the Device of this Stream
+   * @return the communication number
+   */
+  uint8_t inline
+  get_communication_number () const
+  {
+    return m_communication_number;
+  }
+
+  /**
+   * Sets a new period to triggering this stream.
+   * @param period is the new period
    */
   void
-  set_period (uint32_t period)
+  inline
+  set_period (uint16_t period)
   {
     m_period = period;
-    set_active (true);
   }
   /**
    * Sets this Stream to active (true) or disabled (false)
    * @param active is a bool determining if the Stream is active or disabled
    */
   void
+  inline
   set_active (bool active)
   {
     m_active = active;
@@ -87,6 +107,7 @@ public:
    * @return true if it is active, otherwise false
    */
   bool
+  inline
   is_active () const
   {
     return m_active;

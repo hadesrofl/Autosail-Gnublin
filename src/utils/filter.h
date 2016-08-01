@@ -7,6 +7,7 @@
  * @file
  * @class Filter
  * @ingroup Utils
+ * XXX NOT SUPPORTED YET
  * @brief Virtual Class for Filter class (MedianFilter and AverageFilter).
  * @note Idea for Filters mentioned in Bachelor Thesis "Entwurf, Implementierung
  * und Test eines Autopiloten für die Steuerung eines Modellsegelbootes

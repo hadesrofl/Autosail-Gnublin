@@ -28,15 +28,15 @@ Anemometer::read_data ()
   std::vector<int8_t> data;
   Device::read (buf,
 		static_cast<int16_t> (DeviceConfig::ANEMOMETER_DATA_LENGTH));
+#ifdef _DEBUG
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (buf[1] << 8) | buf[0];
-#ifdef _DEBUG
   std::cout << "Raw Data: " << static_cast<int> (buf[0]) << " and "
   << static_cast<int> (buf[1]) << std::endl;
   std::cout << "Raw int16: " << raw_x << std::endl;
 #endif
-  data.push_back (buf[0]);
   data.push_back (buf[1]);
+  data.push_back (buf[0]);
   delete[] buf;
   return data;
 }

@@ -7,6 +7,7 @@
 #include "device.h"
 #include "accelerometer.h"
 #include "anemometer.h"
+#include "battery.h"
 #include "compass.h"
 #include "gps.h"
 #include "gyroscope.h"

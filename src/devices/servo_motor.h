@@ -7,6 +7,50 @@
 #include "../utils/int_converter.h"
 
 /**
+ * Intra Protocol Tag for set rudder.
+ * Parameters are: 2 byte for int16_t angle
+ */
+#define IP_TAG_SET_RUDDER 0x01
+/**
+ * Intra Protocol Tag for set rudder.
+ * Parameters are: 2 byte for int16_t angle
+ */
+#define IP_TAG_SET_MS 0x02
+/**
+ * Intra Protocol Tag for set rudder.
+ * Parameters are: 2 byte for int16_t angle
+ */
+#define IP_TAG_SET_FS 0x03
+/**
+ * Intra Protocol Tag for set rudder.
+ * Parameters are: 2 byte for int16_t angle
+ */
+#define IP_TAG_SET_HOOK 0x04
+/**
+ * Intra Protocol Tag for setting all servos.
+ * Parameters are: 4*2 byte for int16_t angle starting with
+ * rudder, main sail, fore sail, hook
+ * angle value 0 for not setting a servo
+ */
+#define IP_TAG_SET_ALL_SERVOS 0x05
+/**
+ * Servotype for handling the rudder
+ */
+#define MECHANIC_RUDDER 0x01
+/**
+ * Servotype for handling the main sail
+ */
+#define MECHANIC_MS 0x02
+/**
+ * Servotype for handling the fore sail
+ */
+#define MECHANIC_FS 0x03
+/**
+ * Servotype for handling the hook
+ */
+#define MECHANIC_HOOK 0x04
+
+/**
  * @file
  * @class ServoMotor
  * @ingroup Devices
@@ -32,6 +76,10 @@ private:
    */
   int16_t m_angle;
   /**
+   * Type of mechanic handled by this servo.
+   */
+  uint8_t m_mechanic;
+  /**
    * @public
    */
 public:
@@ -39,13 +87,12 @@ public:
    * Constructor
    * @param interface_parameter are the parameters for the SPI Interface
    * @param descriptor is a pointer to the ComponentDescriptor of this device
+   * @param mechanic is the type of mechanic handled by this servo
    */
   ServoMotor (SPIParameter *interface_parameter,
-	      ComponentDescriptor* descriptor);
+	      ComponentDescriptor* descriptor, uint8_t mechanic);
   /**
-   * TODO: Comment with SerialLink specific register
-   * Reads the Data X, Y and Z Register of the SerialLink and returns them as a
-   * pointer with allocated memory.
+   * XXX UNUSED, DO NOT CALL
    */
   std::vector<int8_t>
   read_data ();

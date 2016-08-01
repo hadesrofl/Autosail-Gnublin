@@ -32,6 +32,7 @@ TLVFrame::TLVFrame (TagEnum tag, uint8_t length)
 }
 bool
 TLVFrame::validate_frame ()
+//TODO: add functionality
 {
   return true;
 }

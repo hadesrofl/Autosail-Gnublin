@@ -7,6 +7,55 @@
 #include "tlve_engine.h"
 
 /**
+ * error code used in error messages for unknown tag
+ */
+#define ERROR_UNKNOWN_TAG 0x01
+/**
+ * message of the unknown tag error
+ */
+#define ERROR_UNKNOWN_TAG_MSG "Tag unknown!"
+/**
+ * length of the message for an unknown tag error
+ */
+#define ERROR_UNKNOWN_TAG_MSG_LENGTH 12
+/**
+ * error code used in error messages for unknown tag
+ */
+#define ERROR_NOT_SUPPORTED_TAG 0x02
+/**
+ * message of the not supported tag error
+ */
+#define ERROR_NOT_SUPPORTED_TAG_MSG "Tag not supported!"
+/**
+ * length of the message for an unknown tag error
+ */
+#define ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH 18
+/**
+ * error code used in error messages for unknown component
+ */
+#define ERROR_UNKNOWN_COMP 0x03
+/**
+ * message of the unknown component error
+ */
+#define ERROR_UNKNOWN_COMP_MSG "Component unknown!"
+/**
+ * length of the message for an unknown component error
+ */
+#define ERROR_UNKNOWN_COMP_MSG_LENGTH 12
+/**
+ * error code used in error messages for unknown stream
+ */
+#define ERROR_UNKNOWN_STREAM 0x04
+/**
+ * message of the unknown component error
+ */
+#define ERROR_UNKNOWN_STREAM_MSG "Stream unknown!"
+/**
+ * length of the message for an unknown component error
+ */
+#define ERROR_UNKNOWN_STREAM_MSG_LENGTH 15
+
+/**
  * @file
  * @class TLVInterpreter
  * @ingroup Communication

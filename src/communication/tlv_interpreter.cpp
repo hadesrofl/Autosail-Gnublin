@@ -21,15 +21,18 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
     {
       descriptor = device->get_component_descriptor ();
     }
-  else if (m_autopilot->get_communication_number () == communication_number)
+  else if (m_autopilot != NULL
+      && m_autopilot->get_communication_number () == communication_number)
     {
       descriptor = m_autopilot->get_component_descriptor ();
     }
-  else if (m_stream_generator->get_communication_number ()
-      == communication_number)
+  else if (m_stream_generator != NULL
+      && m_stream_generator->get_communication_number ()
+	  == communication_number)
     {
       descriptor = m_stream_generator->get_component_descriptor ();
     }
+  // if descriptor != NULL start interpreting
   if (descriptor != NULL)
     {
       descriptor_enum =
@@ -86,7 +89,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    dynamic_cast<ServoMotor*> (device)->set_angle (angle);
 	  }
 	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	case ComponentDescriptorEnum::SERVO_MOTOR_MS:
 	  {
 	    int8_t* buf = new int8_t[2];
 	    buf[0] = frame->get_payload ().at (0);
@@ -96,7 +99,17 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    dynamic_cast<ServoMotor*> (device)->set_angle (angle);
 	  }
 	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	case ComponentDescriptorEnum::SERVO_MOTOR_FS:
+	  {
+	    int8_t* buf = new int8_t[2];
+	    buf[0] = frame->get_payload ().at (0);
+	    buf[1] = frame->get_payload ().at (1);
+	    int16_t angle = IntConverter::int8_to_int16 (buf);
+	    delete[] buf;
+	    dynamic_cast<ServoMotor*> (device)->set_angle (angle);
+	  }
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_HOOK:
 	  {
 	    int8_t* buf = new int8_t[2];
 	    buf[0] = frame->get_payload ().at (0);
@@ -107,11 +120,14 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	  }
 	  break;
 	default:
+	  m_protocol_engine->send_error (ERROR_UNKNOWN_COMP,
+					 (uint8_t*) ERROR_UNKNOWN_COMP_MSG,
+					 ERROR_UNKNOWN_COMP_MSG_LENGTH);
 	  break;
 	}
       break;
     case TagEnum::ERROR:
-      //TODO: Do something?
+      //Ignore frame
       break;
     case TagEnum::GET_BOAT_DESCRIPTION:
       {
@@ -154,21 +170,52 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	 On-Board Software
 	 ------------------------------------------*/
 	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
-	  //TODO: Get some other fancy idea for getting Stream Generator
-	  //maybe add StreamGenerator to Interpreter? & BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t attribute, *cn, *period_ack;
+	    int8_t* tmp = new int8_t[2];
+	    // Get communication number
+	    tmp[0] = frame->get_payload ().at (0);
+	    tmp[1] = frame->get_payload ().at (1);
+	    int16_t comm_number = IntConverter::int8_to_int16 (tmp);
+	    // Get period
+	    tmp[0] = frame->get_payload ().at (2);
+	    tmp[1] = frame->get_payload ().at (3);
+	    std::shared_ptr<Device> device = m_protocol_engine->get_device (
+		comm_number);
+	    int16_t period = IntConverter::int8_to_int16 (tmp);
+	    if (period > 0)
+	      {
+		m_stream_generator->add_stream (device, comm_number, period);
+	      }
+	    else
+	      {
+		m_stream_generator->disable_stream (comm_number);
+	      }
+	    Stream* stream = m_stream_generator->get_stream (comm_number);
+	    attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16, communication_number);
+	    period_ack = IntConverter::uint16_to_uint8 (stream->get_period ());
+	    cn = IntConverter::uint16_to_uint8 (
+		stream->get_communication_number ());
+	    payload.push_back (cn[0]);
+	    payload.push_back (cn[1]);
+	    payload.push_back (period_ack[0]);
+	    payload.push_back (period_ack[1]);
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::ACKNOWLEDGE_STREAM, attribute, payload.size () + 1,
+		payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::AUTOPILOT:
-	  //TODO: Do something!
 	  {
 	    std::vector<uint8_t> payload;
 	    uint8_t attribute;
 	    int8_t* buf = new int8_t[2];
 	    buf[0] = frame->get_payload ().at (0);
 	    buf[1] = frame->get_payload ().at (1);
-	    std::cout << "Command in uint8_t: " << static_cast<int> (buf[0])
-		<< " and " << static_cast<int> (buf[1]) << std::endl;
 	    int16_t command = IntConverter::int8_to_int16 (buf);
-	    std::cout << "Command: " << command << std::endl;
 	    buf[0] = frame->get_payload ().at (2);
 	    buf[1] = frame->get_payload ().at (3);
 	    int16_t direction = IntConverter::int8_to_int16 (buf);
@@ -178,12 +225,10 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	      {
 	      /* Deactivate autopilot */
 	      case COMMAND_AUTOPILOT_OFF:
-		std::cout << "Got it" << std::endl;
 		ret = m_autopilot->set_active (false);
 		break;
 		/* Set Course */
 	      case COMMAND_SET_COURSE:
-		std::cout << "Got it, Set Course! " << std::endl;
 		ret = m_autopilot->set_course (direction);
 		break;
 		/* Hold Course */
@@ -202,7 +247,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    if (ret == 1)
 	      {
 		attribute = m_protocol_engine->tlve4_attribute (
-		    DataStructureIdentifier::UINT8,
+		    DataStructureIdentifier::INT16,
 		    m_autopilot->get_communication_number ());
 		uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
 		payload.push_back (ts[0]);
@@ -245,7 +290,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    dynamic_cast<ServoMotor*> (device)->set_angle (angle);
 	  }
 	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_MAIN_SAIL:
+	case ComponentDescriptorEnum::SERVO_MOTOR_MS:
 	  {
 	    int8_t* buf = new int8_t[2];
 	    buf[0] = frame->get_payload ().at (0);
@@ -255,7 +300,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    dynamic_cast<ServoMotor*> (device)->set_angle (angle);
 	  }
 	  break;
-	case ComponentDescriptorEnum::SERVO_MOTOR_FORE_SAIL:
+	case ComponentDescriptorEnum::SERVO_MOTOR_FS:
 	  {
 	    int8_t* buf = new int8_t[2];
 	    buf[0] = frame->get_payload ().at (0);
@@ -266,21 +311,88 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	  }
 	  break;
 	default:
+	  m_protocol_engine->send_error (ERROR_UNKNOWN_COMP,
+					 (uint8_t*) ERROR_UNKNOWN_COMP_MSG,
+					 ERROR_UNKNOWN_COMP_MSG_LENGTH);
 	  break;
 	}
       break;
     case TagEnum::REQUEST_VALUE:
-      //TODO: Do something!
-      switch (frame->get_length ())
+      switch (descriptor_enum)
 	{
-	/* Get all streams */
-	case 1:
+	case ComponentDescriptorEnum::STREAM_CONTROL_UNIT:
+	  switch (frame->get_length ())
+	    {
+	    /* Get all streams */
+	    case 1:
+	      {
+		std::vector<uint8_t> payload;
+		std::vector<Stream*> streams =
+		    m_stream_generator->get_streams ();
+		uint8_t attribute;
+		attribute = m_protocol_engine->tlve4_attribute (
+		    DataStructureIdentifier::INT16, communication_number);
+		for (uint8_t i = 0; i < streams.size (); i++)
+		  {
+		    payload.push_back (0);
+		    payload.push_back (
+			m_protocol_engine->get_communication_number (
+			    streams.at (i)->get_device ()->get_component_descriptor ()));
+		    uint8_t* period = IntConverter::uint16_to_uint8 (
+			streams.at (i)->get_period ());
+		    payload.push_back (period[0]);
+		    payload.push_back (period[1]);
+		    delete[] period;
+		  }
+		Frame* frame = m_protocol_engine->create_frame (
+		    TagEnum::VALUE_RESPONSE, attribute, payload.size () + 1,
+		    payload);
+		m_protocol_engine->send_frame (frame);
+	      }
+	      break;
+	      /* Get one stream */
+	    case 2:
+	      {
+		std::vector<uint8_t> payload;
+		uint8_t attribute, comm_number;
+		std::shared_ptr<Device> device = m_protocol_engine->get_device (
+		    frame->get_payload ().at (0));
+		comm_number = m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ());
+		Stream* stream = m_stream_generator->get_stream (comm_number);
+		attribute = m_protocol_engine->tlve4_attribute (
+		    DataStructureIdentifier::INT16, communication_number);
+		if (stream != NULL)
+		  {
+		    payload.push_back (0);
+		    payload.push_back (comm_number);
+		    uint8_t* period = IntConverter::uint16_to_uint8 (
+			stream->get_period ());
+		    payload.push_back (period[0]);
+		    payload.push_back (period[1]);
+		    Frame* frame = m_protocol_engine->create_frame (
+			TagEnum::VALUE_RESPONSE, attribute, payload.size () + 1,
+			payload);
+		    m_protocol_engine->send_frame (frame);
+		    delete[] period;
+		  }
+		else
+		  {
+		    m_protocol_engine->send_error (
+			ERROR_UNKNOWN_STREAM,
+			(uint8_t*) ERROR_UNKNOWN_STREAM_MSG,
+			ERROR_UNKNOWN_STREAM_MSG_LENGTH);
+		  }
+	      }
+	      break;
+	    }
 	  break;
-	  /* Get one stream */
-	case 2:
+	default:
+	  m_protocol_engine->send_error (ERROR_UNKNOWN_COMP,
+					 (uint8_t*) ERROR_UNKNOWN_COMP_MSG,
+					 ERROR_UNKNOWN_COMP_MSG_LENGTH);
 	  break;
 	}
-
       break;
     case TagEnum::REQUEST_VALUE_W_TIMESTAMP:
       switch (descriptor_enum)
@@ -288,95 +400,470 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	/*------------------------------------------
 	 Actor
 	 ------------------------------------------*/
-	case ComponentDescriptorEnum::POSITION_RUDDER:
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::SERVO_MOTOR_RUDDER:
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t* angle = IntConverter::uint16_to_uint8 (
+		dynamic_cast<ServoMotor*> (device)->get_angle ());
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (angle[0]);
+	    payload.push_back (angle[1]);
+	    delete[] ts;
+	    delete[] angle;
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
-	case ComponentDescriptorEnum::POSITION_MAIN_SAIL:
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::SERVO_MOTOR_MS:
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t* angle = IntConverter::uint16_to_uint8 (
+		dynamic_cast<ServoMotor*> (device)->get_angle ());
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (angle[0]);
+	    payload.push_back (angle[1]);
+	    delete[] ts;
+	    delete[] angle;
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
-	case ComponentDescriptorEnum::POSITION_FORE_SAIL:
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::SERVO_MOTOR_FS:
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t* angle = IntConverter::uint16_to_uint8 (
+		dynamic_cast<ServoMotor*> (device)->get_angle ());
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (angle[0]);
+	    payload.push_back (angle[1]);
+	    delete[] ts;
+	    delete[] angle;
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
+	  break;
+	case ComponentDescriptorEnum::SERVO_MOTOR_HOOK:
+	  {
+	    std::vector<uint8_t> payload;
+	    uint8_t* angle = IntConverter::uint16_to_uint8 (
+		dynamic_cast<ServoMotor*> (device)->get_angle ());
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (angle[0]);
+	    payload.push_back (angle[1]);
+	    delete[] ts;
+	    delete[] angle;
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	  /*------------------------------------------
 	   System Info
 	   ------------------------------------------*/
 	case ComponentDescriptorEnum::POWER_SUPPLY_SENSING:
-	  //TODO: BlackMagic Commands
-	  break;
-	case ComponentDescriptorEnum::GPS_VALIDITY_LEA_6H:
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    payload.push_back (data.at (2));
+	    payload.push_back (data.at (3));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::AUTOPILOT_SYSTEM_INFO:
-	  //TODO: BlackMagic Commands
+	  //TODO: response with idk
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	case ComponentDescriptorEnum::BILGE_WATER_DETECTION:
 	  dynamic_cast<Hygrometer*> (device);
-	  //TODO: BlackMagic Commands
+	  //XXX NOT SUPPORTED YET
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	case ComponentDescriptorEnum::STREAMING_SYSTEM_INFO:
-	  //TODO: BlackMagic Commands
+	  //TODO: response with idk
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
-	case ComponentDescriptorEnum::GPS_SYSTEM_INFO:
-	  //TODO: BlackMagic Commands
+	case ComponentDescriptorEnum::GPS_DOP:
+	  //XXX NOT SUPPORTED YET
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	  /*------------------------------------------
 	   Wind
 	   ------------------------------------------*/
 	case ComponentDescriptorEnum::ANEMOMETER:
-	  dynamic_cast<Anemometer*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::WESTON_ANEMOMETER:
-	  dynamic_cast<WestonAnemometer*> (device);
-	  //TODO: BlackMagic Commands
+	  // XXX NOT SUPPORTED YET
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	case ComponentDescriptorEnum::WIND_VANE:
-	  dynamic_cast<WindVane*> (device);
-	  //TODO: BlackMagic Commands
-	  break;
-	  /*------------------------------------------
-	   Speed
-	   ------------------------------------------*/
-	case ComponentDescriptorEnum::GPS_VELOCITY:
-	  dynamic_cast<GPS*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	  /*------------------------------------------
 	   Positioning
 	   ------------------------------------------*/
 	case ComponentDescriptorEnum::GPS_POSITION:
-
-	  dynamic_cast<GPS*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    if (dynamic_cast<GPS*> (device)->is_active () == true)
+	      {
+		uint8_t gps_number =
+		    m_protocol_engine->get_communication_number (
+			device->get_component_descriptor ());
+		/* Position data is requested */
+		if (communication_number == gps_number)
+		  {
+		    std::vector<uint8_t> payload;
+		    std::vector<int8_t> data;
+		    uint32_t timestamp = time (NULL);
+		    // If data is older than 500ms, read new
+		    if (timestamp
+			- dynamic_cast<GPS*> (device)->get_last_data ()->timestamp
+			>= 500 * 1000)
+		      {
+			data = device->read_data ();
+		      }
+		    gps_data_t* last_data =
+			dynamic_cast<GPS*> (device)->get_last_data ();
+		    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+			DataStructureIdentifier::INT32,
+			m_protocol_engine->get_communication_number (
+			    device->get_component_descriptor ()));
+		    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+		    payload.push_back (ts[0]);
+		    payload.push_back (ts[1]);
+		    payload.push_back (ts[2]);
+		    payload.push_back (ts[3]);
+		    int8_t* longitude = IntConverter::int32_to_int8 (
+			last_data->longitude);
+		    int8_t* latitude = IntConverter::int32_to_int8 (
+			last_data->latitude);
+		    payload.push_back (latitude[0]);
+		    payload.push_back (latitude[1]);
+		    payload.push_back (latitude[2]);
+		    payload.push_back (latitude[3]);
+		    payload.push_back (longitude[0]);
+		    payload.push_back (longitude[1]);
+		    payload.push_back (longitude[2]);
+		    payload.push_back (longitude[3]);
+		    delete[] ts;
+		    delete[] longitude;
+		    delete[] latitude;
+		    data.clear ();
+		    Frame* frame = m_protocol_engine->create_frame (
+			TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+			payload.size () + 1, payload);
+		    m_protocol_engine->send_frame (frame);
+		  }
+		/* validity is requested */
+		else if (communication_number == gps_number + 1)
+		  {
+		    std::vector<uint8_t> payload;
+		    std::vector<int8_t> data;
+		    uint32_t timestamp = time (NULL);
+		    // If data is older than 500ms, read new
+		    if (timestamp
+			- dynamic_cast<GPS*> (device)->get_last_data ()->timestamp
+			>= 500 * 1000)
+		      {
+			data = device->read_data ();
+		      }
+		    gps_data_t* last_data =
+			dynamic_cast<GPS*> (device)->get_last_data ();
+		    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+			DataStructureIdentifier::INT16,
+			m_protocol_engine->get_communication_number (
+			    device->get_component_descriptor ()));
+		    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+		    payload.push_back (ts[0]);
+		    payload.push_back (ts[1]);
+		    payload.push_back (ts[2]);
+		    payload.push_back (ts[3]);
+		    payload.push_back (last_data->fix_mode);
+		    delete[] ts;
+		    data.clear ();
+		    Frame* frame = m_protocol_engine->create_frame (
+			TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+			payload.size () + 1, payload);
+		    m_protocol_engine->send_frame (frame);
+		  }
+		/*velocity is requested */
+		else if (communication_number == gps_number + 2)
+		  {
+		    std::vector<uint8_t> payload;
+		    std::vector<int8_t> data;
+		    uint32_t timestamp = time (NULL);
+		    // If data is older than 500ms, read new
+		    if (timestamp
+			- dynamic_cast<GPS*> (device)->get_last_data ()->timestamp
+			>= 500 * 1000)
+		      {
+			data = device->read_data ();
+		      }
+		    gps_data_t* last_data =
+			dynamic_cast<GPS*> (device)->get_last_data ();
+		    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+			DataStructureIdentifier::INT16,
+			m_protocol_engine->get_communication_number (
+			    device->get_component_descriptor ()));
+		    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+		    payload.push_back (ts[0]);
+		    payload.push_back (ts[1]);
+		    payload.push_back (ts[2]);
+		    payload.push_back (ts[3]);
+		    int8_t* speed = IntConverter::int16_to_int8 (
+			last_data->speed);
+		    int8_t* direction = IntConverter::int16_to_int8 (
+			last_data->direction);
+		    payload.push_back (speed[0]);
+		    payload.push_back (speed[1]);
+		    payload.push_back (direction[0]);
+		    payload.push_back (direction[1]);
+		    delete[] ts;
+		    delete[] speed;
+		    delete[] direction;
+		    data.clear ();
+		    Frame* frame = m_protocol_engine->create_frame (
+			TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+			payload.size () + 1, payload);
+		    m_protocol_engine->send_frame (frame);
+		  }
+	      }
+	    else
+	      {
+		m_protocol_engine->send_error (
+		    ERROR_UNKNOWN_COMP, (uint8_t*) ERROR_UNKNOWN_COMP_MSG,
+		    ERROR_UNKNOWN_COMP_MSG_LENGTH);
+	      }
+	  }
 	  break;
 	  /*------------------------------------------
 	   Orientation
 	   ------------------------------------------*/
 	case ComponentDescriptorEnum::ACCELEROMETER:
-	  dynamic_cast<Accelerometer*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    /* Add x value */
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    /* Add y value */
+	    payload.push_back (data.at (2));
+	    payload.push_back (data.at (3));
+	    /* Add z value */
+	    payload.push_back (data.at (4));
+	    payload.push_back (data.at (5));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::COMPASS:
-	  dynamic_cast<Compass*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    /* Add x value */
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    /* Add y value */
+	    payload.push_back (data.at (4));
+	    payload.push_back (data.at (5));
+	    /* Add z value */
+	    payload.push_back (data.at (2));
+	    payload.push_back (data.at (3));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::GYROSCOPE:
-	  dynamic_cast<Gyroscope*> (device);
-	  //TODO: BlackMagic Commands
+	  {
+	    std::vector<uint8_t> payload;
+	    std::vector<int8_t> data = device->read_data ();
+	    uint8_t attribute = m_protocol_engine->tlve4_attribute (
+		DataStructureIdentifier::INT16,
+		m_protocol_engine->get_communication_number (
+		    device->get_component_descriptor ()));
+	    uint8_t* ts = IntConverter::uint32_to_uint8 (time (NULL));
+	    payload.push_back (ts[0]);
+	    payload.push_back (ts[1]);
+	    payload.push_back (ts[2]);
+	    payload.push_back (ts[3]);
+	    /* Add x value */
+	    payload.push_back (data.at (0));
+	    payload.push_back (data.at (1));
+	    /* Add y value */
+	    payload.push_back (data.at (2));
+	    payload.push_back (data.at (3));
+	    /* Add z value */
+	    payload.push_back (data.at (4));
+	    payload.push_back (data.at (5));
+	    delete[] ts;
+	    data.clear ();
+	    Frame* frame = m_protocol_engine->create_frame (
+		TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
+		payload.size () + 1, payload);
+	    m_protocol_engine->send_frame (frame);
+	  }
 	  break;
 	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_9DOF:
-	  //TODO: BlackMagic Commands
+	  //XXX NOT SUPPORTED YET
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	case ComponentDescriptorEnum::ORIENTATION_COMPUTED_BOAT:
-	  //TODO: BlackMagic Commands
+	  //XXX NOT SUPPORTED YET
+	  m_protocol_engine->send_error (
+	  ERROR_NOT_SUPPORTED_TAG,
+					 (uint8_t*) ERROR_NOT_SUPPORTED_TAG_MSG,
+					 ERROR_NOT_SUPPORTED_TAG_MSG_LENGTH);
 	  break;
 	default:
-	  //TODO: something fancy
+	  m_protocol_engine->send_error (ERROR_UNKNOWN_COMP,
+					 (uint8_t*) ERROR_UNKNOWN_COMP_MSG,
+					 ERROR_UNKNOWN_COMP_MSG_LENGTH);
 	  break;
 	}
       break;
     default:
-      //TODO: Ignore?
+      m_protocol_engine->send_error (ERROR_UNKNOWN_TAG,
+				     (uint8_t*) ERROR_UNKNOWN_TAG_MSG,
+				     ERROR_UNKNOWN_TAG_MSG_LENGTH);
       break;
     }
 }

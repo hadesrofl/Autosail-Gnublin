@@ -6,7 +6,7 @@
 /**
  * Sync Byte at the end of each frame
  */
-#define SYNC_BYTE 0x01
+#define SYNC_BYTE 0x52
 /**
  * @file
  * @class TLVFrame

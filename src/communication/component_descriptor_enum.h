@@ -16,8 +16,9 @@ enum class ComponentDescriptorEnum
    Actor
    ------------------------------------------*/
   SERVO_MOTOR_RUDDER = 0x0C4401,
-  SERVO_MOTOR_MAIN_SAIL = 0x0C4501,
-  SERVO_MOTOR_FORE_SAIL = 0x0C4601,
+  SERVO_MOTOR_MS = 0x0C4501,
+  SERVO_MOTOR_FS = 0x0C4601,
+  SERVO_MOTOR_HOOK = 0x0C4701,
   SERIAL_LINK = 0x0C4801,
   /*------------------------------------------
    Mechanical
@@ -33,13 +34,14 @@ enum class ComponentDescriptorEnum
    ------------------------------------------*/
   POWER_SUPPLY_SENSING = 0x510301,
   POSITION_RUDDER = 0x510401,
-  POSITION_MAIN_SAIL = 0x510501,
-  POSITION_FORE_SAIL = 0x510601,
+  POSITION_MS = 0x510501,
+  POSITION_FS = 0x510601,
+  POSITION_HOOK = 0x510701,
   GPS_VALIDITY_LEA_6H = 0x510901,
   AUTOPILOT_SYSTEM_INFO = 0x510D01,
   BILGE_WATER_DETECTION = 0x510F01,
   STREAMING_SYSTEM_INFO = 0x511001,
-  GPS_SYSTEM_INFO = 0x511101,
+  GPS_DOP = 0x511101,
   /*------------------------------------------
    Wind
    ------------------------------------------*/

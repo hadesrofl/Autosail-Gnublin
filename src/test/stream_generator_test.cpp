@@ -18,6 +18,7 @@ StreamGeneratorTest::test_cases ()
 bool
 StreamGeneratorTest::stream_test ()
 {
+  uint8_t comm_number;
   Loader* loader = new Loader ();
   std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
   std::shared_ptr<Device> device_a = dmanager->get_device (
@@ -36,14 +37,26 @@ StreamGeneratorTest::stream_test ()
 
   pthread_t generator_thread = loader->start_generator ();
   sleep (2);
-  generator->add_stream (device_a, 2500);
-  generator->add_stream (device_b, 10000);
-  generator->add_stream (device_c, 5000);
-  generator->add_stream (device_d, 10000);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_a->get_component_descriptor ());
+  generator->add_stream (device_a, comm_number, 2500);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_b->get_component_descriptor ());
+  generator->add_stream (device_b, comm_number, 10000);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_c->get_component_descriptor ());
+  generator->add_stream (device_c, comm_number, 5000);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_d->get_component_descriptor ());
+  generator->add_stream (device_d, comm_number, 10000);
   sleep (2);
-  generator->disable_stream (device_a);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_a->get_component_descriptor ());
+  generator->disable_stream (comm_number);
   sleep (6);
-  generator->add_stream (device_a, 2500);
+  comm_number = loader->get_protocol_engine ()->get_communication_number (
+      device_a->get_component_descriptor ());
+  generator->add_stream (device_a, comm_number, 2500);
   pthread_join (generator_thread, NULL);
   return true;
 }

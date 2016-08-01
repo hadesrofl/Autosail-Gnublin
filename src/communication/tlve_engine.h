@@ -102,17 +102,25 @@ public:
   create_frame ();
   /**
    * Sends a frame of a Stream
-   * @param device is a pointer to the device where the data comes from
+   * @param stream is a pointer to the Stream where the data comes from
    * @param data is a list of data from the Device
    */
   void
-  send_stream (std::shared_ptr<Device> device, std::vector<int8_t> data);
+  send_stream (Stream* stream, std::vector<int8_t> data);
   /**
    * Sends a frame to the receiver
    * @param frame is the frame to send
    */
   void
   send_frame (Frame* frame);
+  /**
+   * Sends a Frame with an error message
+   * @param code is the error code
+   * @param msg is a char pointer containing the message
+   * @param msg_length is the length of the message
+   */
+  void
+  send_error (uint8_t code, uint8_t* msg, uint8_t msg_length);
   /**
    * Calls the TLVInterpreter and interprets the frame. The TLVInterpreter
    * calls the function described by the command in the Frame.

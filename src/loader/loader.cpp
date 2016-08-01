@@ -1,7 +1,9 @@
-#include "loader.h"
+#include "../loader/loader.h"
 
 Loader::Loader ()
 {
+  m_stream_generator = NULL;
+  m_autopilot = NULL;
   ConfReader* reader = new ConfReader (FW_CONFIG);
   m_protocol_engine = distinguish_protocol (reader->get_protocol (),
 					    reader->get_protocol_version (),
@@ -16,20 +18,39 @@ Loader::Loader ()
     {
       exit (EXIT_FAILURE);
     }
-  m_stream_generator = std::shared_ptr<StreamGenerator> (
-      new StreamGenerator (
-	  get_descriptor (reader->get_stream_generator_config ()),
-	  reader->get_stream_generator_config ().at (3)));
-  m_protocol_engine->insert_communication_table_forward (
-      &(*m_stream_generator->get_component_descriptor ()),
-      m_stream_generator->get_communication_number ());
-  m_autopilot = std::shared_ptr<AutoPilot> (
-      new AutoPilot (get_descriptor (reader->get_autopilot_config ()),
-		     reader->get_autopilot_config ().at (3)));
+  if (reader->get_stream_generator_config ().size () >= 3)
+    {
+      m_stream_generator = std::shared_ptr<StreamGenerator> (
+	  new StreamGenerator (
+	      get_descriptor (reader->get_stream_generator_config ()),
+	      reader->get_stream_generator_config ().at (3)));
+
+      m_protocol_engine->insert_communication_table_forward (
+	  &(*m_stream_generator->get_component_descriptor ()),
+	  m_stream_generator->get_communication_number ());
+    }
+  if (reader->get_autopilot_config ().size() >= 3)
+    {
+
+      m_autopilot = std::shared_ptr<AutoPilot> (
+	  new AutoPilot (get_descriptor (reader->get_autopilot_config ()),
+			 reader->get_autopilot_config ().at (3)));
+      m_protocol_engine->insert_communication_table_forward (
+	  &(*m_autopilot->get_component_descriptor ()),
+	  m_autopilot->get_communication_number ());
+    }
   m_protocol_engine->start_interpreter (m_stream_generator, m_autopilot);
-  m_protocol_engine->insert_communication_table_forward (
-      &(*m_autopilot->get_component_descriptor ()),
-      m_autopilot->get_communication_number ());
+  if (m_stream_generator != NULL)
+    {
+      m_stream_generator->set_protocol_engine (m_protocol_engine);
+    }
+  SerialLink* sl = dynamic_cast<SerialLink*> (&(*(m_device_manager->get_device (
+      ComponentDescriptorEnum::SERIAL_LINK))));
+  m_protocol_engine->set_serial_link (std::shared_ptr<SerialLink> (sl));
+  if (m_stream_generator != NULL)
+    {
+      start_generator ();
+    }
   delete reader;
 }
 pthread_t

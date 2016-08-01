@@ -52,7 +52,7 @@ SPIMasterSelect::SPIMasterSelect (char* device_file, uint16_t spi_speed,
 int16_t
 SPIMasterSelect::receive (uint8_t* buf, int16_t length)
 {
-  int result = m_spi_port->receive ((char*) buf, length);
+  int16_t result = m_spi_port->receive ((char*) buf, length);
 #ifdef _DEBUG
   bool error = m_spi_port->fail ();
   std::cout << error << std::endl;
@@ -63,12 +63,18 @@ SPIMasterSelect::receive (uint8_t* buf, int16_t length)
 int16_t
 SPIMasterSelect::send (uint8_t* buf, int16_t length)
 {
-  int result = m_spi_port->send (buf, length);
+  int16_t result = m_spi_port->send (buf, length);
 #ifdef _DEBUG
   bool error = m_spi_port->fail ();
   std::cout << error << std::endl;
 #endif
   return result;
+}
+int8_t
+SPIMasterSelect::transfer (uint8_t* write, int16_t write_length, uint8_t* read,
+			   int16_t read_length)
+{
+  return m_spi_port->message (write, write_length, read, read_length);
 }
 
 void *

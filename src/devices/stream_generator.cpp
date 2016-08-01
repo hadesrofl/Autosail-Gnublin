@@ -3,9 +3,9 @@
 #include <pthread.h>
 
 // Intialize static member
-uint32_t StreamGenerator::m_interrupt_counter = 0;
+uint16_t StreamGenerator::m_interrupt_counter = 0;
 pthread_mutex_t StreamGenerator::m_region_mutex = PTHREAD_MUTEX_INITIALIZER;
-uint32_t StreamGenerator::m_min_period = 0;
+uint16_t StreamGenerator::m_min_period = 0;
 
 // Private functions
 void
@@ -15,11 +15,11 @@ StreamGenerator::timer_handler (int signo)
 }
 
 Stream*
-StreamGenerator::lookup_device (std::shared_ptr<Device> device)
+StreamGenerator::lookup_device (uint8_t comm_number)
 {
   for (uint8_t i = 0; i < m_streams.size (); i++)
     {
-      if (m_streams.at (i)->get_device ()->equals (device) == true)
+      if (m_streams.at (i)->get_communication_number () == comm_number)
 	{
 	  return m_streams.at (i);
 	}
@@ -39,9 +39,10 @@ StreamGenerator::StreamGenerator (
 }
 
 int8_t
-StreamGenerator::add_stream (std::shared_ptr<Device> device, uint32_t period)
+StreamGenerator::add_stream (std::shared_ptr<Device> device,
+			     uint8_t communication_number, uint16_t period)
 {
-  Stream* stream = lookup_device (device);
+  Stream* stream = lookup_device (communication_number);
   pthread_mutex_lock (&StreamGenerator::m_region_mutex);
   if (stream != NULL)
     {
@@ -49,7 +50,7 @@ StreamGenerator::add_stream (std::shared_ptr<Device> device, uint32_t period)
     }
   else
     {
-      stream = new Stream (device, period);
+      stream = new Stream (device, communication_number, period);
 #ifdef _DEBUG
       std::cout << "Device: " << "Class: "
       << static_cast<int> (stream->get_device ()->get_component_descriptor ()->get_component_class ())
@@ -75,15 +76,16 @@ StreamGenerator::add_stream (std::shared_ptr<Device> device, uint32_t period)
 #ifdef _DEBUG
   std::cout << "Min Period: " << get_min_period () << std::endl;
 #endif
+  stream->set_active (true);
   set_max_period (stream->get_period ());
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   return 1;
 }
 
 int8_t
-StreamGenerator::disable_stream (std::shared_ptr<Device> device)
+StreamGenerator::disable_stream (uint8_t comm_number)
 {
-  Stream* stream = lookup_device (device);
+  Stream* stream = lookup_device (comm_number);
   if (stream != NULL)
     {
 #ifdef _DEBUG
@@ -98,7 +100,7 @@ StreamGenerator::disable_stream (std::shared_ptr<Device> device)
 	      std::cout << "Periods size: " << m_periods.size () << std::endl;
 	      std::cout << "Deactive: " << m_periods.at (j) << std::endl;
 #endif
-	      std::vector<uint32_t>::iterator it = m_periods.begin ();
+	      std::vector<uint16_t>::iterator it = m_periods.begin ();
 	      std::advance (it, j);
 	      m_periods.erase (it);
 #ifdef _DEBUG
@@ -106,8 +108,9 @@ StreamGenerator::disable_stream (std::shared_ptr<Device> device)
 #endif
 	    }
 	}
+      stream->set_period (0);
       stream->set_active (false);
-      uint32_t new_min = Calculation::gcd_vector (m_periods, 0,
+      uint16_t new_min = Calculation::gcd_vector (m_periods, 0,
 						  m_periods.size ());
 #ifdef _DEBUG
       std::cout << "New Min Period: " << new_min << std::endl;
@@ -132,7 +135,7 @@ StreamGenerator::run_generator (void* params)
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   struct timespec ts;
 #ifdef _DEBUG
-  uint32_t last_interrupt = 0;
+  uint16_t last_interrupt = 0;
 #endif
   while (true)
     {
@@ -158,10 +161,10 @@ StreamGenerator::run_generator (void* params)
 	}
       for (uint32_t i = 0; i < streams.size (); i++)
 	{
-	  if (m_interrupt_counter % streams.at (i)->get_period () == 0
-	      && m_min_period != 0 && streams.at (i)->is_active () == true)
+	  if (streams.at (i)->is_active () == true
+	      && m_interrupt_counter % streams.at (i)->get_period () == 0
+	      && m_min_period != 0)
 	    {
-	      //TODO: Call Create Frame
 #ifdef _DEBUG
 	      std::cout << "Device Descriptor: \n" << "Class: "
 	      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
@@ -176,12 +179,65 @@ StreamGenerator::run_generator (void* params)
 	      data = streams.at (i)->get_device ()->read_data ();
 	      if (data.size () != 0)
 		{
+#ifdef _DEBUG
 		  for (uint16_t j = 0; j < data.size (); j++)
 		    {
-		      std::cout << "Data: " << data[j] << std::endl;
+		      std::cout << "Data: " << static_cast<int> (data[j])
+		      << std::endl;
 		    }
-		  generator->m_protocol_engine->send_stream (
-		      streams.at (i)->get_device (), data);
+#endif
+		  if (GPS* v =
+		      dynamic_cast<GPS*> (&(*(streams.at (i)->get_device ()))))
+		    {
+		      // old was safely casted to NewType
+		      gps_data_t* gps_data = v->get_last_data ();
+		      uint8_t comm_number =
+			  generator->m_protocol_engine->get_communication_number (
+			      v->get_component_descriptor ());
+		      data.clear ();
+		      //GPS position
+		      if (streams.at (i)->get_communication_number ()
+			  == comm_number)
+			{
+			  int8_t* longitude = IntConverter::int32_to_int8 (
+			      gps_data->longitude);
+			  int8_t* latitude = IntConverter::int32_to_int8 (
+			      gps_data->latitude);
+			  data.push_back (latitude[0]);
+			  data.push_back (latitude[1]);
+			  data.push_back (latitude[2]);
+			  data.push_back (latitude[3]);
+			  data.push_back (longitude[0]);
+			  data.push_back (longitude[1]);
+			  data.push_back (longitude[2]);
+			  data.push_back (longitude[3]);
+			  delete[] longitude;
+			  delete[] latitude;
+			}
+		      // GPS Validity
+		      else if (streams.at (i)->get_communication_number ()
+			  == comm_number + 1)
+			{
+			  data.push_back (gps_data->fix_mode);
+			}
+		      // GPS Velocity
+		      else if (streams.at (i)->get_communication_number ()
+			  == comm_number + 2)
+			{
+			  int8_t* speed = IntConverter::int16_to_int8 (
+			      gps_data->speed);
+			  int8_t* direction = IntConverter::int16_to_int8 (
+			      gps_data->direction);
+			  data.push_back (speed[0]);
+			  data.push_back (speed[1]);
+			  data.push_back (direction[0]);
+			  data.push_back (direction[1]);
+			  delete[] speed;
+			  delete[] direction;
+			}
+		    }
+		  generator->m_protocol_engine->send_stream (streams.at (i),
+							     data);
 		  data.clear ();
 		}
 	    }

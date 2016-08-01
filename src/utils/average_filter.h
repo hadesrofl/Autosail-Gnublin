@@ -6,6 +6,7 @@
  * @file
  * @class AverageFilter
  * @ingroup Utils
+ * XXX NOT SUPPORTED YET
  * @brief Class for a AverageFilter. Filters Values via average calculation.
  * @note Idea for Filters mentioned in Bachelor Thesis "Entwurf, Implementierung
  * und Test eines Autopiloten für die Steuerung eines Modellsegelbootes

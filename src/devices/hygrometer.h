@@ -9,6 +9,7 @@
  * @file
  * @class Hygrometer
  * @ingroup Devices
+ * XXX NOT SUPPORTED YET
  * @brief Class for a Hygrometer module. Uses a I2C Port for communication purposes
  * and has some specific functions for handling and transforming data.
  * @author Rene Kremer
@@ -33,9 +34,7 @@ public:
    */
   Hygrometer (I2CParameter *interface_parameter, ComponentDescriptor* descriptor);
   /**
-   * TODO: Comment with hygrometer specific register
-   * Reads the Data X, Y and Z Register of the Accelerometer and returns them as a
-   * pointer with allocated memory.
+   * XXX NOT YET SUPPORTED
    */
   std::vector<int8_t> read_data();
   /**

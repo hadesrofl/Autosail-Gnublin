@@ -7,6 +7,8 @@
 #include <memory>
 #include <map>
 #include "communication_protocols.h"
+#include "../devices/serial_link.h"
+#include "../devices/stream.h"
 
 /**
  * Max Communication Numbers to determine array length
@@ -84,12 +86,21 @@ protected:
    */
   std::unique_ptr<FrameInterpreter> m_interpreter;
   /**
+   * SerialLink for communication purposes
+   */
+  std::shared_ptr<SerialLink> m_serial_link;
+  /**
+   * Last communication number used in m_communication_table_backward
+   */
+  uint8_t m_last_communication_number;
+  /**
    * Constructor needed for class hierarchy purposes. Shouldn't be called
    */
   ProtocolEngine ()
   {
     m_control_mode = 0x00;
     m_boat_id = 0;
+    m_last_communication_number = 0;
   }
   /**
    * @public
@@ -104,6 +115,7 @@ public:
   {
     m_control_mode = 0x00;
     m_boat_id = boat_id;
+    m_last_communication_number = 0;
   }
   /**
    * Starts and sets the interpreter to this engine
@@ -156,17 +168,25 @@ public:
   create_frame () = 0;
   /**
    * Sends a frame of a Stream
-   * @param device is a pointer to the device where the data comes from
+   * @param stream is a pointer to the Stream where the data comes from
    * @param data is a list of data from the Device
    */
   virtual void
-  send_stream (std::shared_ptr<Device> device, std::vector<int8_t> data) = 0;
+  send_stream (Stream* stream, std::vector<int8_t> data) = 0;
   /**
    * Sends a frame to the receiver
    * @param frame is a pointer to the Frame
    */
   virtual void
   send_frame (Frame* frame) =0;
+  /**
+   * Sends a Frame with an error message
+   * @param code is the error code
+   * @param msg is a char pointer containing the message
+   * @param msg_length is the length of the message
+   */
+  virtual void
+  send_error (uint8_t code, uint8_t* msg, uint8_t msg_length) =0;
   /**
    * Creates a ComponentDescriptor and returns it. After creation it will be stored
    * in the private vector list of this class.
@@ -221,14 +241,28 @@ public:
    * Returns 0 if the ComponentDescriptor is not found in the communication table
    */
   inline uint8_t
-  get_communication_number (ComponentDescriptor* descriptor)
+  get_communication_number (std::shared_ptr<ComponentDescriptor> descriptor)
   {
-    std::shared_ptr<ComponentDescriptor> key = std::shared_ptr<
-	ComponentDescriptor> (descriptor);
-    if (m_communication_table_forward.count (key) > 0)
+    map<std::shared_ptr<ComponentDescriptor>, uint8_t> comm_table =
+	get_communication_table_forward ();
+    typedef std::map<std::shared_ptr<ComponentDescriptor>, uint8_t, std::string>::iterator it_type;
+    for (it_type iterator = comm_table.begin (); iterator != comm_table.end ();
+	iterator++)
       {
-	return m_communication_table_forward.at (key);
+	if (descriptor->get_component_class ()
+	    == iterator->first->get_component_class ()
+	    && descriptor->get_component_attribute ()
+		== iterator->first->get_component_attribute ()
+	    && descriptor->get_component_number ()
+		== iterator->first->get_component_number ())
+	  {
+	    return iterator->second;
+	  }
       }
+//    if (m_communication_table_forward.count (descriptor) > 0)
+//      {
+//	return m_communication_table_forward.at (descriptor);
+//      }
     return 0;
   }
   /**
@@ -245,6 +279,7 @@ public:
       {
 	m_communication_table_backward[communication_number] = std::shared_ptr<
 	    Device> (device);
+	m_last_communication_number++;
       }
   }
   /**
@@ -286,6 +321,17 @@ public:
   virtual int8_t
   set_control_mode (uint8_t control_mode) = 0;
   /**
+   * Sets a SerialLink to communicate via SPI and Actor Platform
+   * to some other gate/receiver
+   * @param sl is a pointer to the SerialLink used for communication
+   * via SPI and Actor Platform
+   */
+  inline void
+  set_serial_link (std::shared_ptr<SerialLink> sl)
+  {
+    m_serial_link = sl;
+  }
+  /**
    * Returns the 3 bytes list for the major and minor version number of the protocol.
    * @return a 3 byte list where the first byte is the major version number, the second
    * byte is the first decimal of the minor version number and the third byte is
@@ -318,6 +364,15 @@ public:
     uint8_t fused_attribute = static_cast<uint8_t> (dsid) << 5
 	| (comm_no & 0x1F);
     return fused_attribute;
+  }
+  /**
+   * Gets the last communication number used in backward communication table
+   * @return the last communication number
+   */
+  inline uint8_t
+  get_last_communication_number () const
+  {
+    return m_last_communication_number;
   }
   /**
    * Destructor

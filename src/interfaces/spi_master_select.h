@@ -100,6 +100,17 @@ public:
    */
   int16_t
   send (uint8_t* buf, int16_t length);
+  /**
+   * Transfers data in half duplex mode via the SPI.
+   * @param write is the buffer to write data from
+   * @param write_length is the length of data to write
+   * @param read is the buffer to read data into
+   * @param read_length is the length of byte to read
+   * @return 1 on success, otherwise -1
+   */
+  int8_t
+  transfer (uint8_t* write, int16_t write_length, uint8_t* read,
+	    int16_t read_length);
 
   /**
    * Pin Change Interrupt for Master Select Pin.

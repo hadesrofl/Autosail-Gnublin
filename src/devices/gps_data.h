@@ -4,6 +4,19 @@
 #include <stdint.h>
 
 /**
+ * GPS has no fix
+ */
+#define GPS_NO_FIX 0x00
+/**
+ * GPS has 2D fix
+ */
+#define GPS_2D_FIX 0x01
+/**
+ * GPS has 3D fix
+ */
+#define GPS_3D_FIX 0x02
+
+/**
  * @file
  * @class gps_data_t
  * @ingroup Devices
@@ -15,11 +28,10 @@
  */
 struct gps_data_t
 {
-  //TODO: Add Fix in GPS Subprogram
   /**
    * Mode of the fix (No Fix = 0x00, 2D = 0x01, 3D = 0x02)
    */
-  int32_t fix_mode;
+  int8_t fix_mode;
   /**
    * latitude of the position
    */
@@ -29,9 +41,13 @@ struct gps_data_t
    */
   int32_t longitude;
   /**
-   * speed gained from the GPS device
+   * speed gained from the GPS device (5cm/s)
    */
-  int32_t speed;
+  int16_t speed;
+  /**
+   * direction gained from the gps device
+   */
+  int16_t direction;
   /**
    * the time when the
    */
