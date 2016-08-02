@@ -126,12 +126,37 @@ public:
   start_interpreter (std::shared_ptr<StreamGenerator> generator,
 		     std::shared_ptr<AutoPilot> autopilot) = 0;
   /**
-   * Gets the description of the boat as specified in the TLVE4-Protocol and sends
-   * the initial message and communication numbers
-   * @return a Frame packed with the data that shall be sent
+   * Receives a frame from the SerialLink
    */
-  virtual Frame*
-  send_boat_description () = 0;
+  void
+  receive_frame ()
+  {
+    //TODO: needs testing
+
+    /* Read first two bytes, get length and read received frame wrapped
+     *  in intra procotol frame
+     */
+    std::vector<uint8_t> payload;
+    std::vector<int8_t> raw_frame;
+    uint8_t attribute, length;
+    TagEnum tag;
+    raw_frame = m_serial_link->read_data ();
+    tag = static_cast<TagEnum> (raw_frame.at (0));
+    length = raw_frame.at (1);
+    if (length > 0)
+      {
+	attribute = raw_frame.at (2);
+	for (uint8_t i = 2; i < length; i++)
+	  {
+	    payload.push_back (raw_frame.at (i));
+	  }
+	interpret_frame (create_frame (tag, attribute, length, payload));
+      }
+    else
+      {
+	interpret_frame (create_frame (tag, length));
+      }
+  }
   /**
    * Creates a Frame and returns a pointer to it
    * @param tag is the value of the tag field

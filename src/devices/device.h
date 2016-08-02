@@ -180,6 +180,15 @@ public:
       }
   }
   /**
+   * Returns the Interface of this Device
+   * @return the Interface
+   */
+  inline Interface*
+  get_interface () const
+  {
+    return &(*m_interface_port);
+  }
+  /**
    * Default Destructor
    */
   virtual

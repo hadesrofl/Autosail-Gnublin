@@ -124,7 +124,8 @@ TLVEEngine::send_frame (Frame* frame)
   std::cout << std::endl;
   std::cout << "Size: " << static_cast<int> (size) << std::endl;
 #endif
-  m_serial_link->write (buf, size);
+  m_serial_link->send_frame (buf, size);
+  delete[] buf;
   delete frame;
 }
 

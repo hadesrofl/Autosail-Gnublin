@@ -590,18 +590,42 @@ main (void)
 #ifdef _TEST
 //  tests ();
 //  gps_csv ();
-  frame_test ();
-//  Loader* loader = new Loader ();
-//  std::vector<uint8_t> payload;
-//  std::shared_ptr<Device> device;
-//  uint8_t attribute, comm_number;
-//  Frame* frame;
+//  frame_test ();
+  Loader* loader = new Loader ();
+  std::vector<uint8_t> payload;
+  std::shared_ptr<Device> device;
+  uint8_t attribute, comm_number;
+  Frame* frame;
 
 //TODO: How to handle PCI
-
+  pthread_t interrupt_thread_a;
+  struct spi_thread_param_t params;
+  params.spi_ptr =
+      dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
+	  ComponentDescriptorEnum::SERIAL_LINK)->get_interface ());
   while (true)
-    ;
-
+    {
+      pthread_create (&interrupt_thread_a, NULL,
+		      params.spi_ptr->pin_change_interrupt, &params);
+      pthread_join (interrupt_thread_a, NULL);
+      if (params.interrupted == true)
+	{
+//	  loader->get_protocol_engine()->receive_frame();
+	  // GET ACCELEROMETER
+	  std::cout << "\n------------------------" << "\nGet Accelerometer"
+	      << "\n------------------------" << std::endl;
+	  device = loader->get_device_manager ()->get_device (
+	      ComponentDescriptorEnum::ACCELEROMETER);
+	  comm_number =
+	      loader->get_protocol_engine ()->get_communication_number (
+		  device->get_component_descriptor ());
+	  attribute = loader->get_protocol_engine ()->tlve4_attribute (
+	      DataStructureIdentifier::UINT8, comm_number);
+	  frame = loader->get_protocol_engine ()->create_frame (
+	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+	  loader->get_protocol_engine ()->interpret_frame (frame);
+	}
+    }
 #endif
 #ifndef _TEST
   Loader* loader = new Loader ();

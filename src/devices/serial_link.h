@@ -6,6 +6,11 @@
 #include "spi_parameter.h"
 
 /**
+ * Tag for the forward frame command of the intra protocol
+ */
+#define FORWARD_FRAME_TAG 0x07
+
+/**
  * @file
  * @class SerialLink
  * @ingroup Devices
@@ -35,20 +40,28 @@ public:
    * @param interface_parameter are the parameters of the SPI Interface
    * @param descriptor is a pointer to the ComponentDescriptor of this device
    */
-  SerialLink (SPIParameter *interface_parameter, ComponentDescriptor* descriptor);
+  SerialLink (SPIParameter *interface_parameter,
+	      ComponentDescriptor* descriptor);
   /**
-   * TODO: Comment with SerialLink specific register
-   * Reads the Data X, Y and Z Register of the SerialLink and returns them as a
-   * pointer with allocated memory.
+   * Reads a frame from the SPI.
+   * @return a list of bytes containing the data from the frame
    */
-  std::vector<int8_t> read_data();
+  std::vector<int8_t>
+  read_data ();
+  /**
+   * Sends a Frame via SPI. Wraps the Frame with an intra protocol frame
+   * used on the boat as intercommunication protocol
+   * @param buf is the array of bytes to send
+   * @param length is the length of data
+   */
+  void
+  send_frame (uint8_t* buf, uint8_t length);
+
   /**
    * Destructor
    */
   ~SerialLink ();
 
 };
-
-
 
 #endif /* DEVICES_SERIAL_LINK_H_ */

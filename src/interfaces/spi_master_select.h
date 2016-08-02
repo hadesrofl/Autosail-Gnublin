@@ -30,6 +30,14 @@
  * Trigger on rising edge
  */
 #define TRIGGER_RISING "rising"
+/**
+ * Pin for Pin Change Interrupt
+ */
+#define PCI_PIN 11
+/**
+ * Length of Command to set output for gpio pin
+ */
+#define COMMAND_OUTPUT_PIN_LENGTH 24
 
 /**
  * @file

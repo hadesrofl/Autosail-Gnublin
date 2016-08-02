@@ -138,10 +138,10 @@ Compass::read_data ()
 #endif
   data.push_back(msb_x);
   data.push_back(lsb_x);
-  data.push_back(msb_z);
-  data.push_back(lsb_z);
   data.push_back(msb_y);
   data.push_back(lsb_y);
+  data.push_back(msb_z);
+  data.push_back(lsb_z);
 #ifdef _DEBUG
   int8_t* tmp = new int8_t[2];
   tmp[0] = msb_x;

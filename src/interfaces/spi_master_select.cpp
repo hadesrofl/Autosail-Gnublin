@@ -36,11 +36,20 @@ SPIMasterSelect::SPIMasterSelect (char* device_file, uint16_t spi_speed,
   m_spi_port->setMode (1);
   // MSB
   m_spi_port->setLSB (0);
+
   if (pin_no > 0)
     {
+
       m_pin_ms = pin_no;
-      m_trigger_action = (char*) TRIGGER_FALLING;
+      m_trigger_action = (char*) TRIGGER_RISING;
       set_trigger_type (m_pin_ms, m_trigger_action);
+      std::cout << "Pin: " << static_cast<int>(m_pin_ms) << std::endl;
+//#ifdef _DEBUG
+      char command[COMMAND_OUTPUT_PIN_LENGTH];
+      snprintf (command, COMMAND_OUTPUT_PIN_LENGTH, "gnublin-gpio -o 1 -p %d",
+	  m_pin_ms);
+      system (command);
+//#endif
     }
   else
     {
@@ -82,6 +91,7 @@ SPIMasterSelect::pin_change_interrupt (void* params)
 {
   struct spi_thread_param_t* spi = (struct spi_thread_param_t*) params;
   spi->interrupted = false;
+
   struct pollfd *poll_fd;
   char buf[2];
   char dir[28];
@@ -92,23 +102,14 @@ SPIMasterSelect::pin_change_interrupt (void* params)
   poll_fd->events = POLLPRI;
   poll_fd->revents = 0;
   read (poll_fd->fd, buf, 1);
-  int interrupt_counter = 0;
-  int ret = 0;
+  int32_t ret = 0;
   ret = poll (poll_fd, 1, -1);
   if (ret > 0)
     {
-      std::cout << "Pin Change Interrupt occured! " << std::endl;
       pthread_mutex_lock (&SPIMasterSelect::m_region_mutex);
-      //SPIMasterSelect::m_interrupted = true;
       spi->interrupted = true;
-      interrupt_counter++;
       pthread_mutex_unlock (&SPIMasterSelect::m_region_mutex);
     }
-  else
-    {
-      std::cout << "No interrupt" << std::endl;
-    }
-  std::cout << "Interrupt Counter: " << interrupt_counter << std::endl;
   pthread_exit (0);
   close (poll_fd->fd);
   return NULL;

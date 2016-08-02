@@ -512,10 +512,21 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
-	    payload.push_back (data.at (2));
-	    payload.push_back (data.at (3));
+	    if (data.size () > 0)
+	      {
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+		payload.push_back (data.at (2));
+		payload.push_back (data.at (3));
+	      }
+	    //TODO: Error Message?
+	    else
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
@@ -569,8 +580,17 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
+	    if (data.size () > 0)
+	      {
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+	      }
+	    //TODO: Error Message
+	    else
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
@@ -599,8 +619,18 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
+	    if (data.size () > 0)
+	      {
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+
+	      }
+	    //TODO: Error Message?
+	    else
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
@@ -724,10 +754,10 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 			last_data->speed);
 		    int8_t* direction = IntConverter::int16_to_int8 (
 			last_data->direction);
-		    payload.push_back (speed[0]);
-		    payload.push_back (speed[1]);
 		    payload.push_back (direction[0]);
 		    payload.push_back (direction[1]);
+		    payload.push_back (speed[0]);
+		    payload.push_back (speed[1]);
 		    delete[] ts;
 		    delete[] speed;
 		    delete[] direction;
@@ -762,15 +792,28 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    /* Add x value */
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
-	    /* Add y value */
-	    payload.push_back (data.at (2));
-	    payload.push_back (data.at (3));
-	    /* Add z value */
-	    payload.push_back (data.at (4));
-	    payload.push_back (data.at (5));
+	    if (data.size () > 0)
+	      {
+		/* Add x value */
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+		/* Add y value */
+		payload.push_back (data.at (2));
+		payload.push_back (data.at (3));
+		/* Add z value */
+		payload.push_back (data.at (4));
+		payload.push_back (data.at (5));
+	      }
+	    else
+	    //TODO: Error Message?
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
@@ -792,15 +835,28 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    /* Add x value */
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
-	    /* Add y value */
-	    payload.push_back (data.at (4));
-	    payload.push_back (data.at (5));
-	    /* Add z value */
-	    payload.push_back (data.at (2));
-	    payload.push_back (data.at (3));
+	    if (data.size () > 0)
+	      {
+		/* Add x value */
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+		/* Add y value */
+		payload.push_back (data.at (2));
+		payload.push_back (data.at (3));
+		/* Add z value */
+		payload.push_back (data.at (4));
+		payload.push_back (data.at (5));
+	      }
+	    //TODO: Error Message?
+	    else
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
@@ -822,15 +878,28 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    payload.push_back (ts[1]);
 	    payload.push_back (ts[2]);
 	    payload.push_back (ts[3]);
-	    /* Add x value */
-	    payload.push_back (data.at (0));
-	    payload.push_back (data.at (1));
-	    /* Add y value */
-	    payload.push_back (data.at (2));
-	    payload.push_back (data.at (3));
-	    /* Add z value */
-	    payload.push_back (data.at (4));
-	    payload.push_back (data.at (5));
+	    if (data.size () > 0)
+	      {
+		/* Add x value */
+		payload.push_back (data.at (0));
+		payload.push_back (data.at (1));
+		/* Add y value */
+		payload.push_back (data.at (2));
+		payload.push_back (data.at (3));
+		/* Add z value */
+		payload.push_back (data.at (4));
+		payload.push_back (data.at (5));
+	      }
+	    //TODO: Error Message?
+	    else
+	      {
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+		payload.push_back (0);
+	      }
 	    delete[] ts;
 	    data.clear ();
 	    Frame* frame = m_protocol_engine->create_frame (
