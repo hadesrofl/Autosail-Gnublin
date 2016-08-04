@@ -73,7 +73,7 @@ StreamGenerator::add_stream (std::shared_ptr<Device> device,
       set_min_period (
 	  Calculation::gcd_vector (m_periods, 0, m_periods.size ()));
     }
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "Min Period: " << get_min_period () << std::endl;
 #endif
   stream->set_active (true);
@@ -88,7 +88,7 @@ StreamGenerator::disable_stream (uint8_t comm_number)
   Stream* stream = lookup_device (comm_number);
   if (stream != NULL)
     {
-#ifdef _TEST
+#ifdef _DEBUG
       std::cout << "Period of disabled Stream: " << stream->get_period ()
 	  << std::endl;
 #endif
@@ -112,7 +112,7 @@ StreamGenerator::disable_stream (uint8_t comm_number)
       stream->set_active (false);
       uint16_t new_min = Calculation::gcd_vector (m_periods, 0,
 						  m_periods.size ());
-#ifdef _TEST
+#ifdef _DEBUG
       std::cout << "New Min Period: " << new_min << std::endl;
 #endif
       set_min_period (new_min);
@@ -134,7 +134,7 @@ StreamGenerator::run_generator (void* params)
   std::shared_ptr<StreamGenerator> generator = generator_param->generator_ptr;
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   struct timespec ts;
-#ifdef _TEST
+#ifdef _DEBUG
   uint16_t last_interrupt = 0;
 #endif
   while (true)
@@ -159,7 +159,7 @@ StreamGenerator::run_generator (void* params)
 	  ts.tv_sec = m_min_period / 1000;
 	  ts.tv_nsec = (m_min_period % 1000) * 1000000;
 	}
-#ifdef _TEST
+#ifdef _DEBUG
       if (m_interrupt_counter != last_interrupt)
 	{
 	  last_interrupt = m_interrupt_counter;
@@ -173,7 +173,7 @@ StreamGenerator::run_generator (void* params)
 	      && m_interrupt_counter % streams.at (i)->get_period () == 0
 	      && m_min_period != 0)
 	    {
-#ifdef _TEST
+#ifdef _DEBUG
 	      std::cout << "Device Descriptor: \n" << "Class: "
 		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
 		  << "\tAttribute: "

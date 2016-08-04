@@ -593,7 +593,7 @@ main (void)
 #ifdef _TEST
   tests ();
 //  gps_csv ();
-//  frame_test ();
+  frame_test ();
 #endif
 #ifdef _RELEASE
   Loader* loader = new Loader ();
