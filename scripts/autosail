@@ -1,0 +1,39 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          Autosail
+# Required-Start:    
+# Required-Stop:    
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the Firmware of this boat
+# Description:       Starts the Firmware of this boat
+### END INIT INFO
+
+#Init Priority
+# Start:			 30
+# Stop:				 90
+
+#Variables
+NAME=Autosail
+DAEMON=Autosail
+DAEMON_PATH=/home/apps
+DESC="Starts the Firmware of this boat"
+SCRIPTNAME=/etc/init.d/$NAME
+ 
+# Actions
+case "$1" in
+    start)
+    	cd $DAEMON_PATH
+        ./$NAME & 
+        printf "%s\n" "Starting $NAME ..."
+      	;;
+    stop)
+        killall $NAME & 
+        printf "%-50s" "Shutdown Autosail..."
+        printf "%s\n" "Ok"
+        ;;
+   *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+   

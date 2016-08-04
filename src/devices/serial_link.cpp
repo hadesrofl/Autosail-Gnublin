@@ -23,7 +23,7 @@ SerialLink::read_data ()
   std::vector<int8_t> frame;
   uint8_t* first_read = new uint8_t[2];
   uint8_t* frame_buf;
-  uint8_t attribute, length, size;
+  uint8_t length, size;
   read (first_read, 2);
   size = first_read[1];
   frame_buf = new uint8_t[size];
@@ -44,7 +44,9 @@ SerialLink::read_data ()
 void
 SerialLink::send_frame (uint8_t* buf, uint8_t length)
 {
+#ifdef _DEBUG
   std::cout << "Sending via Serial Link:" << std::endl;
+#endif
   uint8_t* ip_frame = new uint8_t[length + 2];
   ip_frame[0] = FORWARD_FRAME_TAG;
   ip_frame[1] = length;

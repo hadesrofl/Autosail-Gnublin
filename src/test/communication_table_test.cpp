@@ -1,6 +1,10 @@
 #ifdef _TEST
 #include "communication_table_test.h"
 
+#define ACC_COMM_NUMBER 0x05
+#define COMPASS_COMM_NUMBER 0x06
+#define GYRO_COMM_NUMBER 0x07
+
 // public functions
 CommunicationTableTest::CommunicationTableTest ()
 {
@@ -32,27 +36,40 @@ CommunicationTableTest::communication_table_standard_test ()
   std::vector<bool> asserts;
   Asserter asserter;
   bool passed;
+  uint8_t result, expected;
   std::shared_ptr<Device> device_a = dmanager->get_device (
-      ComponentDescriptorEnum::GYROSCOPE);
-  std::shared_ptr<Device> device_b = dmanager->get_device (
       ComponentDescriptorEnum::ACCELEROMETER);
+  std::shared_ptr<Device> device_b = dmanager->get_device (
+      ComponentDescriptorEnum::GYROSCOPE);
   std::shared_ptr<Device> device_c = dmanager->get_device (
       ComponentDescriptorEnum::COMPASS);
-  asserts.push_back (
-      asserter.assert (
-	  engine->get_communication_number (
-	      device_a->get_component_descriptor ()),
-	  0x03));
+  result = engine->get_communication_number (
+      device_a->get_component_descriptor ());
+  expected = ACC_COMM_NUMBER;
+  std::cout << "Accelerometer: " << "\texpected: "
+      << static_cast<int> (expected) << "\tresult: "
+      << static_cast<int> (result) << std::endl;
+  asserts.push_back (asserter.assert (result, expected));
+  result = engine->get_communication_number (
+      device_b->get_component_descriptor ());
+  expected = GYRO_COMM_NUMBER;
+  std::cout << "Gyroscope: " << "\texpected: " << static_cast<int> (expected)
+      << "\tresult: " << static_cast<int> (result) << std::endl;
   asserts.push_back (
       asserter.assert (
 	  engine->get_communication_number (
 	      device_b->get_component_descriptor ()),
-	  0x01));
+	  expected));
+  result = engine->get_communication_number (
+      device_c->get_component_descriptor ());
+  expected = COMPASS_COMM_NUMBER;
+  std::cout << "Compass: " << "\texpected: " << static_cast<int> (expected)
+      << "\tresult: " << static_cast<int> (result) << std::endl;
   asserts.push_back (
       asserter.assert (
 	  engine->get_communication_number (
 	      device_c->get_component_descriptor ()),
-	  0x02));
+	  expected));
   std::cout << "Assert Communication Table forward..." << std::endl;
   passed = asserter.check_asserts (asserts, 3);
   if (passed == true)

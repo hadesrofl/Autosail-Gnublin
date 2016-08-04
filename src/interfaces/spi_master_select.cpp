@@ -43,13 +43,14 @@ SPIMasterSelect::SPIMasterSelect (char* device_file, uint16_t spi_speed,
       m_pin_ms = pin_no;
       m_trigger_action = (char*) TRIGGER_RISING;
       set_trigger_type (m_pin_ms, m_trigger_action);
+#ifdef _DEBUG
+      //XXX For Test Purposes set Pin to output for switch on breadboard
       std::cout << "Pin: " << static_cast<int>(m_pin_ms) << std::endl;
-//#ifdef _DEBUG
       char command[COMMAND_OUTPUT_PIN_LENGTH];
       snprintf (command, COMMAND_OUTPUT_PIN_LENGTH, "gnublin-gpio -o 1 -p %d",
 	  m_pin_ms);
       system (command);
-//#endif
+#endif
     }
   else
     {

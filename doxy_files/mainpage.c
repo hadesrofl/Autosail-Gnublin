@@ -18,12 +18,15 @@
  * 	<li><a href = "./Software-Interrupt.html">Software Interrupt in Linux</a></li>
  * </ol>
  *
- * <h4>30.08.2016</h4>
+ * <h4>22.08.2016</h4>
  *
  * First implementation of a prototype for the firmware of the autonomous sailboat of
  * the Fachhochschule Luebeck - University of Applied Science.
  *
  * This portation of the firmware was subject of the Bachelor Thesis by Rene Kremer.
+ *
+ * For running the software a config file is needed in a <i>config</i> directory where the firmware is started.
+ * There is also a need for a <i>tmp</i> directory so that the <i>gpsd-client</i> can output the data into a file there.
  *
  * <br>
  * <br>

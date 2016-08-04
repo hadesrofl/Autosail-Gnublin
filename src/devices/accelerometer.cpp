@@ -79,7 +79,7 @@ Accelerometer::read_data ()
   // Get Axis Value therefore shift MSB and OR MSB with LSB
   int16_t raw_x = (buf[1] << 8) | buf[0];
   int16_t raw_y = (buf[3] << 8) | buf[2];
-  int16_t raw_z = (buf[5] << 8) | buf[4];
+  int16_t raw_z = (buf[5] << 8) | buf[3];
   // Calculate G Value with scale factor as described in the data sheet
   int16_t acc_x = raw_x * m_scale_factor;
   int16_t acc_y = raw_y * m_scale_factor;
@@ -115,15 +115,15 @@ Accelerometer::read_data ()
   std::cout << "X-Axis 16 Bit: " << raw_x << std::endl;
   std::cout << "Y-Axis 16 Bit: " << raw_y << std::endl;
   std::cout << "Z-Axis 16 Bit: " << raw_z << std::endl;
-  std::cout << "X-Axis in G: " << acc_x << std::endl;
-  std::cout << "Y-Axis in G: " << acc_y << std::endl;
-  std::cout << "Z-Axis in G: " << acc_z << std::endl;
+  std::cout << "X-Axis in mG: " << acc_x << std::endl;
+  std::cout << "Y-Axis in mG: " << acc_y << std::endl;
+  std::cout << "Z-Axis in mG: " << acc_z << std::endl;
   std::cout << "X-Axis m/s^2: " << accel_meter_x << std::endl;
   std::cout << "Y-Axis m/s^2: " << accel_meter_y << std::endl;
   std::cout << "Z-Axis m/s^2: " << accel_meter_z << std::endl;
-  std::cout << "Z-Axis in G (MSB): " << static_cast<int32_t> (msb_z)
+  std::cout << "Z-Axis in mG (MSB): " << static_cast<int32_t> (msb_z)
   << std::endl;
-  std::cout << "Z-Axis in G (LSB): " << static_cast<int32_t> (lsb_z)
+  std::cout << "Z-Axis in mG (LSB): " << static_cast<int32_t> (lsb_z)
   << std::endl;
   std::cout << "X-Axis together as int16: " << static_cast<int16_t> (tsb_x)
   << std::endl;

@@ -58,7 +58,6 @@ TLVEEngine::send_stream (Stream* stream, std::vector<int8_t> data)
     {
       payload.push_back (data.at (i));
     }
-  std::cout << "Send Stream..." << std::endl;
   uint8_t attribute = tlve4_attribute (
       device->get_datastructure_id (),
       stream->get_communication_number());
@@ -70,7 +69,7 @@ TLVEEngine::send_stream (Stream* stream, std::vector<int8_t> data)
 void
 TLVEEngine::send_frame (Frame* frame)
 {
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "Sending Frame..." << std::endl;
   std::cout << "Frame: " << std::endl;
   std::cout << "Tag: " << static_cast<int> (frame->get_tag ()) << "\t"
@@ -115,7 +114,7 @@ TLVEEngine::send_frame (Frame* frame)
       i++;
     }
   buf[i] = SYNC_BYTE;
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "Before sending to SerialLink \nData: ";
   for (uint8_t j = 0; j < size; j++)
     {

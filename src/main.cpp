@@ -2,6 +2,7 @@
 #include "devices/device_manager.h"
 #include "devices/stream_generator_thread_params.h"
 #include "loader/loader.h"
+#include "interfaces/spi_thread_param_t.h"
 
 #ifdef _TEST
 #include "test/gcd_test.h"
@@ -9,14 +10,15 @@
 #include "test/echo_test.h"
 #include "test/spi_interrupt_test.h"
 #include "test/timer_test.h"
+#include "test/stream_generator_test.h"
 
 void
 tests ()
 {
+  bool passed;
   GCDTest gcd_test;
   CommunicationTableTest comm_table_test;
   TimerTest timer_test;
-  bool passed;
   passed = gcd_test.test_cases ();
   if (passed == true)
     {
@@ -70,10 +72,11 @@ frame_test ()
   uint8_t comm_number, attribute;
   std::shared_ptr<Device> device;
   std::shared_ptr<ComponentDescriptor> descriptor;
+  Frame* frame;
   // GET PROTOCOL VERSION
   std::cout << "\n------------------------" << "\nGet Protocol Version"
       << "\n------------------------" << std::endl;
-  Frame* frame = loader->get_protocol_engine ()->create_frame (
+  frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::GET_PROTOCOL_VERSION, 0, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
   // GET BOAT ID
@@ -588,48 +591,55 @@ int
 main (void)
 {
 #ifdef _TEST
-//  tests ();
+  tests ();
 //  gps_csv ();
 //  frame_test ();
+#endif
+#ifdef _RELEASE
   Loader* loader = new Loader ();
-  std::vector<uint8_t> payload;
-  std::shared_ptr<Device> device;
-  uint8_t attribute, comm_number;
-  Frame* frame;
+//  std::vector<uint8_t> payload;
+//  std::shared_ptr<Device> device;
+//  uint8_t attribute, comm_number;
+//  Frame* frame;
 
-//TODO: How to handle PCI
   pthread_t interrupt_thread_a;
   struct spi_thread_param_t params;
   params.spi_ptr =
-      dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
+  dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::SERIAL_LINK)->get_interface ());
   while (true)
     {
       pthread_create (&interrupt_thread_a, NULL,
-		      params.spi_ptr->pin_change_interrupt, &params);
+	  params.spi_ptr->pin_change_interrupt, &params);
       pthread_join (interrupt_thread_a, NULL);
       if (params.interrupted == true)
 	{
-//	  loader->get_protocol_engine()->receive_frame();
+	  loader->get_protocol_engine ()->receive_frame ();
 	  // GET ACCELEROMETER
-	  std::cout << "\n------------------------" << "\nGet Accelerometer"
-	      << "\n------------------------" << std::endl;
-	  device = loader->get_device_manager ()->get_device (
-	      ComponentDescriptorEnum::ACCELEROMETER);
-	  comm_number =
-	      loader->get_protocol_engine ()->get_communication_number (
-		  device->get_component_descriptor ());
-	  attribute = loader->get_protocol_engine ()->tlve4_attribute (
-	      DataStructureIdentifier::UINT8, comm_number);
-	  frame = loader->get_protocol_engine ()->create_frame (
-	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
-	  loader->get_protocol_engine ()->interpret_frame (frame);
+//	  std::cout << "\n------------------------" << "\nGet Accelerometer"
+//	      << "\n------------------------" << std::endl;
+//	  device = loader->get_device_manager ()->get_device (
+//	      ComponentDescriptorEnum::ACCELEROMETER);
+//	  comm_number =
+//	      loader->get_protocol_engine ()->get_communication_number (
+//		  device->get_component_descriptor ());
+//	  attribute = loader->get_protocol_engine ()->tlve4_attribute (
+//	      DataStructureIdentifier::UINT8, comm_number);
+//	  frame = loader->get_protocol_engine ()->create_frame (
+//	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+//	  loader->get_protocol_engine ()->interpret_frame (frame);
 	}
     }
 #endif
-#ifndef _TEST
+#ifdef _DEBUG
   Loader* loader = new Loader ();
-  while (true);
+  std::shared_ptr<Device> device = loader->get_device_manager ()->get_device (
+      ComponentDescriptorEnum::ACCELEROMETER);
+  while(true)
+    {
+      device->read_data ();
+      sleep(1);
+    }
 #endif
   return 0;
 }

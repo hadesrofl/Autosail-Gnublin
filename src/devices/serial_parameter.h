@@ -2,6 +2,11 @@
 #define DEVICES_SERIAL_PARAMETER_H_
 
 #include "device_config.h"
+
+/**
+ * Default serial device file
+ * XXX needs change for serial without using a usb to uart adapter
+ */
 #define GNUBLIN_DEFAULT_SERIAL "/dev/ttyUSB0"
 
 /**

@@ -73,7 +73,7 @@ StreamGenerator::add_stream (std::shared_ptr<Device> device,
       set_min_period (
 	  Calculation::gcd_vector (m_periods, 0, m_periods.size ()));
     }
-#ifdef _DEBUG
+#ifdef _TEST
   std::cout << "Min Period: " << get_min_period () << std::endl;
 #endif
   stream->set_active (true);
@@ -88,9 +88,9 @@ StreamGenerator::disable_stream (uint8_t comm_number)
   Stream* stream = lookup_device (comm_number);
   if (stream != NULL)
     {
-#ifdef _DEBUG
+#ifdef _TEST
       std::cout << "Period of disabled Stream: " << stream->get_period ()
-      << std::endl;
+	  << std::endl;
 #endif
       for (uint8_t j = 0; j < m_periods.size (); j++)
 	{
@@ -112,7 +112,7 @@ StreamGenerator::disable_stream (uint8_t comm_number)
       stream->set_active (false);
       uint16_t new_min = Calculation::gcd_vector (m_periods, 0,
 						  m_periods.size ());
-#ifdef _DEBUG
+#ifdef _TEST
       std::cout << "New Min Period: " << new_min << std::endl;
 #endif
       set_min_period (new_min);
@@ -134,7 +134,7 @@ StreamGenerator::run_generator (void* params)
   std::shared_ptr<StreamGenerator> generator = generator_param->generator_ptr;
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   struct timespec ts;
-#ifdef _DEBUG
+#ifdef _TEST
   uint16_t last_interrupt = 0;
 #endif
   while (true)
@@ -159,20 +159,30 @@ StreamGenerator::run_generator (void* params)
 	  ts.tv_sec = m_min_period / 1000;
 	  ts.tv_nsec = (m_min_period % 1000) * 1000000;
 	}
+#ifdef _TEST
+      if (m_interrupt_counter != last_interrupt)
+	{
+	  last_interrupt = m_interrupt_counter;
+	  std::cout << "Interrupt Counter: " << m_interrupt_counter
+	      << std::endl;
+	}
+#endif
       for (uint32_t i = 0; i < streams.size (); i++)
 	{
 	  if (streams.at (i)->is_active () == true
 	      && m_interrupt_counter % streams.at (i)->get_period () == 0
 	      && m_min_period != 0)
 	    {
-#ifdef _DEBUG
+#ifdef _TEST
 	      std::cout << "Device Descriptor: \n" << "Class: "
-	      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
-	      << "\tAttribute: "
-	      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_attribute ())
-	      << "\tNumber: "
-	      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_number ())
-	      << "\tPeriod: " << streams.at (i)->get_period () << std::endl;
+		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
+		  << "\tAttribute: "
+		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_attribute ())
+		  << "\tNumber: "
+		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_number ())
+		  << "\nCommunication Number: "
+		  << static_cast<int> (streams.at (i)->get_communication_number ())
+		  << "\tPeriod: " << streams.at (i)->get_period () << std::endl;
 	      std::cout << "Stream triggered!" << std::endl;
 #endif
 	      std::vector<int8_t> data;
@@ -242,14 +252,6 @@ StreamGenerator::run_generator (void* params)
 		}
 	    }
 	}
-#ifdef _DEBUG
-      if (m_interrupt_counter != last_interrupt)
-	{
-	  last_interrupt = m_interrupt_counter;
-	  std::cout << "Interrupt Counter: " << m_interrupt_counter
-	  << std::endl;
-	}
-#endif
       if (m_interrupt_counter >= generator->get_max_period ())
 	{
 	  m_interrupt_counter = 0;

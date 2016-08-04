@@ -141,20 +141,23 @@ public:
     uint8_t attribute, length;
     TagEnum tag;
     raw_frame = m_serial_link->read_data ();
-    tag = static_cast<TagEnum> (raw_frame.at (0));
-    length = raw_frame.at (1);
-    if (length > 0)
+    if (raw_frame.size () > 0)
       {
-	attribute = raw_frame.at (2);
-	for (uint8_t i = 2; i < length; i++)
+	tag = static_cast<TagEnum> (raw_frame.at (0));
+	length = raw_frame.at (1);
+	if (length > 0)
 	  {
-	    payload.push_back (raw_frame.at (i));
+	    attribute = raw_frame.at (2);
+	    for (uint8_t i = 2; i < length; i++)
+	      {
+		payload.push_back (raw_frame.at (i));
+	      }
+	    interpret_frame (create_frame (tag, attribute, length, payload));
 	  }
-	interpret_frame (create_frame (tag, attribute, length, payload));
-      }
-    else
-      {
-	interpret_frame (create_frame (tag, length));
+	else
+	  {
+	    interpret_frame (create_frame (tag, length));
+	  }
       }
   }
   /**
@@ -300,7 +303,7 @@ public:
   insert_communication_table_backward (uint8_t communication_number,
 				       Device* device)
   {
-    if (communication_number <= MAX_COMMUNICATION_NUMBER)
+    if (communication_number < MAX_COMMUNICATION_NUMBER && communication_number > 0)
       {
 	m_communication_table_backward[communication_number] = std::shared_ptr<
 	    Device> (device);
