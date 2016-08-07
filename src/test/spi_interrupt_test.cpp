@@ -42,7 +42,7 @@ SPIInterruptTest::master_select_test ()
   std::cout << "SPI A: " << std::endl;
   std::cout << " SPI Trigger Action: "
       << static_cast<char*> (spi_a->get_trigger_action ()) << std::endl;
-  std::cout << " SPI Interrupted: " << params_a.interrupted << std::endl;
+  std::cout << " SPI Interrupted: " << params_a.frame_count << std::endl;
 
   std::cout << "Delete SPI A" << std::endl;
   delete spi_a;

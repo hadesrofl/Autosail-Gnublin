@@ -58,9 +58,8 @@ TLVEEngine::send_stream (Stream* stream, std::vector<int8_t> data)
     {
       payload.push_back (data.at (i));
     }
-  uint8_t attribute = tlve4_attribute (
-      device->get_datastructure_id (),
-      stream->get_communication_number());
+  uint8_t attribute = tlve4_attribute (device->get_datastructure_id (),
+				       stream->get_communication_number ());
   Frame* frame = create_frame (TagEnum::VALUE_RESPONSE_W_TIMESTAMP, attribute,
 			       payload.size () + 1, payload);
   send_frame (frame);

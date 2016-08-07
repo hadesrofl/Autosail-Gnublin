@@ -85,6 +85,18 @@ private:
    */
   static pthread_mutex_t m_region_mutex;
   /**
+   * Mutex for setting generator active
+   */
+  static pthread_mutex_t m_active_mutex;
+  /**
+   * Condition to wake up main thread to
+   */
+  static pthread_cond_t m_wakeup_cond;
+  /**
+   * Bool if generator is active
+   */
+  static bool m_active;
+  /**
    * Handler for the Timer Interrupt. Will be called if the Timer interrupts
    * @param signo is the signal number for a software interrupt in Linux
    */

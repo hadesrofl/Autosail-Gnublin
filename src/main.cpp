@@ -13,6 +13,15 @@
 #include "test/stream_generator_test.h"
 
 void
+print_time (timeval begin, timeval end)
+{
+  std::cout << (begin.tv_sec) + (begin.tv_usec) << ";"
+      << (end.tv_sec) + (end.tv_usec) << ";"
+      << (end.tv_sec - begin.tv_sec) * 1000
+	  + (end.tv_usec - begin.tv_usec) / 1000 << ";" << std::endl;
+}
+
+void
 tests ()
 {
   bool passed;
@@ -73,18 +82,28 @@ frame_test ()
   std::shared_ptr<Device> device;
   std::shared_ptr<ComponentDescriptor> descriptor;
   Frame* frame;
+  timeval start, end;
+  std::cout << "Start Interpret Frame;End Interpret Frame;Difference;"
+      << std::endl;
   // GET PROTOCOL VERSION
   std::cout << "\n------------------------" << "\nGet Protocol Version"
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::GET_PROTOCOL_VERSION, 0, 0);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
+
   // GET BOAT ID
   std::cout << "\n------------------------" << "\nGet Boat ID"
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::GET_BOAT_ID, 0,
 							0);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // SET CONTROL MODE
   payload.push_back (0x00);
   frame = loader->get_protocol_engine ()->create_frame (
@@ -93,7 +112,10 @@ frame_test ()
       << "\n------------------------" << std::endl;
   if (loader->get_autopilot () != NULL)
     {
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
     }
   payload.clear ();
   // GET CONTROL MODE
@@ -101,17 +123,29 @@ frame_test ()
       TagEnum::GET_CONTROL_MODE, 0, 0);
   if (loader->get_autopilot () != NULL)
     {
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
       payload.push_back (0x01);
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::SET_CONTROL_MODE, 0, 1, payload);
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::GET_CONTROL_MODE, 0, 0);
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::GET_CONTROL_MODE, 0, 0);
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
     }
   // SET RUDDER
   payload.push_back (0x0A);
@@ -120,14 +154,20 @@ frame_test ()
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x44,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
 
   payload.clear ();
   payload.push_back (0xF5);
   payload.push_back (0x01);
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x44,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET RUDDER
   payload.clear ();
   std::cout << "\n------------------------" << "\nGet Rudder Position"
@@ -140,7 +180,10 @@ frame_test ()
 		  ComponentDescriptorEnum::SERVO_MOTOR_RUDDER)->get_component_descriptor ()));
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // SET MAIN SAIL
   payload.push_back (0x0A);
   payload.push_back (0xFF);
@@ -148,13 +191,19 @@ frame_test ()
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x45,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   payload.clear ();
   payload.push_back (0xF5);
   payload.push_back (0x01);
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x45,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET MAIN SAIL
   payload.clear ();
   std::cout << "\n------------------------" << "\nGet Main Sail"
@@ -167,7 +216,10 @@ frame_test ()
 		  ComponentDescriptorEnum::SERVO_MOTOR_RUDDER)->get_component_descriptor ()));
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // SET FORE SAIL
   payload.push_back (0x0A);
   payload.push_back (0xFF);
@@ -175,13 +227,19 @@ frame_test ()
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x46,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   payload.clear ();
   payload.push_back (0xF5);
   payload.push_back (0x01);
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET, 0x46,
 							3, payload);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET FORE SAIL
   std::cout << "\n------------------------" << "\nGet Fore Sail"
       << "\n------------------------" << std::endl;
@@ -193,13 +251,19 @@ frame_test ()
 		  ComponentDescriptorEnum::SERVO_MOTOR_RUDDER)->get_component_descriptor ()));
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET BOAT DESCRIPTION
   std::cout << "\n------------------------" << "\nGet Boat Description"
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::GET_BOAT_DESCRIPTION, 0);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // SET AUTOPILOT COURSE
   if (loader->get_autopilot () != NULL)
     {
@@ -219,7 +283,10 @@ frame_test ()
       frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
 							    attribute, 5,
 							    payload);
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
       std::cout << "\n------------------------" << "\nDeactivate Autopilot"
 	  << "\n------------------------" << std::endl;
       buf = (uint8_t*) IntConverter::int16_to_int8 (0x0000);
@@ -232,7 +299,10 @@ frame_test ()
       frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
 							    attribute, 5,
 							    payload);
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
     }
   // GET CURRENT
   device = loader->get_device_manager ()->get_device (
@@ -245,7 +315,10 @@ frame_test ()
       << "\n------------------------" << std::endl;
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   payload.clear ();
   // GET GPS POSITION, VALIDITY AND VELOCITY
   device = loader->get_device_manager ()->get_device (
@@ -266,7 +339,10 @@ frame_test ()
 		  device->get_component_descriptor ()));
 	  frame = loader->get_protocol_engine ()->create_frame (
 	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+	  gettimeofday (&start, 0);
 	  loader->get_protocol_engine ()->interpret_frame (frame);
+	  gettimeofday (&end, 0);
+	  print_time (start, end);
 	  payload.clear ();
 
 	  std::cout << "\n------------------------" << "\nGet GPS Validity"
@@ -276,7 +352,10 @@ frame_test ()
 	      DataStructureIdentifier::UINT8, comm_number + 1);
 	  frame = loader->get_protocol_engine ()->create_frame (
 	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+	  gettimeofday (&start, 0);
 	  loader->get_protocol_engine ()->interpret_frame (frame);
+	  gettimeofday (&end, 0);
+	  print_time (start, end);
 
 	  std::cout << "\n------------------------" << "\nGet GPS Velocity"
 	      << "\n------------------------" << std::endl;
@@ -285,7 +364,10 @@ frame_test ()
 	      DataStructureIdentifier::UINT8, comm_number + 2);
 	  frame = loader->get_protocol_engine ()->create_frame (
 	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+	  gettimeofday (&start, 0);
 	  loader->get_protocol_engine ()->interpret_frame (frame);
+	  gettimeofday (&end, 0);
+	  print_time (start, end);
 	}
     }
   // GET ACCELEROMETER
@@ -299,7 +381,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET COMPASS
   std::cout << "\n------------------------" << "\nGet Compass"
       << "\n------------------------" << std::endl;
@@ -311,7 +396,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET GYROSCOPE
   std::cout << "\n------------------------" << "\nGet Gyroscope"
       << "\n------------------------" << std::endl;
@@ -323,7 +411,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET WIND VANE
   std::cout << "\n------------------------" << "\nGet Windvane"
       << "\n------------------------" << std::endl;
@@ -335,7 +426,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // GET ANEMOMETER
   std::cout << "\n------------------------" << "\nGet Anemometer"
       << "\n------------------------" << std::endl;
@@ -347,7 +441,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // ERROR UNKNOWN TAG
   std::cout << "\n------------------------" << "\nTag Unknown Tag Error"
       << "\n------------------------" << std::endl;
@@ -359,7 +456,10 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (
       static_cast<TagEnum> (0x45), attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   // ERROR UNKNOWN COMPONENT
   std::cout << "\n------------------------" << "\nTag Unknown Component Error"
       << "\n------------------------" << std::endl;
@@ -368,10 +468,16 @@ frame_test ()
       DataStructureIdentifier::UINT8, comm_number);
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
 							attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
   frame = loader->get_protocol_engine ()->create_frame (TagEnum::PM_SET,
 							attribute, 1);
+  gettimeofday (&start, 0);
   loader->get_protocol_engine ()->interpret_frame (frame);
+  gettimeofday (&end, 0);
+  print_time (start, end);
 
   // DATA STREAMS
   if (loader->get_stream_generator () != NULL)
@@ -392,7 +498,10 @@ frame_test ()
 							    payload.size () + 1,
 							    payload);
       std::cout << "Activate Accelerometer Stream" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
 
       device = loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::COMPASS);
@@ -408,7 +517,10 @@ frame_test ()
 							    payload.size () + 1,
 							    payload);
       std::cout << "Activate Compass Stream" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
 
       device = loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::GYROSCOPE);
@@ -424,7 +536,10 @@ frame_test ()
 							    payload.size () + 1,
 							    payload);
       std::cout << "Activate Gyroscope Stream" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
 
       device = loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::ACCELEROMETER);
@@ -440,7 +555,10 @@ frame_test ()
 							    payload.size () + 1,
 							    payload);
       std::cout << "Deactivate Accelerometer Stream" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
 
       device = loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::ACCELEROMETER);
@@ -456,7 +574,10 @@ frame_test ()
 							    payload.size () + 1,
 							    payload);
       std::cout << "Activate Accelerometer Stream" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
 
       device = loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::GPS_POSITION);
@@ -478,7 +599,10 @@ frame_test ()
 	      frame = loader->get_protocol_engine ()->create_frame (
 		  TagEnum::SET_VALUE, attribute, payload.size () + 1, payload);
 	      std::cout << "Activate GPS Position Stream" << std::endl;
+	      gettimeofday (&start, 0);
 	      loader->get_protocol_engine ()->interpret_frame (frame);
+	      gettimeofday (&end, 0);
+	      print_time (start, end);
 
 	      device = loader->get_device_manager ()->get_device (
 		  ComponentDescriptorEnum::GPS_POSITION);
@@ -493,7 +617,10 @@ frame_test ()
 	      frame = loader->get_protocol_engine ()->create_frame (
 		  TagEnum::SET_VALUE, attribute, payload.size () + 1, payload);
 	      std::cout << "Activate GPS Validity Stream" << std::endl;
+	      gettimeofday (&start, 0);
 	      loader->get_protocol_engine ()->interpret_frame (frame);
+	      gettimeofday (&end, 0);
+	      print_time (start, end);
 
 	      device = loader->get_device_manager ()->get_device (
 		  ComponentDescriptorEnum::GPS_POSITION);
@@ -508,7 +635,10 @@ frame_test ()
 	      frame = loader->get_protocol_engine ()->create_frame (
 		  TagEnum::SET_VALUE, attribute, payload.size () + 1, payload);
 	      std::cout << "Activate GPS Velocity Stream" << std::endl;
+	      gettimeofday (&start, 0);
 	      loader->get_protocol_engine ()->interpret_frame (frame);
+	      gettimeofday (&end, 0);
+	      print_time (start, end);
 	    }
 	}
       // GET COMPASS STREAM
@@ -521,13 +651,19 @@ frame_test ()
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::REQUEST_VALUE, attribute, payload.size () + 1, payload);
       std::cout << "Get Compass" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
       // GET ALL STREAMS
       payload.clear ();
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::REQUEST_VALUE, attribute, 1);
       std::cout << "Get all streams" << std::endl;
+      gettimeofday (&start, 0);
       loader->get_protocol_engine ()->interpret_frame (frame);
+      gettimeofday (&end, 0);
+      print_time (start, end);
     }
 }
 void
@@ -594,6 +730,7 @@ main (void)
   tests ();
 //  gps_csv ();
   frame_test ();
+
 #endif
 #ifdef _RELEASE
   Loader* loader = new Loader ();
@@ -607,13 +744,17 @@ main (void)
   params.spi_ptr =
   dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
 	  ComponentDescriptorEnum::SERIAL_LINK)->get_interface ());
+  pthread_mutex_init(&params.count_mutex, NULL);
+  pthread_cond_init (&params.wakeup_cond, NULL);
+  pthread_create (&interrupt_thread_a, NULL,
+      params.spi_ptr->pin_change_interrupt, &params);
+  pthread_mutex_lock (&params.count_mutex);
   while (true)
     {
-      pthread_create (&interrupt_thread_a, NULL,
-	  params.spi_ptr->pin_change_interrupt, &params);
-      pthread_join (interrupt_thread_a, NULL);
-      if (params.interrupted == true)
+      pthread_cond_wait(&params.wakeup_cond, &params.count_mutex);
+      while(params.frame_count > 0)
 	{
+	  params.frame_count--;
 	  loader->get_protocol_engine ()->receive_frame ();
 	  // GET ACCELEROMETER
 //	  std::cout << "\n------------------------" << "\nGet Accelerometer"
@@ -630,6 +771,8 @@ main (void)
 //	  loader->get_protocol_engine ()->interpret_frame (frame);
 	}
     }
+  pthread_mutex_unlock (&params.count_mutex);
+  pthread_join (interrupt_thread_a, NULL);
 #endif
 #ifdef _DEBUG
   Loader* loader = new Loader ();

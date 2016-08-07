@@ -3,8 +3,6 @@
 
 #include "spi_thread_param_t.h"
 
-pthread_mutex_t SPIMasterSelect::m_region_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 // private functions
 
 int8_t
@@ -91,8 +89,7 @@ void *
 SPIMasterSelect::pin_change_interrupt (void* params)
 {
   struct spi_thread_param_t* spi = (struct spi_thread_param_t*) params;
-  spi->interrupted = false;
-
+  spi->frame_count = 0;
   struct pollfd *poll_fd;
   char buf[2];
   char dir[28];
@@ -102,14 +99,17 @@ SPIMasterSelect::pin_change_interrupt (void* params)
   poll_fd->fd = open (dir, O_RDWR);
   poll_fd->events = POLLPRI;
   poll_fd->revents = 0;
-  read (poll_fd->fd, buf, 1);
   int32_t ret = 0;
-  ret = poll (poll_fd, 1, -1);
-  if (ret > 0)
+  while (true)
     {
-      pthread_mutex_lock (&SPIMasterSelect::m_region_mutex);
-      spi->interrupted = true;
-      pthread_mutex_unlock (&SPIMasterSelect::m_region_mutex);
+      read (poll_fd->fd, buf, 1);
+
+      ret = poll (poll_fd, 1, -1);
+      if (ret > 0)
+	{
+	  spi->frame_count++;
+	  pthread_cond_signal (&spi->wakeup_cond);
+	}
     }
   pthread_exit (0);
   close (poll_fd->fd);

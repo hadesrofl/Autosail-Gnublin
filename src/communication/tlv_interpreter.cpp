@@ -11,8 +11,6 @@ TLVInterpreter::TLVInterpreter (std::shared_ptr<StreamGenerator> generator,
 void
 TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 {
-  DataStructureIdentifier data_structure_id =
-      static_cast<DataStructureIdentifier> (frame->get_attribute () >> 5);
   uint8_t communication_number = (frame->get_attribute () & 0x1F);
   ComponentDescriptorEnum descriptor_enum =
       static_cast<ComponentDescriptorEnum> (NULL);
@@ -219,7 +217,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	    buf[0] = frame->get_payload ().at (2);
 	    buf[1] = frame->get_payload ().at (3);
 	    int16_t direction = IntConverter::int8_to_int16 (buf);
-	    int8_t ret;
+	    int8_t ret = 0;
 	    delete[] buf;
 	    switch (command)
 	      {

@@ -19,9 +19,17 @@ struct spi_thread_param_t
    */
   SPIMasterSelect* spi_ptr;
   /**
-   * Bool to determine if an interrupt occured
+   * Mutex for counting incoming Frames
    */
-  bool interrupted;
+  pthread_mutex_t count_mutex;
+  /**
+   * Condition to wake up main thread to
+   */
+  pthread_cond_t wakeup_cond;
+  /**
+   * Count of incoming Frames
+   */
+  uint32_t frame_count;
 };
 
 #endif /* INTERFACES_SPI_THREAD_PARAMS_H_ */
