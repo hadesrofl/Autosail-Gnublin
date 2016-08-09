@@ -201,7 +201,7 @@ StreamGenerator::run_generator (void* params)
 	    {
 	      last_interrupt = m_interrupt_counter;
 	      std::cout << "Interrupt Counter: " << m_interrupt_counter
-		  << std::endl;
+	      << std::endl;
 	    }
 #endif
 	  for (uint32_t i = 0; i < streams.size (); i++)

@@ -24,19 +24,19 @@ enum class DeviceConfig
   /**
    * Measurement Range for +- 2G
    */
-  ACC_RANGE_2G = 0x01,
+  ACC_RANGE_2G = 0x00,
   /**
    * Measurement Range for +- 4G
    */
-  ACC_RANGE_4G = 0x02,
+  ACC_RANGE_4G = 0x01,
   /**
    * Measurement Range for +- 8G
    */
-  ACC_RANGE_8G = 0x03,
+  ACC_RANGE_8G = 0x02,
   /**
    * Measurement Range for +- 16G
    */
-  ACC_RANGE_16G = 0x04,
+  ACC_RANGE_16G = 0x03,
   /**
    * Address of Digital Compass HMC5883L
    */
@@ -48,7 +48,7 @@ enum class DeviceConfig
   /**
    * Gain of Compass (+- 0.88 Ga)
    */
-  COMPASS_GAIN_0_8_8_GA = 0x01,
+  COMPASS_GAIN_0_8_8_GA = 0x00,
   /**
    * Default Value for Gain of Compass (+- 1.3 Ga)
    */

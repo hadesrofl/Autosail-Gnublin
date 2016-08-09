@@ -25,6 +25,12 @@ GPS::init ()
 	{
 	  return -1;
 	}
+      // Create ramdisk dir
+      snprintf(command, COMMAND_SIZE, "mkdir /media/ramdisk");
+      system(command);
+      // map memory to ramdisk dir with ramfs file system
+      snprintf(command, COMMAND_SIZE, "mount -t ramfs ramfs /media/ramdisk");
+      system(command);
       // Start GPSd
       snprintf (command,
       COMMAND_SIZE,

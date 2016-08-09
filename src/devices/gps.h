@@ -31,7 +31,7 @@
 /**
  * Temporary file to save data from SUB_PROGRAM and read from
  */
-#define TMP_DATA_FILE "tmp/gps-data.txt"
+#define TMP_DATA_FILE "/media/ramdisk/gps-data.txt"
 
 /**
  * @file

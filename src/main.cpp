@@ -12,6 +12,9 @@
 #include "test/timer_test.h"
 #include "test/stream_generator_test.h"
 
+/**
+ * Prints time for frame_test
+ */
 void
 print_time (timeval begin, timeval end)
 {
@@ -20,7 +23,9 @@ print_time (timeval begin, timeval end)
       << (end.tv_sec - begin.tv_sec) * 1000
 	  + (end.tv_usec - begin.tv_usec) / 1000 << ";" << std::endl;
 }
-
+/**
+ * Calls test classes for unit testing
+ */
 void
 tests ()
 {
@@ -73,6 +78,9 @@ tests ()
    << std::endl;
    }*/
 }
+/**
+ * Test function for Frame Interpreter.
+ */
 void
 frame_test ()
 {
@@ -666,6 +674,9 @@ frame_test ()
       print_time (start, end);
     }
 }
+/**
+ * Test function for gps latency
+ */
 void
 gps_csv ()
 {
@@ -727,36 +738,47 @@ int
 main (void)
 {
 #ifdef _TEST
-  tests ();
+//  tests ();
 //  gps_csv ();
-  frame_test ();
+//  frame_test ();
+  Loader* loader = new Loader();
+  std::shared_ptr<Device> gps;
+  std::shared_ptr<Device> acc;
+  gps = loader->get_device_manager()->get_device(ComponentDescriptorEnum::GPS_POSITION);
+  acc = loader->get_device_manager()->get_device(ComponentDescriptorEnum::ACCELEROMETER);
+  while(true){
+      gps->read_data();
+      sleep(1);
+      acc->read_data();
+      sleep(1);
+  }
 
 #endif
 #ifdef _RELEASE
-  Loader* loader = new Loader ();
+    Loader* loader = new Loader ();
 //  std::vector<uint8_t> payload;
 //  std::shared_ptr<Device> device;
 //  uint8_t attribute, comm_number;
 //  Frame* frame;
 
-  pthread_t interrupt_thread_a;
-  struct spi_thread_param_t params;
-  params.spi_ptr =
-  dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
-	  ComponentDescriptorEnum::SERIAL_LINK)->get_interface ());
-  pthread_mutex_init(&params.count_mutex, NULL);
-  pthread_cond_init (&params.wakeup_cond, NULL);
-  pthread_create (&interrupt_thread_a, NULL,
-      params.spi_ptr->pin_change_interrupt, &params);
-  pthread_mutex_lock (&params.count_mutex);
-  while (true)
-    {
-      pthread_cond_wait(&params.wakeup_cond, &params.count_mutex);
-      while(params.frame_count > 0)
-	{
-	  params.frame_count--;
-	  loader->get_protocol_engine ()->receive_frame ();
-	  // GET ACCELEROMETER
+    pthread_t interrupt_thread_a;
+    struct spi_thread_param_t params;
+    params.spi_ptr =
+    dynamic_cast<SPIMasterSelect*> (loader->get_device_manager ()->get_device (
+	    ComponentDescriptorEnum::SERIAL_LINK)->get_interface ());
+    pthread_mutex_init(&params.count_mutex, NULL);
+    pthread_cond_init (&params.wakeup_cond, NULL);
+    pthread_create (&interrupt_thread_a, NULL,
+	params.spi_ptr->pin_change_interrupt, &params);
+    pthread_mutex_lock (&params.count_mutex);
+    while (true)
+      {
+	pthread_cond_wait(&params.wakeup_cond, &params.count_mutex);
+	while(params.frame_count > 0)
+	  {
+	    params.frame_count--;
+	    loader->get_protocol_engine ()->receive_frame ();
+	    // GET ACCELEROMETER
 //	  std::cout << "\n------------------------" << "\nGet Accelerometer"
 //	      << "\n------------------------" << std::endl;
 //	  device = loader->get_device_manager ()->get_device (
@@ -769,20 +791,20 @@ main (void)
 //	  frame = loader->get_protocol_engine ()->create_frame (
 //	      TagEnum::REQUEST_VALUE_W_TIMESTAMP, attribute, 1);
 //	  loader->get_protocol_engine ()->interpret_frame (frame);
-	}
-    }
-  pthread_mutex_unlock (&params.count_mutex);
-  pthread_join (interrupt_thread_a, NULL);
+	  }
+      }
+    pthread_mutex_unlock (&params.count_mutex);
+    pthread_join (interrupt_thread_a, NULL);
 #endif
 #ifdef _DEBUG
-  Loader* loader = new Loader ();
-  std::shared_ptr<Device> device = loader->get_device_manager ()->get_device (
-      ComponentDescriptorEnum::ACCELEROMETER);
-  while(true)
-    {
-      device->read_data ();
-      sleep(1);
-    }
+    Loader* loader = new Loader ();
+    std::shared_ptr<Device> device = loader->get_device_manager ()->get_device (
+	ComponentDescriptorEnum::ACCELEROMETER);
+    while(true)
+      {
+	device->read_data ();
+	sleep(1);
+      }
 #endif
-  return 0;
+    return 0;
 }
