@@ -738,20 +738,9 @@ int
 main (void)
 {
 #ifdef _TEST
-//  tests ();
+  tests ();
 //  gps_csv ();
-//  frame_test ();
-  Loader* loader = new Loader();
-  std::shared_ptr<Device> gps;
-  std::shared_ptr<Device> acc;
-  gps = loader->get_device_manager()->get_device(ComponentDescriptorEnum::GPS_POSITION);
-  acc = loader->get_device_manager()->get_device(ComponentDescriptorEnum::ACCELEROMETER);
-  while(true){
-      gps->read_data();
-      sleep(1);
-      acc->read_data();
-      sleep(1);
-  }
+  frame_test ();
 
 #endif
 #ifdef _RELEASE
