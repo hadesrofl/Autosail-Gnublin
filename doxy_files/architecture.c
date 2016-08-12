@@ -21,24 +21,15 @@
  *
  * <ul>
  * 	<li>Accelerometer</li>
- * 	<li>Anemometer (sure?)</li>
+ * 	<li>Anemometer</li>
+ * 	<li>Battery</li>
  * 	<li>Compass</li>
  * 	<li>GPS</li>
  * 	<li>Gyroscope</li>
- * 	<li>Hygrometer (sure?)</li>
  * 	<li>SerialLink</li>
  * 	<li>ServoMotor</li>
- * 	<li>WestonAnemometer (sure?)</li>
- * 	<li>WindVane (sure?)</li>
+ * 	<li>WindVane</li>
  * </ul>
- * @subsection ssec13 Bridge
- * Ugly Hacks / Black Magic with Timer
- * @subsection ssec14 Communication
- * ProtocolEngine for flexibility, yeah <3
- * @subsection ssec15 Autopilot
- * Well might... drop because of a too big workload
- * @subsection ssec16 Utils
- * Filter for the future use and maybe a ConfReader
  *
  */
 

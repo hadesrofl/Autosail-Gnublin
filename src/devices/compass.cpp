@@ -1,7 +1,4 @@
 #include "compass.h"
-#ifdef _DEBUG
-#include "../utils/int_converter.h"
-#endif
 
 // Private Functions
 int8_t
@@ -110,61 +107,12 @@ Compass::read_data ()
   int8_t lsb_z = z_gauss;
   int8_t msb_y = (uint16_t) y_gauss >> 8;
   int8_t lsb_y = y_gauss;
-#ifdef _DEBUG
-  int16_t check_x = (msb_x << 8) | lsb_x;
-  int16_t check_z = (msb_z << 8) | lsb_z;
-  int16_t check_y = (msb_y << 8) | lsb_y;
-  float x_tesla = x_gauss / 10;
-  float z_tesla = z_gauss / 10;
-  float y_tesla = y_gauss / 10;
-  std::cout << "X MSB: " << static_cast<int> (buf[0]) << " " << std::endl;
-  std::cout << "X LSB: " << static_cast<int> (buf[1]) << " " << std::endl;
-  std::cout << "Z MSB: " << static_cast<int> (buf[2]) << " " << std::endl;
-  std::cout << "Z LSB: " << static_cast<int> (buf[3]) << " " << std::endl;
-  std::cout << "Y MSB: " << static_cast<int> (buf[4]) << " " << std::endl;
-  std::cout << "Y LSB: " << static_cast<int> (buf[5]) << " " << std::endl;
-  std::cout << "X 16 bit: " << x << std::endl;
-  std::cout << "Z 16 bit: " << z << std::endl;
-  std::cout << "Y 16 bit: " << y << std::endl;
-  std::cout << "Check X: " << check_x << std::endl;
-  std::cout << "Check Z: " << check_z << std::endl;
-  std::cout << "Check Y: " << check_y << std::endl;
-  std::cout << "X mGauss: " << x_gauss << std::endl;
-  std::cout << "Z mGauss: " << z_gauss << std::endl;
-  std::cout << "Y mGauss: " << y_gauss << std::endl;
-  std::cout << "X uTesla: " << x_tesla << std::endl;
-  std::cout << "Z uTesla: " << z_tesla << std::endl;
-  std::cout << "Y uTesla: " << y_tesla << std::endl;
-#endif
   data.push_back(msb_x);
   data.push_back(lsb_x);
   data.push_back(msb_y);
   data.push_back(lsb_y);
   data.push_back(msb_z);
   data.push_back(lsb_z);
-#ifdef _DEBUG
-  int8_t* tmp = new int8_t[2];
-  tmp[0] = msb_x;
-  tmp[1] = lsb_x;
-  int16_t test_x = IntConverter::int8_to_int16(tmp);
-  tmp[0] = msb_y;
-  tmp[1] = lsb_y;
-  int16_t test_y = IntConverter::int8_to_int16(tmp);
-  tmp[0] = msb_z;
-  tmp[1] = lsb_z;
-  int16_t test_z = IntConverter::int8_to_int16(tmp);
-  delete[] tmp;
-  std::cout << "Returned:" <<std::endl;
-  std::cout << "X-Axis LSB: " << static_cast<int32_t>(data[1]) << " " << std::endl;
-  std::cout << "X-Axis MSB: " << static_cast<int32_t>(data[0]) << " " << std::endl;
-  std::cout << "Y-Axis LSB: " << static_cast<int32_t>(data[3]) << " " << std::endl;
-  std::cout << "Y-Axis MSB: " << static_cast<int32_t>(data[2]) << " " << std::endl;
-  std::cout << "Z-Axis LSB: " << static_cast<int32_t>(data[5]) << " " << std::endl;
-  std::cout << "Z-Axis MSB: " << static_cast<int32_t>(data[4]) << " " << std::endl;
-  std::cout << "Test X: " << test_x << " " << std::endl;
-  std::cout << "Test Y: " << test_y << " " << std::endl;
-  std::cout << "Test Z: " << test_z << " " << std::endl;
-#endif
   delete[] buf;
   return data;
 }

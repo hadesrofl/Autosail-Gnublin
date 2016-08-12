@@ -1,0 +1,73 @@
+---------------------------------
+Starting Accelerometer Test
+---------------------------------
+
+Test: 0
+X-Axis in mG (MSB): 0
+X-Axis in mG (LSB): 19
+Y-Axis in mG (MSB): -1
+Y-Axis in mG (LSB): -46
+Z-Axis in mG (MSB): -4
+Z-Axis in mG (LSB): 22
+X-Axis in mG as int16: 19
+Y-Axis in mG as int16: -46
+Z-Axis in mG as int16: -1002
+X-Axis m/s^2: 0.18639
+Y-Axis m/s^2: -0.45126
+Z-Axis m/s^2: -9.82962
+
+Test: 1
+X-Axis in mG (MSB): 0
+X-Axis in mG (LSB): 11
+Y-Axis in mG (MSB): -1
+Y-Axis in mG (LSB): -46
+Z-Axis in mG (MSB): -4
+Z-Axis in mG (LSB): 22
+X-Axis in mG as int16: 11
+Y-Axis in mG as int16: -46
+Z-Axis in mG as int16: -1002
+X-Axis m/s^2: 0.10791
+Y-Axis m/s^2: -0.45126
+Z-Axis m/s^2: -9.82962
+
+Test: 2
+X-Axis in mG (MSB): 0
+X-Axis in mG (LSB): 11
+Y-Axis in mG (MSB): -1
+Y-Axis in mG (LSB): -46
+Z-Axis in mG (MSB): -4
+Z-Axis in mG (LSB): 22
+X-Axis in mG as int16: 11
+Y-Axis in mG as int16: -46
+Z-Axis in mG as int16: -1002
+X-Axis m/s^2: 0.10791
+Y-Axis m/s^2: -0.45126
+Z-Axis m/s^2: -9.82962
+
+Test: 3
+X-Axis in mG (MSB): 0
+X-Axis in mG (LSB): 19
+Y-Axis in mG (MSB): -1
+Y-Axis in mG (LSB): -54
+Z-Axis in mG (MSB): -4
+Z-Axis in mG (LSB): 22
+X-Axis in mG as int16: 19
+Y-Axis in mG as int16: -54
+Z-Axis in mG as int16: -1002
+X-Axis m/s^2: 0.18639
+Y-Axis m/s^2: -0.52974
+Z-Axis m/s^2: -9.82962
+
+Test: 4
+X-Axis in mG (MSB): 0
+X-Axis in mG (LSB): 11
+Y-Axis in mG (MSB): -1
+Y-Axis in mG (LSB): -54
+Z-Axis in mG (MSB): -4
+Z-Axis in mG (LSB): 22
+X-Axis in mG as int16: 11
+Y-Axis in mG as int16: -54
+Z-Axis in mG as int16: -1002
+X-Axis m/s^2: 0.10791
+Y-Axis m/s^2: -0.52974
+Z-Axis m/s^2: -9.82962

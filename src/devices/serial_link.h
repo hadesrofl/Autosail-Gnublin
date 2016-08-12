@@ -5,6 +5,10 @@
 #include "device.h"
 #include "spi_parameter.h"
 
+#ifdef _TEST
+#include "i2c_parameter.h"
+#include "../interfaces/i2c.h"
+#endif
 /**
  * Tag for the forward frame command of the intra protocol
  */
@@ -42,6 +46,15 @@ public:
    */
   SerialLink (SPIParameter *interface_parameter,
 	      ComponentDescriptor* descriptor);
+#ifdef _TEST
+  /**
+   * Constructor
+   * @param interface_parameter are the parameters of the I2C Interface
+   * @param descriptor is a pointer to the ComponentDescriptor of this device
+   */
+  SerialLink (I2CParameter *interface_parameter,
+	      ComponentDescriptor* descriptor);
+#endif
   /**
    * Reads a frame from the SPI.
    * @return a list of bytes containing the data from the frame

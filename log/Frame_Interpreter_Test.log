@@ -1,0 +1,425 @@
+------------------------
+Get Protocol Version
+------------------------
+Sending Frame...
+
+------------------------
+Get Boat ID
+------------------------
+Sending Frame...
+
+------------------------
+Set Control Mode
+------------------------
+Sending Frame...
+Sending Frame...
+Sending Frame...
+Sending Frame...
+
+------------------------
+Rudder
+------------------------
+Sending Frame...
+Sending Frame...
+
+------------------------
+Get Rudder Position
+------------------------
+Sending Frame...
+
+------------------------
+Main Sail
+------------------------
+Sending Frame...
+Sending Frame...
+
+------------------------
+Get Main Sail
+------------------------
+Sending Frame...
+
+------------------------
+Fore Sail
+------------------------
+Sending Frame...
+Sending Frame...
+
+------------------------
+Get Fore Sail
+------------------------
+Sending Frame...
+
+------------------------
+Set Autopilot to new Course
+------------------------
+Sending Frame...
+
+------------------------
+Deactivate Autopilot
+------------------------
+Sending Frame...
+
+------------------------
+Get Current
+------------------------
+Sending Frame...
+
+------------------------
+Get Accelerometer
+------------------------
+Sending Frame...
+
+------------------------
+Get Compass
+------------------------
+Sending Frame...
+
+------------------------
+Get Gyroscope
+------------------------
+Sending Frame...
+
+------------------------
+Get Windvane
+------------------------
+Sending Frame...
+
+------------------------
+Get Anemometer
+------------------------
+Sending Frame...
+
+------------------------
+Tag Unknown Tag Error
+------------------------
+Sending Frame...
+
+------------------------
+Tag Unknown Component Error
+------------------------
+Sending Frame...
+Sending Frame...
+
+------------------------
+Activate Accelerometer Stream
+------------------------
+Sending Frame...
+
+------------------------
+Activate Compass Stream
+------------------------
+Sending Frame...
+
+------------------------
+Activate Gyroscope Stream
+------------------------
+Sending Frame...
+
+------------------------
+Deactivate Accelerometer Stream
+------------------------
+Sending Frame...
+
+------------------------
+Activate Accelerometer Stream
+------------------------
+Sending Frame...
+
+------------------------
+Get Compass
+------------------------
+Sending Frame...
+
+------------------------
+Get all streams
+------------------------
+Sending Frame...
+
+Frame Count: 33
+
+IP Frame: 
+Tag: 7	Length: 3
+TLVE Frame: 
+Tag: 1	Length: 0 Sync: 82
+Sending Frame...
+
+Frame Count: 32
+
+IP Frame: 
+Tag: 7	Length: 3
+TLVE Frame: 
+Tag: 2	Length: 0 Sync: 82
+Sending Frame...
+
+Frame Count: 31
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 3	Length: 1
+Data: 0  Sync: 82
+
+Frame Count: 30
+
+IP Frame: 
+Tag: 7	Length: 3
+TLVE Frame: 
+Tag: 10	Length: 0 Sync: 82
+Sending Frame...
+
+Frame Count: 29
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 3	Length: 1
+Data: 1  Sync: 82
+
+Frame Count: 28
+
+IP Frame: 
+Tag: 7	Length: 3
+TLVE Frame: 
+Tag: 10	Length: 0 Sync: 82
+Sending Frame...
+
+Frame Count: 27
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 68 10 255  Sync: 82
+
+Frame Count: 26
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 68 245 1  Sync: 82
+
+Frame Count: 25
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 1  Sync: 82
+Sending Frame...
+
+Frame Count: 24
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 69 10 255  Sync: 82
+
+Frame Count: 23
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 69 245 1  Sync: 82
+
+Frame Count: 22
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 1  Sync: 82
+Sending Frame...
+
+Frame Count: 21
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 70 10 255  Sync: 82
+
+Frame Count: 20
+
+IP Frame: 
+Tag: 7	Length: 6
+TLVE Frame: 
+Tag: 4	Length: 3
+Data: 70 245 1  Sync: 82
+
+Frame Count: 19
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 1  Sync: 82
+Sending Frame...
+
+Frame Count: 18
+
+IP Frame: 
+Tag: 7	Length: 10
+TLVE Frame: 
+Tag: 17	Length: 7
+Data: 76 245 1 0 1 10 255  Sync: 82
+
+Frame Count: 17
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 76 0 0 10 255  Sync: 82
+Sending Frame...
+
+Frame Count: 16
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 14  Sync: 82
+Tag: 6	Length: 0
+Voltage: 10 and 255
+Fused: 2815
+Current: 245 and 1
+Fused: -2815
+Sending Frame...
+
+Frame Count: 15
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 5  Sync: 82
+Sending Frame...
+
+Frame Count: 14
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 6  Sync: 82
+Sending Frame...
+
+Frame Count: 13
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 7  Sync: 82
+Sending Frame...
+
+Frame Count: 12
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 13  Sync: 82
+Sending Frame...
+
+Frame Count: 11
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 19	Length: 1
+Data: 15  Sync: 82
+Sending Frame...
+
+Frame Count: 10
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 69	Length: 1
+Data: 15  Sync: 82
+Sending Frame...
+
+Frame Count: 9
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 17	Length: 1
+Data: 25  Sync: 82
+Sending Frame...
+
+Frame Count: 8
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 4	Length: 1
+Data: 25  Sync: 82
+Sending Frame...
+
+Frame Count: 7
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 75 0 5 9 196  Sync: 82
+Sending Frame...
+
+Frame Count: 6
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 75 0 6 19 136  Sync: 82
+Sending Frame...
+
+Frame Count: 5
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 75 0 7 39 16  Sync: 82
+Sending Frame...
+
+Frame Count: 4
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 75 0 5 0 0  Sync: 82
+Sending Frame...
+
+Frame Count: 3
+
+IP Frame: 
+Tag: 7	Length: 8
+TLVE Frame: 
+Tag: 17	Length: 5
+Data: 75 0 5 29 76  Sync: 82
+Sending Frame...
+
+Frame Count: 2
+
+IP Frame: 
+Tag: 7	Length: 5
+TLVE Frame: 
+Tag: 18	Length: 2
+Data: 75 6  Sync: 82
+Sending Frame...
+
+Frame Count: 1
+
+IP Frame: 
+Tag: 7	Length: 4
+TLVE Frame: 
+Tag: 18	Length: 1
+Data: 75  Sync: 82
+Sending Frame...

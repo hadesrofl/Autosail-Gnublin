@@ -1,0 +1,23 @@
+---------------------------------
+Starting WINDVANE Test
+---------------------------------
+
+Test: 0
+Raw Data: 95 and 6
+Raw int16: 1631
+
+Test: 1
+Raw Data: 85 and 7
+Raw int16: 1877
+
+Test: 2
+Raw Data: 1 and 8
+Raw int16: 2049
+
+Test: 3
+Raw Data: -68 and 8
+Raw int16: -68
+
+Test: 4
+Raw Data: 111 and 9
+Raw int16: 2415

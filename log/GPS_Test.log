@@ -1,0 +1,48 @@
+---------------------------------
+Starting GPS Test
+---------------------------------
+
+Test: 0
+Fix: 3
+Latitude data: 5376187
+Longitude data: 1065987
+Speed data: 0
+Direction data: 42
+Timestamp data: 1468101795
+GPS Read End
+
+Test: 1
+Fix: 3
+Latitude data: 5376187
+Longitude data: 1065987
+Speed data: 0
+Direction data: 87
+Timestamp data: 1468101795
+GPS Read End
+
+Test: 2
+Fix: 3
+Latitude data: 5376187
+Longitude data: 1065987
+Speed data: 0
+Direction data: 87
+Timestamp data: 1468101796
+GPS Read End
+
+Test: 3
+Fix: 3
+Latitude data: 5376187
+Longitude data: 1065987
+Speed data: 0
+Direction data: 126
+Timestamp data: 1468101797
+GPS Read End
+
+Test: 4
+Fix: 3
+Latitude data: 5376187
+Longitude data: 1065987
+Speed data: 0
+Direction data: 0
+Timestamp data: 1468101798
+GPS Read End

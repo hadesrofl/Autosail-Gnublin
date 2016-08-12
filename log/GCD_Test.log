@@ -1,0 +1,26 @@
+---------------------------------
+Starting GCD Test
+---------------------------------
+
+Test single GCD: 
+Expected: 4	Result: 4
+
+Test GCD list of length 1: 
+Expected: 8	Result: 8
+
+Test GCD list of length 2: 
+Expected: 2	Result: 2
+
+Test GCD list of length 3: 
+Expected: 9	Result: 9
+
+Test GCD list of length 4: 
+Expected: 1	Result: 1
+
+Test GCD list of length 6: 
+Expected: 3	Result: 3
+
+Test GCD list of length 8: 
+Expected: 1	Result: 1
+All asserts passed!
+GCD passed!

@@ -64,6 +64,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
       break;
     case TagEnum::SET_CONTROL_MODE:
       {
+	if(frame->get_payload().size() > 0){
 	m_protocol_engine->set_control_mode (frame->get_payload ().at (0));
 	/* In Priority Mode there is autopilot function,
 	 * which might interrupt priority commands
@@ -72,6 +73,7 @@ TLVInterpreter::interpret_frame (Device* device, Frame* frame)
 	  {
 	    m_autopilot->set_active (false);
 	  }
+	}
       }
       break;
     case TagEnum::PM_SET:

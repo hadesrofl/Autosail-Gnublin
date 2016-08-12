@@ -18,8 +18,12 @@ StreamGeneratorTest::test_cases ()
 bool
 StreamGeneratorTest::stream_test ()
 {
-  uint8_t comm_number;
   Loader* loader = new Loader ();
+  std::vector<uint8_t> payload;
+  uint8_t comm_number, attribute;
+  std::shared_ptr<Device> device;
+  std::shared_ptr<ComponentDescriptor> descriptor;
+  Frame* frame;
   std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
   std::shared_ptr<Device> device_a = dmanager->get_device (
       ComponentDescriptorEnum::GYROSCOPE);
@@ -32,32 +36,56 @@ StreamGeneratorTest::stream_test ()
   std::shared_ptr<StreamGenerator> generator = loader->get_stream_generator ();
   stream_generator_thread_param_t* generator_params =
       new stream_generator_thread_param_t;
-
   generator_params->generator_ptr = generator;
-
-  pthread_t generator_thread = loader->start_generator ();
-  sleep (2);
+  loader->start_generator ();
+  attribute = loader->get_protocol_engine ()->tlve4_attribute (
+      DataStructureIdentifier::INT16,
+      loader->get_stream_generator ()->get_communication_number ());
+  device = loader->get_device_manager ()->get_device (
+      ComponentDescriptorEnum::ACCELEROMETER);
   comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_a->get_component_descriptor ());
-  generator->add_stream (device_a, comm_number, 2500);
+      device->get_component_descriptor ());
+  payload.push_back (0);
+  payload.push_back (comm_number);
+  payload.push_back (0x09); //2500 ms
+  payload.push_back (0xC4);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
+							attribute,
+							payload.size () + 1,
+							payload);
+  std::cout << "Activate Accelerometer Stream" << std::endl;
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  device = loader->get_device_manager ()->get_device (
+      ComponentDescriptorEnum::COMPASS);
   comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_b->get_component_descriptor ());
-  generator->add_stream (device_b, comm_number, 10000);
+      device->get_component_descriptor ());
+  payload.clear ();
+  payload.push_back (0);
+  payload.push_back (comm_number);
+  payload.push_back (0x13); //5000ms
+  payload.push_back (0x88);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
+							attribute,
+							payload.size () + 1,
+							payload);
+  std::cout << "Activate Compass Stream" << std::endl;
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  device = loader->get_device_manager ()->get_device (
+      ComponentDescriptorEnum::GYROSCOPE);
   comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_c->get_component_descriptor ());
-  generator->add_stream (device_c, comm_number, 5000);
-  comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_d->get_component_descriptor ());
-  generator->add_stream (device_d, comm_number, 10000);
-  sleep (2);
-  comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_a->get_component_descriptor ());
-  generator->disable_stream (comm_number);
-  sleep (6);
-  comm_number = loader->get_protocol_engine ()->get_communication_number (
-      device_a->get_component_descriptor ());
-  generator->add_stream (device_a, comm_number, 2500);
-  pthread_join (generator_thread, NULL);
+      device->get_component_descriptor ());
+  payload.clear ();
+  payload.push_back (0);
+  payload.push_back (comm_number);
+  payload.push_back (0x27); //10000ms
+  payload.push_back (0x10);
+  frame = loader->get_protocol_engine ()->create_frame (TagEnum::SET_VALUE,
+							attribute,
+							payload.size () + 1,
+							payload);
+  std::cout << "Activate Gyroscope Stream" << std::endl;
+  loader->get_protocol_engine ()->interpret_frame (frame);
+  while(true);
   return true;
 }
 

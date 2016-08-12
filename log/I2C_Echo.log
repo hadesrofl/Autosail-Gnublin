@@ -1,0 +1,19 @@
+---------------------------------
+Starting Teensy I2C Test
+---------------------------------
+Send: 54 86
+Received: 54 86
+Send: 34 51
+Receive: 34 51
+Send: 68 85
+Receive: 68 85
+Send: 102 119
+Receive: 102 119
+Send: 83 105
+Receive: 83 105
+Send: 49 80
+Receive: 49 80
+All asserts passed!
+---------------------------------
+All asserts passed!
+I2C Echo Test passed!

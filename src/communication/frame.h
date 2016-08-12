@@ -130,15 +130,6 @@ public:
       }
   }
   /**
-   * Adds a new element to the payload of this Frame
-   * @param element is the new element to add to the payload
-   */
-  inline void
-  add_to_payload (uint8_t element)
-  {
-    m_payload.push_back (element);
-  }
-  /**
    * Virtual Function: Validates this Frame and returns either true or false
    * @return true if it is ok, otherwise false
    */

@@ -36,9 +36,11 @@ TimerTest::timer_test ()
   std::cout << "---------------------------------" << std::endl;
   std::cout << "Starting Timer Test" << std::endl;
   std::cout << "---------------------------------" << std::endl;
-  uint32_t ms, counter, seconds, nanoseconds;
-  ms = 250;
-  counter = 5;
+  uint32_t ms, counter, difference;
+  ms = 25;
+  counter = 500;
+  std::cout << "Timer set to: " << ms << " ms for " << counter << " times"
+      << std::endl;
   Timer* timer = new Timer (ms, timer_handler);
   timeval start, end;
   gettimeofday (&start, 0);
@@ -48,18 +50,20 @@ TimerTest::timer_test ()
       sleep (1);
     }
   gettimeofday (&end, 0);
+  difference = (end.tv_sec - start.tv_sec) * 1000
+      + (end.tv_usec - start.tv_usec) / 1000;
   std::cout << "Begin: " << start.tv_sec << ":" << start.tv_usec << std::endl;
   std::cout << "End: " << end.tv_sec << ":" << end.tv_usec << std::endl;
-  std::cout << "Difference: " << (end.tv_sec - start.tv_sec) << ":"
-      << (end.tv_usec - start.tv_usec) << std::endl;
-  seconds = end.tv_sec - start.tv_sec;
-  nanoseconds = end.tv_usec - start.tv_usec;
-  // counter + 1 because the timer is not 100 percent accurate so 5*250
-  // might be something around 1250 to 1500 at least between 1250 and 2000
-  if (seconds * 1000 + nanoseconds / 1000 < ms * (counter + 1))
+  std::cout << "Expected Difference: " << ms * counter << std::endl;
+  std::cout << "Difference: " << difference << std::endl;
+  // counter + 3 because the timer is not 100 percent accurate so 250*50
+  // might be something around 12.500 to 12.550
+  if (difference / 1000 < ms * counter)
     {
+      delete timer;
       return true;
     }
+  delete timer;
   return false;
 }
 #endif

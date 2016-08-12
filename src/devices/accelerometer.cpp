@@ -1,7 +1,4 @@
 #include "accelerometer.h"
-#ifdef _DEBUG
-#include "../utils/int_converter.h"
-#endif
 
 // Private Functions
 int8_t
@@ -91,76 +88,12 @@ Accelerometer::read_data ()
   int8_t lsb_y = acc_y;
   int8_t msb_z = (uint16_t) acc_z >> 8;
   int8_t lsb_z = acc_z;
-#ifdef _DEBUG
-  // combine two unsigned chars into one int16_t
-  int16_t tsb_x = (msb_x << 8) | lsb_x;
-  int16_t tsb_y = (msb_y << 8) | lsb_y;
-  int16_t tsb_z = (msb_z << 8) | lsb_z;
-  // Calculate the speed of the axis with reference to G = 9.81 m / s^2
-  float accel_meter_x = acc_x * MG_SPEED;
-  float accel_meter_y = acc_y * MG_SPEED;
-  float accel_meter_z = acc_z * MG_SPEED;
-  uint8_t x0 = buf[0];
-  uint8_t x1 = buf[1];
-  uint8_t y0 = buf[2];
-  uint8_t y1 = buf[3];
-  uint8_t z0 = buf[4];
-  uint8_t z1 = buf[5];
-  std::cout << "X-Axis LSB: " << static_cast<int32_t>(x0) << " " << std::endl;
-  std::cout << "X-Axis MSB: " << static_cast<int32_t>(x1) << " " << std::endl;
-  std::cout << "Y-Axis LSB: " << static_cast<int32_t>(y0) << " " << std::endl;
-  std::cout << "Y-Axis MSB: " << static_cast<int32_t>(y1) << " " << std::endl;
-  std::cout << "Z-Axis LSB: " << static_cast<int32_t>(z0) << " " << std::endl;
-  std::cout << "Z-Axis MSB: " << static_cast<int32_t>(z1) << " " << std::endl;
-  std::cout << "X-Axis 16 Bit: " << raw_x << std::endl;
-  std::cout << "Y-Axis 16 Bit: " << raw_y << std::endl;
-  std::cout << "Z-Axis 16 Bit: " << raw_z << std::endl;
-  std::cout << "X-Axis in mG: " << acc_x << std::endl;
-  std::cout << "Y-Axis in mG: " << acc_y << std::endl;
-  std::cout << "Z-Axis in mG: " << acc_z << std::endl;
-  std::cout << "X-Axis m/s^2: " << accel_meter_x << std::endl;
-  std::cout << "Y-Axis m/s^2: " << accel_meter_y << std::endl;
-  std::cout << "Z-Axis m/s^2: " << accel_meter_z << std::endl;
-  std::cout << "Z-Axis in mG (MSB): " << static_cast<int32_t> (msb_z)
-  << std::endl;
-  std::cout << "Z-Axis in mG (LSB): " << static_cast<int32_t> (lsb_z)
-  << std::endl;
-  std::cout << "X-Axis together as int16: " << static_cast<int16_t> (tsb_x)
-  << std::endl;
-  std::cout << "Y-Axis together as int16: " << static_cast<int16_t> (tsb_y)
-  << std::endl;
-  std::cout << "Z-Axis together as int16: " << static_cast<int16_t> (tsb_z)
-  << std::endl;
-#endif
   data.push_back(msb_x);
   data.push_back(lsb_x);
   data.push_back(msb_y);
   data.push_back(lsb_y);
   data.push_back(msb_z);
   data.push_back(lsb_z);
-#ifdef _DEBUG
-  int8_t* tmp = new int8_t[2];
-  tmp[0] = msb_x;
-  tmp[1] = lsb_x;
-  int16_t test_x = IntConverter::int8_to_int16(tmp);
-  tmp[0] = msb_y;
-  tmp[1] = lsb_y;
-  int16_t test_y = IntConverter::int8_to_int16(tmp);
-  tmp[0] = msb_z;
-  tmp[1] = lsb_z;
-  int16_t test_z = IntConverter::int8_to_int16(tmp);
-  delete[] tmp;
-  std::cout << "Returned:" <<std::endl;
-  std::cout << "X-Axis LSB: " << static_cast<int32_t>(data[1]) << " " << std::endl;
-  std::cout << "X-Axis MSB: " << static_cast<int32_t>(data[0]) << " " << std::endl;
-  std::cout << "Y-Axis LSB: " << static_cast<int32_t>(data[3]) << " " << std::endl;
-  std::cout << "Y-Axis MSB: " << static_cast<int32_t>(data[2]) << " " << std::endl;
-  std::cout << "Z-Axis LSB: " << static_cast<int32_t>(data[5]) << " " << std::endl;
-  std::cout << "Z-Axis MSB: " << static_cast<int32_t>(data[4]) << " " << std::endl;
-  std::cout << "Test X: " << test_x << " " << std::endl;
-  std::cout << "Test Y: " << test_y << " " << std::endl;
-  std::cout << "Test Z: " << test_z << " " << std::endl;
-#endif
   delete[] buf;
   return data;
 }

@@ -1,0 +1,15 @@
+---------------------------------
+Starting XBEE Serial Test
+---------------------------------
+Send: 36 56
+Send: 22 33
+Send: 44 55
+Send: 66 77
+Send: 53 69
+Send: 31 50
+Received: 36 56
+Received: 22 33
+Received: 44 55
+Received: 66 77
+Received: 53 69
+Received: 31 50

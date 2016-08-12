@@ -26,7 +26,9 @@
  * This portation of the firmware was subject of the Bachelor Thesis by Rene Kremer.
  *
  * For running the software a config file is needed in a <i>config</i> directory where the firmware is started.
- * There is also a need for a <i>tmp</i> directory so that the <i>gpsd-client</i> can output the data into a file there.
+ * The software creates a ramdisk in <i>/media/ramdisk</i> to save a tmp file for the gps data there.
+ * This file will be read by the firmware because the gps uses a sub program as client for <i>gpsd</i>
+ * to read the gps data.
  *
  * <br>
  * <br>

@@ -1,0 +1,259 @@
+------------------------
+Get Protocol Version
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Boat ID
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Set Control Mode
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Rudder
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Rudder Position
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Main Sail
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Main Sail
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Fore Sail
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Fore Sail
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Set Autopilot to new Course
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Deactivate Autopilot
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Current
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Accelerometer
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Compass
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Gyroscope
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Windvane
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Anemometer
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Tag Unknown Tag Error
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Tag Unknown Component Error
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Activate Accelerometer Stream
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Activate Compass Stream
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Activate Gyroscope Stream
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Deactivate Accelerometer Stream
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Activate Accelerometer Stream
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get Compass
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+------------------------
+Get all streams
+------------------------
+Sending Frame...
+Pin Change Interrupt occured
+
+Frame Count: 33
+Sending Frame...
+
+Frame Count: 32
+Sending Frame...
+
+Frame Count: 31
+
+Frame Count: 30
+Sending Frame...
+
+Frame Count: 29
+
+Frame Count: 28
+Sending Frame...
+
+Frame Count: 27
+
+Frame Count: 26
+
+Frame Count: 25
+Sending Frame...
+
+Frame Count: 24
+
+Frame Count: 23
+
+Frame Count: 22
+Sending Frame...
+
+Frame Count: 21
+
+Frame Count: 20
+
+Frame Count: 19
+Sending Frame...
+
+Frame Count: 18
+
+Frame Count: 17
+Sending Frame...
+
+Frame Count: 16
+Sending Frame...
+
+Frame Count: 15
+Sending Frame...
+
+Frame Count: 14
+Sending Frame...
+
+Frame Count: 13
+Sending Frame...
+
+Frame Count: 12
+Sending Frame...
+
+Frame Count: 11
+Sending Frame...
+
+Frame Count: 10
+Sending Frame...
+
+Frame Count: 9
+Sending Frame...
+
+Frame Count: 8
+Sending Frame...
+
+Frame Count: 7
+Sending Frame...
+
+Frame Count: 6
+Sending Frame...
+
+Frame Count: 5
+Sending Frame...
+
+Frame Count: 4
+Sending Frame...
+
+Frame Count: 3
+Sending Frame...
+
+Frame Count: 2
+Sending Frame...
+
+Frame Count: 1
+Sending Frame...

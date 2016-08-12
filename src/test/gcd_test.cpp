@@ -37,7 +37,7 @@ GCDTest::test_gcd ()
   std::vector<uint16_t> values;
   m_result = Calculation::gcd (4, 8);
   m_expected = 4;
-  std::cout << "Test single GCD: " << "\nExpected: " << m_expected
+  std::cout << "\nTest single GCD: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -48,7 +48,7 @@ GCDTest::test_length_1 ()
   values.push_back (8);
   m_expected = 8;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 1: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 1: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -60,7 +60,7 @@ GCDTest::test_length_2 ()
   values.push_back (6);
   m_expected = 2;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 2: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 2: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -73,7 +73,7 @@ GCDTest::test_length_3 ()
   values.push_back (27);
   m_expected = 9;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 3: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 3: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -87,7 +87,7 @@ GCDTest::test_length_4 ()
   values.push_back (100);
   m_expected = 1;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 4: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 4: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -103,7 +103,7 @@ GCDTest::test_length_6 ()
   values.push_back (3);
   m_expected = 3;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 6: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 6: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
@@ -121,7 +121,7 @@ GCDTest::test_length_8 ()
   values.push_back (243);
   m_expected = 1;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "Test GCD list of length 8: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 8: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }

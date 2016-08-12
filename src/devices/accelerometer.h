@@ -21,14 +21,6 @@
  * Address of the first Data Register
  */
 #define ACC_X_LSB_REGISTER_ADDR 0x32
-
-#ifdef _DEBUG
-/**
- * Speed of milli g. 1G = 9.81 m / s^2
- */
-#define MG_SPEED 0.00981
-
-#endif
 /**
  * @file
  * @class Accelerometer

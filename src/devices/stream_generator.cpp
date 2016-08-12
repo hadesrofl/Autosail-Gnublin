@@ -162,7 +162,7 @@ StreamGenerator::run_generator (void* params)
   std::shared_ptr<StreamGenerator> generator = generator_param->generator_ptr;
   pthread_mutex_unlock (&StreamGenerator::m_region_mutex);
   struct timespec ts;
-#ifdef _DEBUG
+#ifdef _TEST
   uint16_t last_interrupt = 0;
 #endif
   while (true)
@@ -196,7 +196,7 @@ StreamGenerator::run_generator (void* params)
 	   */
 	  ts.tv_sec = m_min_period / 1000;
 	  ts.tv_nsec = (m_min_period % 1000) * 1000000;
-#ifdef _DEBUG
+#ifdef _TEST
 	  if (m_interrupt_counter != last_interrupt)
 	    {
 	      last_interrupt = m_interrupt_counter;
@@ -210,7 +210,7 @@ StreamGenerator::run_generator (void* params)
 		  && m_interrupt_counter % streams.at (i)->get_period () == 0
 		  && m_min_period != 0)
 		{
-#ifdef _DEBUG
+#ifdef _TEST
 		  std::cout << "Device Descriptor: \n" << "Class: "
 		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
 		  << "\tAttribute: "

@@ -1,6 +1,6 @@
 #ifdef _TEST
-#ifndef TEST_ECHO_TEST_H_
-#define TEST_ECHO_TEST_H_
+#ifndef TEST_I2C_TEST_H_
+#define TEST_I2C_TEST_H_
 
 #include <vector>
 #include "asserter.h"
@@ -15,13 +15,13 @@
 
 /**
  * @file
- * @class EchoTest
- * @brief Class for testing purposes the Interface Classes via a TeensyDuino.
- * Implements some functions to assert that the I2C and Serial Interface is working.
+ * @class I2CTest
+ * @brief Class for testing purposes the I2C Class via a TeensyDuino.
+ * Implements some functions to assert that the I2C Interface is working.
  * @author Rene Kremer
  * @version 0.2
  */
-class EchoTest
+class I2CTest
   {
     /**
      * @private
@@ -42,7 +42,7 @@ class EchoTest
     /**
      * Constructor
      */
-    EchoTest();
+    I2CTest();
     /**
      * Tests all cases and returns a boolean if they passed or not
      * @return true if all cases passed, otherwise false
@@ -51,8 +51,8 @@ class EchoTest
     /**
      * Destructor
      */
-    ~EchoTest();
+    ~I2CTest();
   };
 
-#endif /* TEST_ECHO_TEST_H_ */
+#endif /* TEST_I2C_TEST_H_ */
 #endif

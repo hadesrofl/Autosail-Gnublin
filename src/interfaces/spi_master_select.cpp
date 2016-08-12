@@ -107,6 +107,9 @@ SPIMasterSelect::pin_change_interrupt (void* params)
       ret = poll (poll_fd, 1, -1);
       if (ret > 0)
 	{
+#ifdef _TEST
+	  std::cout << "Pin Change Interrupt occured" << std::endl;
+#endif
 	  spi->frame_count++;
 	  pthread_cond_signal (&spi->wakeup_cond);
 	}

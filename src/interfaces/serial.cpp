@@ -30,14 +30,11 @@ Serial::receive (uint8_t* buf, int16_t length)
 #endif
       return -1;
     }
-
-  int fd = open (Interface::get_device_file (),
-  O_RDWR | O_NOCTTY | O_SYNC | O_NONBLOCK);
-  if (read (fd, buf, length) != length)
+  int8_t result = m_serial_port->receive (buf, length);
+  if (result < 0)
     {
 #ifdef _DEBUG
-      std::cout << "ERROR: Not as many bytes read as given by length!"
-	  << std::endl;
+      std::cout << "Receiving failed" << std::endl;
 #endif
       return -1;
     }
@@ -48,7 +45,7 @@ Serial::receive (uint8_t* buf, int16_t length)
 int16_t
 Serial::send (uint8_t* buf, int16_t length)
 {
-  int result = 0;
+  int8_t result = 0;
   if (buf == 0)
     {
 #ifdef _DEBUG
@@ -89,5 +86,4 @@ Serial::send (uint8_t* buf, int16_t length)
 Serial::~Serial ()
 {
 }
-
 

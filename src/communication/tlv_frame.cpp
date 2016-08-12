@@ -1,4 +1,5 @@
 #include "tlv_frame.h"
+#include <iostream>
 
 TLVFrame::TLVFrame ()
 {
@@ -9,7 +10,6 @@ TLVFrame::TLVFrame ()
 TLVFrame::TLVFrame (TagEnum tag, uint8_t attribute, uint8_t length,
 		    std::vector<uint8_t> payload)
 {
-
   m_tag = tag;
   m_attribute = attribute;
   m_length = length;

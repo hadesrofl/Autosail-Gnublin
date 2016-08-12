@@ -144,8 +144,8 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	    comp_number =
 		static_cast<uint8_t> (ComponentDescriptorEnum::GPS_VALIDITY_LEA_6H);
 	    val_desc = protocol_engine->create_descriptor (comp_class,
-							    comp_attribute,
-							    comp_number);
+							   comp_attribute,
+							   comp_number);
 	    comm_number = protocol_engine->get_last_communication_number () + 1;
 	    protocol_engine->insert_communication_table_backward (comm_number,
 								  &(*device));
@@ -162,8 +162,8 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	    comp_number =
 		static_cast<uint8_t> (ComponentDescriptorEnum::GPS_VELOCITY);
 	    vel_desc = protocol_engine->create_descriptor (comp_class,
-							    comp_attribute,
-							    comp_number);
+							   comp_attribute,
+							   comp_number);
 
 	    comm_number = protocol_engine->get_last_communication_number () + 1;
 	    protocol_engine->insert_communication_table_backward (comm_number,
@@ -304,6 +304,7 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 	  break;
 	case ComponentDescriptorEnum::SERIAL_LINK:
 	  {
+#ifndef _TEST
 	    std::shared_ptr<SerialLink> device = std::shared_ptr<SerialLink> (
 		new SerialLink (
 		    new SPIParameter (0, DeviceConfig::SPI_SPEED_1MHZ, true),
@@ -313,6 +314,19 @@ DeviceManager::init_sensors (ProtocolEngine* protocol_engine,
 		communication_number, &(*device));
 	    protocol_engine->insert_communication_table_forward (
 		descriptor, communication_number);
+#endif
+#ifdef _TEST
+	    std::shared_ptr<SerialLink> device = std::shared_ptr<SerialLink> (
+		new SerialLink (
+		    new I2CParameter (
+			static_cast<uint8_t> (DeviceConfig::TEENSY_ADDR)),
+		    descriptor));
+	    m_devices.push_back (device);
+	    protocol_engine->insert_communication_table_backward (
+		communication_number, &(*device));
+	    protocol_engine->insert_communication_table_forward (
+		descriptor, communication_number);
+#endif
 	  }
 	  break;
 	case ComponentDescriptorEnum::WESTON_ANEMOMETER:

@@ -43,9 +43,17 @@ CommunicationTableTest::communication_table_standard_test ()
       ComponentDescriptorEnum::GYROSCOPE);
   std::shared_ptr<Device> device_c = dmanager->get_device (
       ComponentDescriptorEnum::COMPASS);
+  std::cout << "Communication Number: " << "\nAccelerometer: "
+      << static_cast<int> (engine->get_communication_number (
+	  device_a->get_component_descriptor ())) << "\nGyroscope: "
+      << static_cast<int> (engine->get_communication_number (
+	  device_b->get_component_descriptor ())) << "\nCompass: "
+      << static_cast<int> (engine->get_communication_number (
+	  device_c->get_component_descriptor ())) << std::endl;
   result = engine->get_communication_number (
       device_a->get_component_descriptor ());
   expected = ACC_COMM_NUMBER;
+  std::cout << "\nAssert Communication Table forward..." << std::endl;
   std::cout << "Accelerometer: " << "\texpected: "
       << static_cast<int> (expected) << "\tresult: "
       << static_cast<int> (result) << std::endl;
@@ -70,7 +78,6 @@ CommunicationTableTest::communication_table_standard_test ()
 	  engine->get_communication_number (
 	      device_c->get_component_descriptor ()),
 	  expected));
-  std::cout << "Assert Communication Table forward..." << std::endl;
   passed = asserter.check_asserts (asserts, 3);
   if (passed == true)
     {
@@ -91,7 +98,49 @@ CommunicationTableTest::communication_table_standard_test ()
   asserts.push_back (asserter.assert (device_a, dev_a));
   asserts.push_back (asserter.assert (device_b, dev_b));
   asserts.push_back (asserter.assert (device_c, dev_c));
-  std::cout << "Assert Communication Table backward..." << std::endl;
+  std::cout << "\nAssert Communication Table backward..." << std::endl;
+  std::cout << "Accelerometer expected: " << "\nClass: "
+      << static_cast<int> (device_a->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (device_a->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (device_a->get_component_descriptor ()->get_component_number ())
+      << std::endl;
+  std::cout << "Accelerometer result: " << "\nClass: "
+      << static_cast<int> (dev_a->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (dev_a->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (dev_a->get_component_descriptor ()->get_component_number ())
+      << std::endl;
+  std::cout << "Gyroscope expected: " << "\nClass: "
+      << static_cast<int> (device_b->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (device_b->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (device_b->get_component_descriptor ()->get_component_number ())
+      << std::endl;
+  std::cout << "Gyroscope result: " << "\nClass: "
+      << static_cast<int> (dev_b->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (dev_b->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (dev_b->get_component_descriptor ()->get_component_number ())
+      << std::endl;
+  std::cout << "Compass expected: " << "\nClass: "
+      << static_cast<int> (device_c->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (device_c->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (device_c->get_component_descriptor ()->get_component_number ())
+      << std::endl;
+  std::cout << "Compass result: " << "\nClass: "
+      << static_cast<int> (dev_c->get_component_descriptor ()->get_component_class ())
+      << "\tAttribute: "
+      << static_cast<int> (dev_c->get_component_descriptor ()->get_component_attribute ())
+      << "\tNumber: "
+      << static_cast<int> (dev_c->get_component_descriptor ()->get_component_number ())
+      << std::endl;
   passed = asserter.check_asserts (asserts, 3);
   if (passed == true)
     {

@@ -1,0 +1,58 @@
+---------------------------------
+Starting Gyroscope Test
+---------------------------------
+
+Test: 0
+X MSB: 0 
+X LSB: 1 
+Y MSB: 0 
+Y LSB: 0 
+Z MSB: 0 
+Z LSB: 0 
+X as int16: 1
+Y as int16: 0
+Z as int16: 0
+
+Test: 1
+X MSB: 0 
+X LSB: 1 
+Y MSB: 0 
+Y LSB: 0 
+Z MSB: 0 
+Z LSB: 0 
+X as int16: 1
+Y as int16: 0
+Z as int16: 0
+
+Test: 2
+X MSB: 0 
+X LSB: 1 
+Y MSB: 0 
+Y LSB: 0 
+Z MSB: 0 
+Z LSB: 0 
+X as int16: 1
+Y as int16: 0
+Z as int16: 0
+
+Test: 3
+X MSB: 0 
+X LSB: 1 
+Y MSB: 0 
+Y LSB: 0 
+Z MSB: 0 
+Z LSB: 0 
+X as int16: 1
+Y as int16: 0
+Z as int16: 0
+
+Test: 4
+X MSB: 0 
+X LSB: 1 
+Y MSB: 0 
+Y LSB: 0 
+Z MSB: 0 
+Z LSB: 0 
+X as int16: 1
+Y as int16: 0
+Z as int16: 0

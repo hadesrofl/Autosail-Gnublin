@@ -1,0 +1,109 @@
+---------------------------------
+Starting Stream Test
+---------------------------------
+Activate Accelerometer Stream
+Sending Frame...
+Activate Compass Stream
+Sending Frame...
+Activate Gyroscope Stream
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 5000
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Device Descriptor: 
+Class: 85	Attribute: 6	Number: 1
+Communication Number: 6	Period: 5000
+Stream triggered!
+Sending Frame...
+Sending Frame...
+Interrupt Counter: 7500
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 10000
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 6	Number: 1
+Communication Number: 6	Period: 5000
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 5	Number: 1
+Communication Number: 7	Period: 10000
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 2500
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 5000
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 6	Number: 1
+Communication Number: 6	Period: 5000
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 7500
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 10000
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 6	Number: 1
+Communication Number: 6	Period: 5000
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 5	Number: 1
+Communication Number: 7	Period: 10000
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 2500
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 5000
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...
+Device Descriptor: 
+Class: 85	Attribute: 6	Number: 1
+Communication Number: 6	Period: 5000
+Stream triggered!
+Sending Frame...
+Interrupt Counter: 7500
+Device Descriptor: 
+Class: 85	Attribute: 7	Number: 1
+Communication Number: 5	Period: 2500
+Stream triggered!
+Sending Frame...

@@ -131,8 +131,6 @@ public:
   void
   receive_frame ()
   {
-    //TODO: needs testing
-
     /* Read first two bytes, get length and read received frame wrapped
      *  in intra procotol frame
      */
@@ -148,7 +146,7 @@ public:
 	if (length > 0)
 	  {
 	    attribute = raw_frame.at (2);
-	    for (uint8_t i = 2; i < length; i++)
+	    for (uint8_t i = 3; i < length+2; i++)
 	      {
 		payload.push_back (raw_frame.at (i));
 	      }
