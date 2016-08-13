@@ -17,7 +17,7 @@ Expected: 9	Result: 9
 Test GCD list of length 4: 
 Expected: 1	Result: 1
 
-Test GCD list of length 6: 
+Test GCD list of length 5: 
 Expected: 3	Result: 3
 
 Test GCD list of length 8: 
