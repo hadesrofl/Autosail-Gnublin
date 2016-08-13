@@ -1095,6 +1095,9 @@ FrameInterpreterTest::test_teensy (void* params)
       comm_number = loader->get_protocol_engine ()->get_communication_number (
 	  device->get_component_descriptor ());
       payload.clear ();
+      attribute = loader->get_protocol_engine ()->tlve4_attribute (
+	  DataStructureIdentifier::UINT8,
+	  loader->get_stream_generator ()->get_communication_number ());
       payload.push_back (comm_number);
       frame = loader->get_protocol_engine ()->create_frame (
 	  TagEnum::REQUEST_VALUE, attribute, payload.size () + 1, payload);

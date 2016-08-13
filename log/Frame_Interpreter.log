@@ -1,160 +1,337 @@
+
 ------------------------
 Get Protocol Version
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 1	Length: 0
+Payload: 
+Attribute: 0	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Boat ID
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 2	Length: 0
+Payload: 
+Attribute: 0	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Set Control Mode
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 3	Length: 1
+Payload: 
+Attribute: 0	Data: 0 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 10	Length: 0
+Payload: 
+Attribute: 0	Data: 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 3	Length: 1
+Payload: 
+Attribute: 1	Data: 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 10	Length: 0
+Payload: 
+Attribute: 0	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Rudder
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 68	Data: 10 255 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 68	Data: 245 1 
+Pin Change Interrupt occured
 
 ------------------------
 Get Rudder Position
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 1	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Main Sail
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 69	Data: 10 255 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 69	Data: 245 1 
+Pin Change Interrupt occured
 
 ------------------------
 Get Main Sail
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 1	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Fore Sail
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 70	Data: 10 255 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 4	Length: 3
+Payload: 
+Attribute: 70	Data: 245 1 
+Pin Change Interrupt occured
 
 ------------------------
 Get Fore Sail
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 1	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Set Autopilot to new Course
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 7
+Payload: 
+Attribute: 76	Data: 245 1 0 1 10 255 
+Pin Change Interrupt occured
 
 ------------------------
 Deactivate Autopilot
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 76	Data: 0 0 10 255 
+Pin Change Interrupt occured
 
 ------------------------
 Get Current
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 14	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Accelerometer
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 5	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Compass
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 6	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Gyroscope
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 7	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Windvane
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 13	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Get Anemometer
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 19	Length: 1
+Payload: 
+Attribute: 15	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Tag Unknown Tag Error
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 69	Length: 1
+Payload: 
+Attribute: 15	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Tag Unknown Component Error
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 1
+Payload: 
+Attribute: 25	Data: 
+Pin Change Interrupt occured
 Sending Frame...
+Frame: 
+Tag: 4	Length: 1
+Payload: 
+Attribute: 25	Data: 
+Pin Change Interrupt occured
 
 ------------------------
 Activate Accelerometer Stream
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 9 196 
+Pin Change Interrupt occured
 
 ------------------------
 Activate Compass Stream
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 75	Data: 0 6 19 136 
+Pin Change Interrupt occured
 
 ------------------------
 Activate Gyroscope Stream
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 75	Data: 0 7 39 16 
+Pin Change Interrupt occured
 
 ------------------------
 Deactivate Accelerometer Stream
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 0 0 
+Pin Change Interrupt occured
 
 ------------------------
 Activate Accelerometer Stream
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 17	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 29 76 
+Pin Change Interrupt occured
 
 ------------------------
 Get Compass
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 18	Length: 2
+Payload: 
+Attribute: 11	Data: 6 
+Pin Change Interrupt occured
 
 ------------------------
 Get all streams
 ------------------------
 Sending Frame...
+Frame: 
+Tag: 18	Length: 1
+Payload: 
+Attribute: 11	Data: 
+Pin Change Interrupt occured
 
 Frame Count: 33
 
 IP Frame: 
 Tag: 7	Length: 3
+
 TLVE Frame: 
 Tag: 1	Length: 0 Sync: 82
 Sending Frame...
+Frame: 
+Tag: 129	Length: 4
+Payload: 
+Attribute: 32	Data: 4 0 0 
 
 Frame Count: 32
 
 IP Frame: 
 Tag: 7	Length: 3
+
 TLVE Frame: 
 Tag: 2	Length: 0 Sync: 82
 Sending Frame...
+Frame: 
+Tag: 130	Length: 1
+Payload: 
+Attribute: 0	Data: 1 
 
 Frame Count: 31
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 3	Length: 1
 Data: 0  Sync: 82
@@ -163,14 +340,20 @@ Frame Count: 30
 
 IP Frame: 
 Tag: 7	Length: 3
+
 TLVE Frame: 
 Tag: 10	Length: 0 Sync: 82
 Sending Frame...
+Frame: 
+Tag: 138	Length: 1
+Payload: 
+Attribute: 0	Data: 0 
 
 Frame Count: 29
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 3	Length: 1
 Data: 1  Sync: 82
@@ -179,14 +362,20 @@ Frame Count: 28
 
 IP Frame: 
 Tag: 7	Length: 3
+
 TLVE Frame: 
 Tag: 10	Length: 0 Sync: 82
 Sending Frame...
+Frame: 
+Tag: 138	Length: 1
+Payload: 
+Attribute: 0	Data: 0 
 
 Frame Count: 27
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 68 10 255  Sync: 82
@@ -195,6 +384,7 @@ Frame Count: 26
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 68 245 1  Sync: 82
@@ -203,15 +393,21 @@ Frame Count: 25
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 1  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 7
+Payload: 
+Attribute: 65	Data: 87 129 118 231 245 1 
 
 Frame Count: 24
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 69 10 255  Sync: 82
@@ -220,6 +416,7 @@ Frame Count: 23
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 69 245 1  Sync: 82
@@ -228,15 +425,21 @@ Frame Count: 22
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 1  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 7
+Payload: 
+Attribute: 65	Data: 87 129 118 231 245 1 
 
 Frame Count: 21
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 70 10 255  Sync: 82
@@ -245,6 +448,7 @@ Frame Count: 20
 
 IP Frame: 
 Tag: 7	Length: 6
+
 TLVE Frame: 
 Tag: 4	Length: 3
 Data: 70 245 1  Sync: 82
@@ -253,15 +457,21 @@ Frame Count: 19
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 1  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 7
+Payload: 
+Attribute: 65	Data: 87 129 118 231 245 1 
 
 Frame Count: 18
 
 IP Frame: 
 Tag: 7	Length: 10
+
 TLVE Frame: 
 Tag: 17	Length: 7
 Data: 76 245 1 0 1 10 255  Sync: 82
@@ -270,15 +480,21 @@ Frame Count: 17
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 76 0 0 10 255  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 9
+Payload: 
+Attribute: 76	Data: 87 129 118 231 0 0 18 52 
 
 Frame Count: 16
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 14  Sync: 82
@@ -288,138 +504,217 @@ Fused: 2815
 Current: 245 and 1
 Fused: -2815
 Sending Frame...
+Frame: 
+Tag: 147	Length: 9
+Payload: 
+Attribute: 78	Data: 87 129 118 231 10 255 245 1 
 
 Frame Count: 15
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 5  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 11
+Payload: 
+Attribute: 69	Data: 87 129 118 231 0 0 255 255 0 0 
 
 Frame Count: 14
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 6  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 11
+Payload: 
+Attribute: 70	Data: 87 129 118 231 0 0 0 0 0 0 
 
 Frame Count: 13
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 7  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 11
+Payload: 
+Attribute: 71	Data: 87 129 118 231 0 0 0 0 0 0 
 
 Frame Count: 12
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 13  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 7
+Payload: 
+Attribute: 77	Data: 87 129 118 231 134 80 
 
 Frame Count: 11
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 19	Length: 1
 Data: 15  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 147	Length: 7
+Payload: 
+Attribute: 79	Data: 87 129 118 231 126 104 
 
 Frame Count: 10
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 69	Length: 1
 Data: 15  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 8	Length: 13
+Payload: 
+Attribute: 129	Data: 84 97 103 32 117 110 107 110 111 119 110 33 
 
 Frame Count: 9
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 17	Length: 1
 Data: 25  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 8	Length: 13
+Payload: 
+Attribute: 131	Data: 67 111 109 112 111 110 101 110 116 32 117 110 
 
 Frame Count: 8
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 4	Length: 1
 Data: 25  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 8	Length: 13
+Payload: 
+Attribute: 131	Data: 67 111 109 112 111 110 101 110 116 32 117 110 
 
 Frame Count: 7
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 75 0 5 9 196  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 145	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 9 196 
 
 Frame Count: 6
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 75 0 6 19 136  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 145	Length: 5
+Payload: 
+Attribute: 75	Data: 0 6 19 136 
 
 Frame Count: 5
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 75 0 7 39 16  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 145	Length: 5
+Payload: 
+Attribute: 75	Data: 0 7 39 16 
 
 Frame Count: 4
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 75 0 5 0 0  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 145	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 0 0 
 
 Frame Count: 3
 
 IP Frame: 
 Tag: 7	Length: 8
+
 TLVE Frame: 
 Tag: 17	Length: 5
 Data: 75 0 5 29 76  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 145	Length: 5
+Payload: 
+Attribute: 75	Data: 0 5 29 76 
 
 Frame Count: 2
 
 IP Frame: 
 Tag: 7	Length: 5
+
 TLVE Frame: 
 Tag: 18	Length: 2
-Data: 75 6  Sync: 82
+Data: 11 6  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 146	Length: 5
+Payload: 
+Attribute: 75	Data: 0 6 19 136 
 
 Frame Count: 1
 
 IP Frame: 
 Tag: 7	Length: 4
+
 TLVE Frame: 
 Tag: 18	Length: 1
-Data: 75  Sync: 82
+Data: 11  Sync: 82
 Sending Frame...
+Frame: 
+Tag: 146	Length: 13
+Payload: 
+Attribute: 75	Data: 0 5 29 76 0 6 19 136 0 7 39 16 

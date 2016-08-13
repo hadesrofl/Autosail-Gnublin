@@ -46,7 +46,6 @@ TimerTest::timer_test ()
   gettimeofday (&start, 0);
   while (m_interrupt_counter < counter)
     {
-      std::cout << "Interrupt Counter: " << m_interrupt_counter << std::endl;
       sleep (1);
     }
   gettimeofday (&end, 0);
@@ -56,14 +55,15 @@ TimerTest::timer_test ()
   std::cout << "End: " << end.tv_sec << ":" << end.tv_usec << std::endl;
   std::cout << "Expected Difference: " << ms * counter << std::endl;
   std::cout << "Difference: " << difference << std::endl;
+  std::cout << "Expected Interrupt Counter: " << counter << std::endl;
+  std::cout << "Interrupt Counter: " << m_interrupt_counter << std::endl;
+  delete timer;
   // counter + 3 because the timer is not 100 percent accurate so 250*50
   // might be something around 12.500 to 12.550
-  if (difference / 1000 < ms * counter)
+  if (difference / 1000 < ms * counter && m_interrupt_counter == counter)
     {
-      delete timer;
       return true;
     }
-  delete timer;
   return false;
 }
 #endif

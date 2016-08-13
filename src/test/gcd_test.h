@@ -58,10 +58,10 @@ class GCDTest
      */
     bool test_length_4();
     /**
-     * Test for the vector size of 6
+     * Test for the vector size of 5
      * @return true if the test passed, otherwise false
      */
-    bool test_length_6();
+    bool test_length_5();
     /**
      * Test for the vector size of 8
      * @return true if the test passed, otherwise false

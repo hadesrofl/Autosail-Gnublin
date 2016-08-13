@@ -70,17 +70,17 @@ TLVEEngine::send_frame (Frame* frame)
 {
 #ifdef _TEST
   std::cout << "Sending Frame..." << std::endl;
-//  std::cout << "Frame: " << std::endl;
-//  std::cout << "Tag: " << static_cast<int> (frame->get_tag ()) << "\t"
-//      << "Length: " << static_cast<int> (frame->get_length ()) << std::endl;
-//  std::cout << "Payload: " << std::endl;
-//  std::cout << "Attribute: " << static_cast<int> (frame->get_attribute ());
-//  std::cout << "\tData: ";
-//  for (uint8_t i = 0; i < frame->get_payload ().size (); i++)
-//    {
-//      std::cout << static_cast<int> (frame->get_payload ().at (i)) << " ";
-//    }
-//  std::cout << std::endl;
+  std::cout << "Frame: " << std::endl;
+  std::cout << "Tag: " << static_cast<int> (frame->get_tag ()) << "\t"
+      << "Length: " << static_cast<int> (frame->get_length ()) << std::endl;
+  std::cout << "Payload: " << std::endl;
+  std::cout << "Attribute: " << static_cast<int> (frame->get_attribute ());
+  std::cout << "\tData: ";
+  for (uint8_t i = 0; i < frame->get_payload ().size (); i++)
+    {
+      std::cout << static_cast<int> (frame->get_payload ().at (i)) << " ";
+    }
+  std::cout << std::endl;
 #endif
   uint8_t size, i;
   uint8_t* buf;

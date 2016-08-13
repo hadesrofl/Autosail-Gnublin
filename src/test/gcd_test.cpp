@@ -20,7 +20,7 @@ GCDTest::test_cases ()
   passed.push_back (test_length_2 ());
   passed.push_back (test_length_3 ());
   passed.push_back (test_length_4 ());
-  passed.push_back (test_length_6 ());
+  passed.push_back (test_length_5 ());
   passed.push_back (test_length_8 ());
   return asserter.check_asserts (passed, 7);
 }
@@ -92,18 +92,17 @@ GCDTest::test_length_4 ()
   return asserter.assert (m_expected, m_result);
 }
 bool
-GCDTest::test_length_6 ()
+GCDTest::test_length_5 ()
 {
   std::vector<uint16_t> values;
   values.push_back (15);
   values.push_back (21);
   values.push_back (9);
   values.push_back (12);
-  values.push_back (6);
   values.push_back (3);
   m_expected = 3;
   m_result = Calculation::gcd_vector (values, 0, values.size ());
-  std::cout << "\nTest GCD list of length 6: " << "\nExpected: " << m_expected
+  std::cout << "\nTest GCD list of length 5: " << "\nExpected: " << m_expected
       << "\tResult: " << m_result << std::endl;
   return asserter.assert (m_expected, m_result);
 }
