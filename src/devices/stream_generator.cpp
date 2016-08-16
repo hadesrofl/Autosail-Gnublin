@@ -217,8 +217,10 @@ StreamGenerator::run_generator (void* params)
 		  && m_interrupt_counter % streams.at (i)->get_period () == 0
 		  && m_min_period != 0)
 		{
-#ifdef _DEBUG
+#ifdef _TEST
 		  gettimeofday (&begin_loop, 0);
+#endif
+#ifdef _DEBUG
 		  std::cout << "Device Descriptor: \n" << "Class: "
 		      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
 		      << "\tAttribute: "
