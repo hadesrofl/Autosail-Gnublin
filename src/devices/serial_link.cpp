@@ -38,35 +38,35 @@ SerialLink::read_data ()
   uint8_t length, size;
   m_interface_port->receive (ip_frame, 2);
   size = ip_frame[1];
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "\nIP Frame: " << "\nTag: " << static_cast<unsigned int> (ip_frame[0])
       << "\tLength: " << static_cast<unsigned int> (size) << std::endl;
 #endif
   frame_buf = new uint8_t[size];
   m_interface_port->receive (frame_buf, size);
   frame.push_back (frame_buf[0]);
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "\nTLVE Frame: " << "\nTag: " << static_cast<unsigned int> (frame.at (0));
 #endif
   length = frame_buf[1];
   frame.push_back (length);
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "\tLength: " << static_cast<unsigned int> (frame.at (1));
 #endif
   if (length > 0)
     {
-#ifdef _TEST
+#ifdef _DEBUG
       std::cout << "\nData: ";
 #endif
       for (uint8_t i = 2; i < size-1; i++)
 	{
 	  frame.push_back (frame_buf[i]);
-#ifdef _TEST
+#ifdef _DEGUB
 	  std::cout << static_cast<unsigned int> (frame_buf[i]) << " ";
 #endif
 	}
     }
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << " Sync: " << static_cast<unsigned int> (frame_buf[size - 1]) << std::endl;
 #endif
   return frame;

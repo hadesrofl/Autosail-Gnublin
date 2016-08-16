@@ -24,6 +24,11 @@ public:
    */
   GPSTest ();
   /**
+   * Test function for gps latency
+   */
+  void
+  eval ();
+  /**
    * Test cases for the GPS. Reads data from the Sensor and prints it to
    * stdio
    */

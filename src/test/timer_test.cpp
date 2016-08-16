@@ -27,6 +27,9 @@ TimerTest::~TimerTest ()
 void
 TimerTest::timer_handler (int32_t signo)
 {
+  timeval start;
+  gettimeofday(&start,0);
+  std::cout << start.tv_sec << ";" << start.tv_usec/1000 << ";" << std::endl;
   m_interrupt_counter++;
 }
 
@@ -36,9 +39,10 @@ TimerTest::timer_test ()
   std::cout << "---------------------------------" << std::endl;
   std::cout << "Starting Timer Test" << std::endl;
   std::cout << "---------------------------------" << std::endl;
+  std::cout << "\nPeriod in ms;Seconds;Milliseconds;" << std::endl;
   uint32_t ms, counter, difference;
-  ms = 25;
-  counter = 500;
+  ms = 50;
+  counter = 250;
   std::cout << "Timer set to: " << ms << " ms for " << counter << " times"
       << std::endl;
   Timer* timer = new Timer (ms, timer_handler);
@@ -46,6 +50,7 @@ TimerTest::timer_test ()
   gettimeofday (&start, 0);
   while (m_interrupt_counter < counter)
     {
+      std::cout << ms << ";";
       sleep (1);
     }
   gettimeofday (&end, 0);
@@ -58,8 +63,6 @@ TimerTest::timer_test ()
   std::cout << "Expected Interrupt Counter: " << counter << std::endl;
   std::cout << "Interrupt Counter: " << m_interrupt_counter << std::endl;
   delete timer;
-  // counter + 3 because the timer is not 100 percent accurate so 250*50
-  // might be something around 12.500 to 12.550
   if (difference / 1000 < ms * counter && m_interrupt_counter == counter)
     {
       return true;

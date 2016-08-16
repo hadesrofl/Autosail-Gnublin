@@ -16,7 +16,7 @@
 /**
  * @file
  * @class I2CTest
- * @brief Class for testing purposes the I2C Class via a TeensyDuino.
+ * @brief Class for testing purposes of the I2C Class via a TeensyDuino.
  * Implements some functions to assert that the I2C Interface is working.
  * @author Rene Kremer
  * @version 0.2

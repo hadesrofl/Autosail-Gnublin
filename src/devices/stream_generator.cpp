@@ -2,6 +2,11 @@
 #include "stream_generator_thread_params.h"
 #include <pthread.h>
 
+#ifdef _TEST
+#include <signal.h>
+#include <time.h>
+#endif
+
 // Intialize static member
 uint16_t StreamGenerator::m_interrupt_counter = 0;
 pthread_mutex_t StreamGenerator::m_region_mutex;
@@ -164,6 +169,7 @@ StreamGenerator::run_generator (void* params)
   struct timespec ts;
 #ifdef _TEST
   uint16_t last_interrupt = 0;
+  timeval begin_loop, begin_total, end_loop, end_total;
 #endif
   while (true)
     {
@@ -197,11 +203,12 @@ StreamGenerator::run_generator (void* params)
 	  ts.tv_sec = m_min_period / 1000;
 	  ts.tv_nsec = (m_min_period % 1000) * 1000000;
 #ifdef _TEST
+	  gettimeofday (&begin_total, 0);
 	  if (m_interrupt_counter != last_interrupt)
 	    {
 	      last_interrupt = m_interrupt_counter;
 	      std::cout << "Interrupt Counter: " << m_interrupt_counter
-	      << std::endl;
+		  << std::endl;
 	    }
 #endif
 	  for (uint32_t i = 0; i < streams.size (); i++)
@@ -210,22 +217,25 @@ StreamGenerator::run_generator (void* params)
 		  && m_interrupt_counter % streams.at (i)->get_period () == 0
 		  && m_min_period != 0)
 		{
-#ifdef _TEST
+#ifdef _DEBUG
+		  gettimeofday (&begin_loop, 0);
 		  std::cout << "Device Descriptor: \n" << "Class: "
-		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
-		  << "\tAttribute: "
-		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_attribute ())
-		  << "\tNumber: "
-		  << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_number ())
-		  << "\nCommunication Number: "
-		  << static_cast<int> (streams.at (i)->get_communication_number ())
-		  << "\tPeriod: " << streams.at (i)->get_period () << std::endl;
+		      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_class ())
+		      << "\tAttribute: "
+		      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_attribute ())
+		      << "\tNumber: "
+		      << static_cast<int> (streams.at (i)->get_device ()->get_component_descriptor ()->get_component_number ())
+		      << "\nCommunication Number: "
+		      << static_cast<int> (streams.at (i)->get_communication_number ())
+		      << "\tPeriod: " << streams.at (i)->get_period ()
+		      << std::endl;
 		  std::cout << "Stream triggered!" << std::endl;
 #endif
 		  std::vector<int8_t> data;
 		  data = streams.at (i)->get_device ()->read_data ();
 		  if (data.size () != 0)
 		    {
+
 #ifdef _DEBUG
 		      for (uint16_t j = 0; j < data.size (); j++)
 			{
@@ -287,8 +297,28 @@ StreamGenerator::run_generator (void* params)
 								 data);
 		      data.clear ();
 		    }
+#ifdef _TEST
+		  // Check time needed in loop when stream needs to be executed
+		  gettimeofday (&end_loop, 0);
+		  std::cout << (begin_loop.tv_sec) << ";"
+		      << (begin_loop.tv_usec) / 1000 << ";" << (end_loop.tv_sec)
+		      << ";" << (end_loop.tv_usec) / 1000 << ";"
+		      << (end_loop.tv_sec - begin_loop.tv_sec) * 1000
+			  + (end_loop.tv_usec - begin_loop.tv_usec) / 1000
+		      << ";" << std::endl;
+#endif
 		}
 	    }
+#ifdef _TEST
+	  // Check time needed for executing the whole run generator for one interrupt
+//	  gettimeofday (&end_total, 0);
+//	  std::cout << (begin_total.tv_sec) << ";"
+//	      << (begin_total.tv_usec) / 1000 << ";" << (end_total.tv_sec)
+//	      << ";" << (end_total.tv_usec) / 1000 << ";"
+//	      << (end_total.tv_sec - begin_total.tv_sec) * 1000
+//		  + (end_total.tv_usec - begin_total.tv_usec) / 1000 << ";"
+//	      << std::endl;
+#endif
 	  if (m_interrupt_counter >= generator->get_max_period ())
 	    {
 	      m_interrupt_counter = 0;

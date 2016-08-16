@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "../loader/loader.h"
+#include <signal.h>
 
 /**
  * Speed of milli g. 1G = 9.81 m / s^2
@@ -29,6 +30,11 @@ public:
    * Constructor
    */
   AccTest ();
+  /**
+   * Tests for time needed to read device
+   */
+  void
+  eval ();
   /**
    * Test cases for the Accelerometer. Reads data from the Sensor and prints it to
    * stdio

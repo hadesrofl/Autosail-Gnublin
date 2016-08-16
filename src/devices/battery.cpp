@@ -46,12 +46,14 @@ Battery::read_data ()
   read[3] = 0x01;
   m_voltage = (read[0] << 8) | read[1];
   m_current = (read[2] << 8) | read[3];
+#ifdef _DEBUG
   std::cout << "Tag: " << static_cast<int> (write[0]) << "\tLength: "
       << static_cast<int> (write[1]) << std::endl;
   std::cout << "Voltage: " << static_cast<int> (read[0]) << " and "
       << static_cast<int> (read[1]) << "\nFused: " << m_voltage << std::endl;
   std::cout << "Current: " << static_cast<int> (read[2]) << " and "
       << static_cast<int> (read[3]) << "\nFused: " << m_current << std::endl;
+#endif
   data.push_back (read[0]);
   data.push_back (read[1]);
   data.push_back (read[2]);

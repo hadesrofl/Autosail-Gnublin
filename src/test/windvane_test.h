@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "../loader/loader.h"
+#include <signal.h>
 /**
  * @file
  * @class WindVaneTest
@@ -20,6 +21,10 @@ public:
    * Constructor
    */
   WindVaneTest ();
+  /**
+   * Test to eval the read speed in the firmware
+   */
+  void eval();
   /**
    * Test cases for the WindVane. Reads data from the Sensor and prints it to
    * stdio

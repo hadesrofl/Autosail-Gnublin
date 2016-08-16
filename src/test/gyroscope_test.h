@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "../loader/loader.h"
+#include <signal.h>
 /**
  * @file
  * @class GyroscopeTest
@@ -23,6 +24,10 @@ public:
    * Constructor
    */
   GyroscopeTest ();
+  /**
+   * Test for time needed to read device in firmware
+   */
+  void eval();
   /**
    * Test cases for the Gyroscope. Reads data from the Sensor and prints it to
    * stdio

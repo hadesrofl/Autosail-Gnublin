@@ -4,7 +4,62 @@
 GPSTest::GPSTest ()
 {
 }
-
+void
+eval ()
+{
+  Loader* loader = new Loader ();
+  std::shared_ptr<DeviceManager> dmanager = loader->get_device_manager ();
+  timeval begin, end;
+  GPS* gps = dynamic_cast<GPS*> (&(*(dmanager->get_device (
+      ComponentDescriptorEnum::GPS_POSITION))));
+  std::vector<int8_t> data;
+  std::cout << "Latitude;Longitude;Speed;Timestamp;Needed Time;" << std::endl;
+  for (int32_t i = 0; i < 1000; i++)
+    {
+      if (gps != NULL)
+	{
+	  gettimeofday (&begin, NULL);
+	  data = gps->read_data ();
+	  if (data.size () == 0)
+	    {
+	      int8_t* test_latitude = new int8_t[4];
+	      test_latitude[0] = data[0];
+	      test_latitude[1] = data[1];
+	      test_latitude[2] = data[2];
+	      test_latitude[3] = data[3];
+	      int8_t* test_longitude = new int8_t[4];
+	      test_longitude[0] = data[4];
+	      test_longitude[1] = data[5];
+	      test_longitude[2] = data[6];
+	      test_longitude[3] = data[7];
+	      int8_t* test_speed = new int8_t[4];
+	      test_speed[0] = data[8];
+	      test_speed[1] = data[9];
+	      test_speed[2] = data[10];
+	      test_speed[3] = data[11];
+	      int8_t* test_timestamp = new int8_t[4];
+	      test_timestamp[0] = data[12];
+	      test_timestamp[1] = data[13];
+	      test_timestamp[2] = data[14];
+	      test_timestamp[3] = data[15];
+	      int32_t latitude = IntConverter::int8_to_int32 (test_latitude);
+	      int32_t longitude = IntConverter::int8_to_int32 (test_longitude);
+	      int32_t speed = IntConverter::int8_to_int32 (test_speed);
+	      int32_t timestamp = IntConverter::int8_to_int32 (test_timestamp);
+	      delete[] test_latitude;
+	      delete[] test_longitude;
+	      delete[] test_speed;
+	      delete[] test_timestamp;
+	      std::cout << latitude << ";" << longitude << ";" << speed << ";"
+		  << timestamp << ";";
+	    }
+	  gettimeofday (&end, NULL);
+	  std::cout
+	      << (end.tv_sec - begin.tv_sec) * 1000
+		  + (end.tv_usec - begin.tv_usec) / 1000 << ";" << std::endl;
+	}
+    }
+}
 bool
 GPSTest::test_cases ()
 {
@@ -12,7 +67,7 @@ GPSTest::test_cases ()
   std::cout << "Starting GPS Test" << std::endl;
   std::cout << "---------------------------------" << std::endl;
   Loader* loader = new Loader ();
-  GPS* gps = dynamic_cast<GPS*>(&(*(loader->get_device_manager ()->get_device (
+  GPS* gps = dynamic_cast<GPS*> (&(*(loader->get_device_manager ()->get_device (
       ComponentDescriptorEnum::GPS_POSITION))));
   std::vector<int8_t> data;
   uint8_t i = 0;

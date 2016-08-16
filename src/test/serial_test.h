@@ -12,7 +12,7 @@
 /**
  * @file
  * @class SerialTest
- * @brief Class for testing purposes the Serial Classes via XBEE Modules.
+ * @brief Class for testing purposes of the Serial Classes via XBEE Modules.
  * @author Rene Kremer
  * @version 0.2
  */

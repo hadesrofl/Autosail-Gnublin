@@ -25,6 +25,10 @@ public:
    */
   CompassTest ();
   /**
+   * Test for time needed to read device
+   */
+  void eval();
+  /**
    * Test cases for the Compass. Reads data and prints it to stdio
    */
   bool test_cases();

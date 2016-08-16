@@ -36,11 +36,12 @@ public:
   FrameInterpreterTest ();
   /**
    * Prints the time and difference in time for the eval function
+   * @param command is the commando of the Frame
    * @param begin is the begin time
    * @param end is the end time
    */
   void
-  print_time (timeval begin, timeval end);
+  print_time (const char* command, timeval begin, timeval end);
   /**
    * Evals the speed to interpret frames
    */

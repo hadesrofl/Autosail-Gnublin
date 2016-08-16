@@ -4,6 +4,30 @@
 GyroscopeTest::GyroscopeTest ()
 {
 }
+void
+GyroscopeTest::eval ()
+{
+  Loader* loader = new Loader ();
+  std::shared_ptr<Device> gyroscope = loader->get_device_manager ()->get_device (
+      ComponentDescriptorEnum::GYROSCOPE);
+  std::vector<int8_t> data;
+  uint16_t i = 0;
+  timeval begin, end;
+  std::cout
+      << "Start Read Seconds;Start Read Milliseconds;End Read Seconds;End Read Milliseconds;Difference;"
+      << std::endl;
+  while (i != 1000)
+    {
+      i++;
+      gettimeofday (&begin, 0);
+      data = gyroscope->read_data ();
+      gettimeofday (&end, 0);
+      std::cout << (begin.tv_sec) << ";" << (begin.tv_usec) / 1000 << ";"
+	  << (end.tv_sec) << ";" << (end.tv_usec) / 1000 << ";"
+	  << (end.tv_sec - begin.tv_sec) * 1000
+	      + (end.tv_usec - begin.tv_usec) / 1000 << ";" << std::endl;
+    }
+}
 bool
 GyroscopeTest::test_cases ()
 {

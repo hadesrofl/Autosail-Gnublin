@@ -68,7 +68,7 @@ TLVEEngine::send_stream (Stream* stream, std::vector<int8_t> data)
 void
 TLVEEngine::send_frame (Frame* frame)
 {
-#ifdef _TEST
+#ifdef _DEBUG
   std::cout << "Sending Frame..." << std::endl;
   std::cout << "Frame: " << std::endl;
   std::cout << "Tag: " << static_cast<int> (frame->get_tag ()) << "\t"

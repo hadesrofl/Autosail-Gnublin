@@ -3,18 +3,18 @@ Starting Compass Test
 ---------------------------------
 
 Test: 0
-X MSB: 5 
-X LSB: 101 
-Y MSB: -20 
-Y LSB: -66 
-Z MSB: -34 
-Z LSB: 92 
-X mGauss in int16: 1381
-Y mGauss in int16: -66
-Z mGauss in int16: -8612
-X uTesla: 138
-Y uTesla: -6
-Z uTesla: -861
+X MSB: 2 
+X LSB: 61 
+Y MSB: 0 
+Y LSB: 104 
+Z MSB: -2 
+Z LSB: -121 
+X mGauss in int16: 573
+Y mGauss in int16: 104
+Z mGauss in int16: -121
+X uTesla: 57
+Y uTesla: 10
+Z uTesla: -12
 
 Test: 1
 X MSB: 2 
