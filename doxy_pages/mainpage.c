@@ -25,8 +25,5 @@
  * This file will be read by the firmware because the gps uses a sub program as client for <i>gpsd</i>
  * to read the gps data.
  *
- * <br>
- * <br>
- * <img src="images/wiki_logo_135p.png"  alt="Autosail Wiki Logo" align="middle"/>
  *
  */
